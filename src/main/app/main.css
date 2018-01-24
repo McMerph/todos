@@ -1,0 +1,7 @@
+html {
+    touch-action: manipulation;
+}
+
+body {
+    background-color: #e2e1e0;
+}
