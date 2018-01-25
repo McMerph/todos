@@ -4,11 +4,8 @@ import { Provider } from 'react-redux';
 import ConnectedApp from './components/ConnectedApp';
 import { store } from './store/Store';
 
-import 'typeface-roboto';
-
 import 'normalize.css/normalize.css';
-import './main.css';
-// TODO Delete? Instead use typeface-roboto? How?
+import './index.css';
 import './fonts.css';
 
 document.addEventListener('DOMContentLoaded', () => {

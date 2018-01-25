@@ -4,10 +4,10 @@ import TodoItem from '../store/TodoItem';
 import TodoList from './TodoList';
 import FilterChooser from './FilterChooser';
 import { Filters } from '../store/actions/filter/SetFilterAction';
-import RippleButton, { ButtonType } from './buttons/ripple-button';
 import TextField from './text-fields/index';
 import { Card } from './Card';
 import styled from 'styled-components';
+import Button from 'material-ui/Button';
 
 export interface StateFromProps {
 
@@ -35,9 +35,9 @@ const AppCard = Card.extend`
   margin: 15px auto;
 `;
 
-const StyledRippleButton = styled(RippleButton)`
-  margin-left: 10px;
-`;
+const AddButton: React.SFC = () => <Button raised={true} color="primary" type="submit">Add</Button>;
+const StyledAddButton = styled(AddButton)` margin-left: 10px; `;
+
 const StyledForm = styled.form`
   display: flex;
   justify-content: center;
@@ -62,7 +62,7 @@ export default class App extends React.PureComponent<AppProps, {}> {
             setInput={(input: HTMLInputElement) => this.input = input}
             caption="Todo"
           />
-          <StyledRippleButton text="Add" buttonType={ButtonType.Submit}/>
+          <StyledAddButton/>
         </StyledForm>
         <TodoList {...this.props}/>
         <FilterChooser {...this.props}/>
