@@ -4,10 +4,10 @@ import TodoItem from '../store/TodoItem';
 import TodoList from './TodoList';
 import FilterChooser from './FilterChooser';
 import { Filters } from '../store/actions/filter/SetFilterAction';
-import TextField from './text-fields/index';
 import { Card } from './Card';
 import styled from 'styled-components';
 import Button from 'material-ui/Button';
+import TextField from 'material-ui/TextField';
 
 export interface StateFromProps {
 
@@ -29,14 +29,19 @@ export interface DispatchFromProps {
 interface AppProps extends StateFromProps, DispatchFromProps {
 }
 
+interface DummyProps {
+  className?: string;
+}
+
 const AppCard = Card.extend`
   width: 98%;
   max-width: 500px;
   margin: 15px auto;
 `;
 
-const AddButton: React.SFC = () => <Button raised={true} color="primary" type="submit">Add</Button>;
-const StyledAddButton = styled(AddButton)` margin-left: 10px; `;
+const AddButton: React.SFC<DummyProps> = props =>
+  <Button className={props.className} raised={true} color="primary" type="submit">Add</Button>;
+const StyledAddButton = styled(AddButton)` margin: 0 10px; `;
 
 const StyledForm = styled.form`
   display: flex;
@@ -53,14 +58,13 @@ export default class App extends React.PureComponent<AppProps, {}> {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  // TODO Delete spinner
   public render(): React.ReactNode {
     return (
       <AppCard>
         <StyledForm onSubmit={this.onSubmit}>
           <TextField
-            setInput={(input: HTMLInputElement) => this.input = input}
-            caption="Todo"
+            label="Todo"
+            inputRef={(input: HTMLInputElement) => this.input = input}
           />
           <StyledAddButton/>
         </StyledForm>
