@@ -1,6 +1,6 @@
 import * as React from 'react';
-import TodoItem from '../store/todo-item';
-import { Filters } from '../store/actions/filter/set-filter-action';
+import TodoItem from '../../store/todo-item';
+import { Filters } from '../../store/actions/filter/set-filter-action';
 import Checkbox from 'material-ui/Checkbox';
 import { FormControl, FormControlLabel, FormGroup, FormLabel } from 'material-ui/Form';
 

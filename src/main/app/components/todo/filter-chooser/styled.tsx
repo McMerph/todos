@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { FormControl, FormControlProps } from 'material-ui/Form';
-import ClassNameProps from '../classname-props';
+import ClassNameProps from '../../classname-props';
 
 const FilterFormControl: React.SFC<ClassNameProps & FormControlProps> = props =>
   <FormControl className={props.className} {...props}/>;

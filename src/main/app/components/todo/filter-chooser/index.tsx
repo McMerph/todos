@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormControlLabel, FormLabel } from 'material-ui/Form';
-import { Filters } from '../../store/actions/filter/set-filter-action';
+import { Filters } from '../../../store/actions/filter/set-filter-action';
 import { StyledFilterFormControl } from './styled';
 
 interface Props {

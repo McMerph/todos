@@ -1,8 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import Button from 'material-ui/Button';
 import TextField, { TextFieldProps } from 'material-ui/TextField';
-import { ButtonProps } from 'material-ui/es/Button';
+import Button, { ButtonProps } from 'material-ui/Button';
 import Card, { CardProps } from 'material-ui/Card';
 import ClassNameProps from '../classname-props';
 

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { FormEvent } from 'react';
 import TodoItem from '../../store/todo-item';
-import TodoList from '../todo-list';
-import FilterChooser from '../filter-chooser/index';
+import TodoList from './todo-list';
+import FilterChooser from './filter-chooser/index';
 import { Filters } from '../../store/actions/filter/set-filter-action';
 import { StyledAddTodoButton, StyledForm, StyledTextField, StyledTodoCard } from './styled';
 import Divider from 'material-ui/Divider';
