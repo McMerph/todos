@@ -1,8 +1,9 @@
 import * as React from 'react';
 import TodoItem from '../store/TodoItem';
 import { Filters } from '../store/actions/filter/SetFilterAction';
-import Checkbox from './checkbox/index';
+import Checkbox from 'material-ui/Checkbox';
 import styled from 'styled-components';
+import { FormControlLabel } from 'material-ui/Form';
 
 const StyledUl = styled.ul`
   list-style: none;
@@ -26,10 +27,15 @@ export default class TodoList extends React.PureComponent<Props, {}> {
       <StyledUl>
         {this.props.todoItems.filter((todo) => this.isVisible(todo)).map((todo) =>
           <li key={todo.id}>
-            <Checkbox
-              text={todo.text}
-              onClick={() => this.props.actions.onToggle(todo.id)}
-              defaultChecked={todo.completed}
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={todo.completed}
+                  onChange={() => this.props.actions.onToggle(todo.id)}
+                  value={todo.text}
+                />
+              }
+              label={todo.text}
             />
           </li>
         )}

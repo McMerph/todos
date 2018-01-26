@@ -7,7 +7,8 @@ import { Filters } from '../store/actions/filter/SetFilterAction';
 import { Card } from './Card';
 import styled from 'styled-components';
 import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
+import TextField, { TextFieldProps } from 'material-ui/TextField';
+import { ButtonProps } from 'material-ui/es/Button';
 
 export interface StateFromProps {
 
@@ -29,24 +30,35 @@ export interface DispatchFromProps {
 interface AppProps extends StateFromProps, DispatchFromProps {
 }
 
-interface DummyProps {
-  className?: string;
-}
-
 const AppCard = Card.extend`
   width: 98%;
   max-width: 500px;
   margin: 15px auto;
 `;
 
-const AddButton: React.SFC<DummyProps> = props =>
-  <Button className={props.className} raised={true} color="primary" type="submit">Add</Button>;
-const StyledAddButton = styled(AddButton)` margin: 0 10px; `;
+const offset: number = 12;
 
 const StyledForm = styled.form`
   display: flex;
-  justify-content: center;
-  align-items: baseline;
+`;
+
+interface ClassNameProps {
+  className?: string;
+}
+
+const TodoTextField: React.SFC<ClassNameProps & TextFieldProps> = props =>
+  <TextField className={props.className} {...props}/>;
+
+const StyledTextField = styled(TodoTextField)`
+  flex: auto;
+`;
+
+const AddTodoButton: React.SFC<ClassNameProps & ButtonProps> = props =>
+  <Button className={props.className} {...props}/>;
+
+const StyledAddTodoButton = styled(AddTodoButton)`
+  flex: 0 1 100px;
+  margin-left: ${offset}px !important;
 `;
 
 export default class App extends React.PureComponent<AppProps, {}> {
@@ -62,11 +74,8 @@ export default class App extends React.PureComponent<AppProps, {}> {
     return (
       <AppCard>
         <StyledForm onSubmit={this.onSubmit}>
-          <TextField
-            label="Todo"
-            inputRef={(input: HTMLInputElement) => this.input = input}
-          />
-          <StyledAddButton/>
+          <StyledTextField label="Todo" inputRef={(input: HTMLInputElement) => this.input = input}/>
+          <StyledAddTodoButton raised={true} color="primary" type="submit">Add</StyledAddTodoButton>
         </StyledForm>
         <TodoList {...this.props}/>
         <FilterChooser {...this.props}/>
