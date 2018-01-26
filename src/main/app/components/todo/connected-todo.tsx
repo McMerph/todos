@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
-import Todo, { DispatchFromProps, StateFromProps } from './todo';
+import Todo from './todo';
 import { AppStore } from '../../store/store';
 import { Dispatch } from 'redux';
 import { actionProducer } from '../../store/actions/actions-producer';
 import { Filters } from '../../store/actions/filter/set-filter-action';
+import { DispatchFromProps, StateFromProps } from './connected-props';
 
 // TODO Rename file to index.tsx?
 const mapStateToProps: (store: AppStore) => StateFromProps = store => ({

@@ -2,14 +2,10 @@ import * as React from 'react';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormControlLabel, FormLabel } from 'material-ui/Form';
 import { Filters } from '../../../store/actions/filter/set-filter-action';
+import ConnectedProps from '../connected-props';
 import { StyledFilterFormControl } from './styled';
 
-interface Props {
-  filter: Filters;
-  actions: { onSetFilter: (filter: Filters) => void; };
-}
-
-const FilterChooser: React.SFC<Props> = props => (
+const FilterChooser: React.SFC<ConnectedProps> = props => (
   <StyledFilterFormControl component="fieldset" fullWidth>
     <FormLabel component="legend">Filter</FormLabel>
     <RadioGroup

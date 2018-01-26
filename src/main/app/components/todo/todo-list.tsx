@@ -1,16 +1,11 @@
 import * as React from 'react';
-import TodoItem from '../../store/todo-item';
-import { Filters } from '../../store/actions/filter/set-filter-action';
 import Checkbox from 'material-ui/Checkbox';
 import { FormControl, FormControlLabel, FormGroup, FormLabel } from 'material-ui/Form';
+import TodoItem from '../../store/todo-item';
+import { Filters } from '../../store/actions/filter/set-filter-action';
+import ConnectedProps from './connected-props';
 
-interface Props {
-  filter: Filters;
-  todoItems: TodoItem[];
-  actions: { onToggle: (id: number) => void; };
-}
-
-const TodoList: React.SFC<Props> = props => (
+const TodoList: React.SFC<ConnectedProps> = props => (
   <FormControl component="fieldset" fullWidth>
     <FormLabel component="legend">Todo's list:</FormLabel>
     <FormGroup>
@@ -25,7 +20,7 @@ const TodoList: React.SFC<Props> = props => (
   </FormControl>
 );
 
-const isVisible: (props: Props, todo: TodoItem) => boolean = (props, todo) => {
+const isVisible: (props: ConnectedProps, todo: TodoItem) => boolean = (props, todo) => {
   return props.filter === Filters.Completed ? todo.completed :
     props.filter === Filters.Active ? !todo.completed : true;
 };
