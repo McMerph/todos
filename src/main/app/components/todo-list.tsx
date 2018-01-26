@@ -5,50 +5,29 @@ import Checkbox from 'material-ui/Checkbox';
 import { FormControl, FormControlLabel, FormGroup, FormLabel } from 'material-ui/Form';
 
 interface Props {
-
   filter: Filters;
   todoItems: TodoItem[];
-  actions: {
-    onToggle: (id: number) => void;
-  };
-
+  actions: { onToggle: (id: number) => void; };
 }
 
-export default class TodoList extends React.PureComponent<Props, {}> {
+const TodoList: React.SFC<Props> = props => (
+  <FormControl component="fieldset" fullWidth>
+    <FormLabel component="legend">Todo's list:</FormLabel>
+    <FormGroup>
+      {props.todoItems.filter((todo) => isVisible(props, todo)).map((todo) =>
+        <FormControlLabel
+          key={todo.id}
+          control={<Checkbox checked={todo.completed} onChange={() => props.actions.onToggle(todo.id)}/>}
+          label={todo.text}
+        />
+      )}
+    </FormGroup>
+  </FormControl>
+);
 
-  public render(): React.ReactNode {
-    return (
-      <FormControl component="fieldset" fullWidth>
-        <FormLabel component="legend">Todo's list:</FormLabel>
-        <FormGroup>
-          {this.props.todoItems.filter((todo) => this.isVisible(todo)).map((todo) =>
-            <FormControlLabel
-              key={todo.id}
-              control={
-                <Checkbox
-                  checked={todo.completed}
-                  onChange={() => this.props.actions.onToggle(todo.id)}
-                  value={todo.text}
-                />
-              }
-              label={todo.text}
-            />
-          )}
-        </FormGroup>
-      </FormControl>
-    );
-  }
+const isVisible: (props: Props, todo: TodoItem) => boolean = (props, todo) => {
+  return props.filter === Filters.Completed ? todo.completed :
+    props.filter === Filters.Active ? !todo.completed : true;
+};
 
-  private isVisible(todo: TodoItem): boolean {
-    if (this.props.filter === Filters.All) {
-      return true;
-    } else if (this.props.filter === Filters.Completed) {
-      return todo.completed;
-    } else if (this.props.filter === Filters.Active) {
-      return !todo.completed;
-    } else {
-      return true;
-    }
-  }
-
-}
+export default TodoList;
