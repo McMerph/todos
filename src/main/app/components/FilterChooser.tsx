@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Filters } from '../store/actions/filter/SetFilterAction';
+import Radio, { RadioGroup } from 'material-ui/Radio';
+import { FormControl, FormControlLabel, FormLabel } from 'material-ui/Form';
 
 interface Props {
 
@@ -12,38 +14,31 @@ interface Props {
 
 export default class FilterChooser extends React.PureComponent<Props, {}> {
 
+  public constructor(props: Props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
   public render(): React.ReactNode {
     return (
-      <div>
-        <label>
-          All
-          <input name="filter"
-                 type="radio"
-                 value="All"
-                 defaultChecked={this.props.filter === Filters.All}
-                 onClick={() => this.props.actions.onSetFilter(Filters.All)}
-          />
-        </label>
-        <label>
-          Completed
-          <input name="filter"
-                 type="radio"
-                 value="Completed"
-                 defaultChecked={this.props.filter === Filters.Completed}
-                 onClick={() => this.props.actions.onSetFilter(Filters.Completed)}
-          />
-        </label>
-        <label>
-          Active
-          <input name="filter"
-                 type="radio"
-                 value="Active"
-                 defaultChecked={this.props.filter === Filters.Active}
-                 onClick={() => this.props.actions.onSetFilter(Filters.Active)}
-          />
-        </label>
-      </div>
+      <FormControl component="fieldset">
+        <FormLabel component="legend">Filter</FormLabel>
+        <RadioGroup
+          aria-label="filter"
+          name="filter"
+          value={this.props.filter}
+          onChange={this.handleChange}
+        >
+          <FormControlLabel value={Filters.All} control={<Radio/>} label="All"/>
+          <FormControlLabel value={Filters.Completed} control={<Radio/>} label="Completed"/>
+          <FormControlLabel value={Filters.Active} control={<Radio/>} label="Active"/>
+        </RadioGroup>
+      </FormControl>
     );
+  }
+
+  private handleChange(event: React.ChangeEvent<{}>, value: string): void {
+    this.props.actions.onSetFilter(value as Filters);
   }
 
 }
