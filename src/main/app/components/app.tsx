@@ -60,6 +60,7 @@ const StyledAddTodoButton = styled(AddTodoButton)`
   margin-left: ${offset}px !important;
 `;
 
+// TODO Fix TodoTextField behavior after submit
 export default class App extends React.PureComponent<StateFromProps & DispatchFromProps, {}> {
 
   private input: HTMLInputElement;
