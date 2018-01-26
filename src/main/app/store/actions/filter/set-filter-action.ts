@@ -1,4 +1,4 @@
-import AppAction from '../AppAction';
+import AppAction from '../app-action';
 
 export const SET_FILTER_ACTION_TYPE = 'SET_FILTER';
 

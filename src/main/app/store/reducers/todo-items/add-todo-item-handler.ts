@@ -1,7 +1,7 @@
-import TodoItemsHandler from './TodoItemsHandler';
-import AppAction from '../../actions/AppAction';
-import { AddTodoAction, isAddTodoAction } from '../../actions/todo-item/AddTodoAction';
-import TodoItem from '../../TodoItem';
+import TodoItemsHandler from './todo-items-handler';
+import AppAction from '../../actions/app-action';
+import { AddTodoAction, isAddTodoAction } from '../../actions/todo-item/add-todo-action';
+import TodoItem from '../../todo-item';
 
 export default class AddTodoItemHandler extends TodoItemsHandler {
 

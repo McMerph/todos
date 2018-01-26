@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import App, { DispatchFromProps } from './App';
-import { AppStore } from '../store/Store';
+import App, { DispatchFromProps } from './app';
+import { AppStore } from '../store/store';
 import { Dispatch } from 'redux';
-import { actionProducer } from '../store/actions/ActionsProducer';
-import { Filters } from '../store/actions/filter/SetFilterAction';
+import { actionProducer } from '../store/actions/actions-producer';
+import { Filters } from '../store/actions/filter/set-filter-action';
 
 const mapStateToProps: (store: AppStore) => AppStore = store => {
   return {

@@ -14,8 +14,8 @@ module.exports = merge(common, {
   devtool: 'source-map',
   plugins: [
     new webpack.NormalModuleReplacementPlugin(
-      /Store\.ts/,
-      './Store.production.ts'
+      /store\.ts/,
+      './store.production.ts'
     ),
     new UglifyJSPlugin({
       sourceMap: true

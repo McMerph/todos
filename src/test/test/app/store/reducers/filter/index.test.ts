@@ -1,6 +1,6 @@
-import { actionProducer } from '../../../../../../main/app/store/actions/ActionsProducer';
-import { Filters } from '../../../../../../main/app/store/actions/filter/SetFilterAction';
-import { filterReducer } from '../../../../../../main/app/store/reducers/filter/FilterReducer';
+import { actionProducer } from '../../../../../../main/app/store/actions/actions-producer';
+import { Filters } from '../../../../../../main/app/store/actions/filter/set-filter-action';
+import { filterReducer } from '../../../../../../main/app/store/reducers/filter/filter-reducer';
 
 test('initial state', () => {
   expect(filterReducer(undefined, {type: 'dummy'})).toBe(Filters.All);

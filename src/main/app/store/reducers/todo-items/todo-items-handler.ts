@@ -1,5 +1,5 @@
-import TodoItem from '../../TodoItem';
-import AppAction from '../../actions/AppAction';
+import TodoItem from '../../todo-item';
+import AppAction from '../../actions/app-action';
 
 export default abstract class TodoItemsHandler {
 

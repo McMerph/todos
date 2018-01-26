@@ -1,4 +1,4 @@
-import AppAction from '../AppAction';
+import AppAction from '../app-action';
 
 export const TOGGLE_TODO_ACTION_TYPE = 'TOGGLE_TODO';
 

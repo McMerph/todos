@@ -1,7 +1,7 @@
-import TodoItemsHandler from './TodoItemsHandler';
-import AppAction from '../../actions/AppAction';
-import { isToggleTodoAction, ToggleTodoAction } from '../../actions/todo-item/ToggleTodoAction';
-import TodoItem from '../../TodoItem';
+import TodoItemsHandler from './todo-items-handler';
+import AppAction from '../../actions/app-action';
+import { isToggleTodoAction, ToggleTodoAction } from '../../actions/todo-item/toggle-todo-action';
+import TodoItem from '../../todo-item';
 
 export default class ToggleTodoItemHandler extends TodoItemsHandler {
 

@@ -1,6 +1,6 @@
-import TodoItem from '../../../../../../main/app/store/TodoItem';
-import { actionProducer } from '../../../../../../main/app/store/actions/ActionsProducer';
-import { todoItemsReducer } from '../../../../../../main/app/store/reducers/todo-items/TodoItemsReducer';
+import TodoItem from '../../../../../../main/app/store/todo-item';
+import { actionProducer } from '../../../../../../main/app/store/actions/actions-producer';
+import { todoItemsReducer } from '../../../../../../main/app/store/reducers/todo-items/todo-items-reducer';
 
 test('initial state', () => {
   expect(todoItemsReducer(undefined, {type: 'dummy'}).length).toBeGreaterThan(0);

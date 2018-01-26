@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { FormEvent } from 'react';
-import TodoItem from '../store/TodoItem';
-import TodoList from './TodoList';
-import FilterChooser from './FilterChooser';
-import { Filters } from '../store/actions/filter/SetFilterAction';
+import TodoItem from '../store/todo-item';
+import TodoList from './todo-list';
+import FilterChooser from './filter-chooser';
+import { Filters } from '../store/actions/filter/set-filter-action';
 import styled from 'styled-components';
 import Button from 'material-ui/Button';
 import TextField, { TextFieldProps } from 'material-ui/TextField';

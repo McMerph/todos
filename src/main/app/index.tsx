@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import ConnectedApp from './components/ConnectedApp';
-import { store } from './store/Store';
+import ConnectedApp from './components/connected-app';
+import { store } from './store/store';
 
 import 'normalize.css/normalize.css';
 import './index.css';

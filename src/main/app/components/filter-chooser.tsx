@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Filters } from '../store/actions/filter/SetFilterAction';
+import { Filters } from '../store/actions/filter/set-filter-action';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormControl, FormControlLabel, FormControlProps, FormLabel } from 'material-ui/Form';
 import ClassNameProps from './classname-props';

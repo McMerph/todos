@@ -1,7 +1,7 @@
-import TodoItem from '../../TodoItem';
-import AppAction from '../../actions/AppAction';
-import AddTodoItemHandler from './AddTodoItemHandler';
-import ToggleTodoItemHandler from './ToggleTodoItemHandler';
+import TodoItem from '../../todo-item';
+import AppAction from '../../actions/app-action';
+import AddTodoItemHandler from './add-todo-item-handler';
+import ToggleTodoItemHandler from './toggle-todo-item-handler';
 
 const initial: TodoItem[] = [
   {
