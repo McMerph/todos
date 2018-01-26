@@ -4,13 +4,13 @@ import TodoItem from '../store/TodoItem';
 import TodoList from './TodoList';
 import FilterChooser from './FilterChooser';
 import { Filters } from '../store/actions/filter/SetFilterAction';
-import { Card } from './Card';
 import styled from 'styled-components';
 import Button from 'material-ui/Button';
 import TextField, { TextFieldProps } from 'material-ui/TextField';
 import { ButtonProps } from 'material-ui/es/Button';
 import Divider from 'material-ui/Divider';
 import ClassNameProps from './classname-props';
+import Card, { CardContent, CardProps } from 'material-ui/Card';
 
 export interface StateFromProps {
 
@@ -29,20 +29,20 @@ export interface DispatchFromProps {
 
 }
 
-interface AppProps extends StateFromProps, DispatchFromProps {
-}
-
-const AppCard = Card.extend`
-  width: 98%;
-  max-width: 500px;
-  margin: 15px auto;
-`;
-
 const offset: number = 12;
 
 const StyledForm = styled.form`
   display: flex;
   margin: 0 0 24px 0;
+`;
+
+const TodoCard: React.SFC<ClassNameProps & CardProps> = props =>
+  <Card className={props.className} {...props}/>;
+
+const StyledTodoCard = styled(TodoCard)`
+  width: 98%;
+  max-width: 500px;
+  margin: 15px auto;
 `;
 
 const TodoTextField: React.SFC<ClassNameProps & TextFieldProps> = props =>
@@ -60,26 +60,28 @@ const StyledAddTodoButton = styled(AddTodoButton)`
   margin-left: ${offset}px !important;
 `;
 
-export default class App extends React.PureComponent<AppProps, {}> {
+export default class App extends React.PureComponent<StateFromProps & DispatchFromProps, {}> {
 
   private input: HTMLInputElement;
 
-  public constructor(props: AppProps) {
+  public constructor(props: StateFromProps & DispatchFromProps) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   public render(): React.ReactNode {
     return (
-      <AppCard>
-        <StyledForm onSubmit={this.onSubmit}>
-          <StyledTextField label="Todo" inputRef={(input: HTMLInputElement) => this.input = input}/>
-          <StyledAddTodoButton raised={true} color="primary" type="submit">Add</StyledAddTodoButton>
-        </StyledForm>
-        <TodoList {...this.props}/>
-        <Divider/>
-        <FilterChooser {...this.props}/>
-      </AppCard>
+      <StyledTodoCard>
+        <CardContent>
+          <StyledForm onSubmit={this.onSubmit}>
+            <StyledTextField label="Todo" inputRef={(input: HTMLInputElement) => this.input = input}/>
+            <StyledAddTodoButton raised={true} color="primary" type="submit">Add</StyledAddTodoButton>
+          </StyledForm>
+          <TodoList {...this.props}/>
+          <Divider/>
+          <FilterChooser {...this.props}/>
+        </CardContent>
+      </StyledTodoCard>
     );
   }
 
