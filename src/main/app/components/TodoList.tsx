@@ -2,13 +2,7 @@ import * as React from 'react';
 import TodoItem from '../store/TodoItem';
 import { Filters } from '../store/actions/filter/SetFilterAction';
 import Checkbox from 'material-ui/Checkbox';
-import styled from 'styled-components';
-import { FormControlLabel } from 'material-ui/Form';
-
-const StyledUl = styled.ul`
-  list-style: none;
-  padding-left: 20px;
-`;
+import { FormControl, FormControlLabel, FormGroup, FormLabel } from 'material-ui/Form';
 
 interface Props {
 
@@ -24,10 +18,12 @@ export default class TodoList extends React.PureComponent<Props, {}> {
 
   public render(): React.ReactNode {
     return (
-      <StyledUl>
-        {this.props.todoItems.filter((todo) => this.isVisible(todo)).map((todo) =>
-          <li key={todo.id}>
+      <FormControl component="fieldset" fullWidth>
+        <FormLabel component="legend">Todo's list:</FormLabel>
+        <FormGroup>
+          {this.props.todoItems.filter((todo) => this.isVisible(todo)).map((todo) =>
             <FormControlLabel
+              key={todo.id}
               control={
                 <Checkbox
                   checked={todo.completed}
@@ -37,9 +33,9 @@ export default class TodoList extends React.PureComponent<Props, {}> {
               }
               label={todo.text}
             />
-          </li>
-        )}
-      </StyledUl>
+          )}
+        </FormGroup>
+      </FormControl>
     );
   }
 

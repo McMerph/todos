@@ -9,6 +9,8 @@ import styled from 'styled-components';
 import Button from 'material-ui/Button';
 import TextField, { TextFieldProps } from 'material-ui/TextField';
 import { ButtonProps } from 'material-ui/es/Button';
+import Divider from 'material-ui/Divider';
+import ClassNameProps from './classname-props';
 
 export interface StateFromProps {
 
@@ -40,11 +42,8 @@ const offset: number = 12;
 
 const StyledForm = styled.form`
   display: flex;
+  margin: 0 0 24px 0;
 `;
-
-interface ClassNameProps {
-  className?: string;
-}
 
 const TodoTextField: React.SFC<ClassNameProps & TextFieldProps> = props =>
   <TextField className={props.className} {...props}/>;
@@ -78,6 +77,7 @@ export default class App extends React.PureComponent<AppProps, {}> {
           <StyledAddTodoButton raised={true} color="primary" type="submit">Add</StyledAddTodoButton>
         </StyledForm>
         <TodoList {...this.props}/>
+        <Divider/>
         <FilterChooser {...this.props}/>
       </AppCard>
     );

@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { Filters } from '../store/actions/filter/SetFilterAction';
 import Radio, { RadioGroup } from 'material-ui/Radio';
-import { FormControl, FormControlLabel, FormLabel } from 'material-ui/Form';
+import { FormControl, FormControlLabel, FormControlProps, FormLabel } from 'material-ui/Form';
+import ClassNameProps from './classname-props';
+import styled from 'styled-components';
 
 interface Props {
 
@@ -12,6 +14,13 @@ interface Props {
 
 }
 
+const FilterFormControl: React.SFC<ClassNameProps & FormControlProps> = props =>
+  <FormControl className={props.className} {...props}/>;
+
+const StyledFilterFormControl = styled(FilterFormControl)`
+  margin: 24px 0 0 0 !important;
+`;
+
 export default class FilterChooser extends React.PureComponent<Props, {}> {
 
   public constructor(props: Props) {
@@ -21,7 +30,7 @@ export default class FilterChooser extends React.PureComponent<Props, {}> {
 
   public render(): React.ReactNode {
     return (
-      <FormControl component="fieldset">
+      <StyledFilterFormControl component="fieldset" fullWidth>
         <FormLabel component="legend">Filter</FormLabel>
         <RadioGroup
           aria-label="filter"
@@ -33,7 +42,7 @@ export default class FilterChooser extends React.PureComponent<Props, {}> {
           <FormControlLabel value={Filters.Completed} control={<Radio/>} label="Completed"/>
           <FormControlLabel value={Filters.Active} control={<Radio/>} label="Active"/>
         </RadioGroup>
-      </FormControl>
+      </StyledFilterFormControl>
     );
   }
 
