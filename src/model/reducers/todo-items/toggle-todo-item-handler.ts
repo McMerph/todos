@@ -1,7 +1,12 @@
-import { isToggleTodoAction, IToggleTodoAction } from "../../actions/todo-item/IToggleTodoAction";
 import IAction from "../../IAction";
 import ITodoItem from "../../ITodoItem";
 import TodoItemsHandler from "./todo-items-handler";
+
+interface IToggleTodoAction extends IAction {
+  id: number;
+}
+
+export const TOGGLE_TODO_ACTION_TYPE = "TOGGLE_TODO";
 
 export default class ToggleTodoItemHandler extends TodoItemsHandler {
 
@@ -16,7 +21,8 @@ export default class ToggleTodoItemHandler extends TodoItemsHandler {
   }
 
   protected isSuitableAction(action: IAction): action is IToggleTodoAction {
-    return isToggleTodoAction(action);
+    const cast: IToggleTodoAction = action as IToggleTodoAction;
+    return cast.type === TOGGLE_TODO_ACTION_TYPE && cast.id !== undefined;
   }
 
 }
