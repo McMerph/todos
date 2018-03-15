@@ -5,8 +5,8 @@ import { store } from "./model/store";
 import ConnectedTodo from "./view/components/todo/connected-todo";
 
 import "normalize.css/normalize.css";
-import "./view/fonts.css";
-import "./view/index.css";
+
+import "./view/inject-global";
 
 document.addEventListener("DOMContentLoaded", () => {
   render(

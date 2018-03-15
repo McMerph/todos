@@ -9,36 +9,44 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),
-    new HtmlWebpackPlugin({template: './src/view/index.html'}),
+    new HtmlWebpackPlugin({
+      template: './src/view/index.html',
+      minify: {
+        collapseInlineTagWhitespace: true,
+        collapseWhitespace: true
+      }
+    }),
     new FaviconsWebpackPlugin('./src/view/resources/favicon.svg')
   ],
   module: {
     rules: [
       {
-        test: /\.(css)$/,
+        test: /\.css$/,
         use: [
-          {loader: 'style-loader'}, // adds CSS to the DOM by injecting a <style> tag
-          {loader: 'css-loader'}, // interprets @import and url() like import/require() and will resolve them
+          // adds CSS to the DOM by injecting a <style> tag
+          { loader: 'style-loader' },
+          // interprets @import and url() like import/require() and will resolve them
+          { loader: 'css-loader' },
         ],
       },
       {
-        test: /\.(ts|tsx)$/,
+        test: /\.tsx?$/,
         exclude: path.resolve(__dirname, "node_modules"),
         use: ['babel-loader', 'awesome-typescript-loader', 'stylelint-custom-processor-loader']
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf|jpg|jpeg|png|webp)$/,
+        test: /\.(jpe?g|png|webp)$/,
         use: [{
           loader: 'url-loader',
           options: {
-            limit: 0,
+            limit: 8192,
             name: 'asset/[name]-[sha512:hash:base64:7].[ext]'
           }
         }]
       },
       {
-        test: /\.html$/,
-        loader: 'html-loader'
+        test: /\.(woff2?|eot|ttf|otf|svg)$/,
+        use: [{ loader: 'file-loader' }]
       }
     ]
   },

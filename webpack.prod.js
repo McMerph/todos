@@ -7,7 +7,14 @@ const common = require('./webpack.common.js');
 module.exports = merge(common, {
   entry: {
     vendor: [
-      'normalize.css'
+      'normalize.css',
+      'react',
+      'react-dom',
+      'redux',
+      'react-redux',
+      'redux-devtools-extension',
+      'styled-components',
+      'material-ui'
     ]
   },
   devtool: 'source-map',
