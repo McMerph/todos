@@ -1,7 +1,7 @@
+import FilterType from "./FilterType";
 import ITodoItem from "./ITodoItem";
-import { FilterType } from "./reducers/filter";
 
-export interface IStore {
-  filterType: FilterType;
+export default interface IStore {
+  filter: FilterType;
   todoItems: ITodoItem[];
 }

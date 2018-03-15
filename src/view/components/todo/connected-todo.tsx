@@ -1,14 +1,14 @@
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { actionCreator } from "../../../model/actionCreator";
-import { IStore } from "../../../model/IStore";
-import { FilterType } from "../../../model/reducers/filter";
+import FilterType from "../../../model/FilterType";
+import IStore from "../../../model/IStore";
 import { IDispatchFromProps, IStateFromProps } from "./IConnectedProps";
 import Todo from "./todo";
 
 // TODO Rename file to index.tsx?
 const mapStateToProps: (store: IStore) => IStateFromProps = (store) => ({
-  filterType: store.filterType,
+  filterType: store.filter,
   todoItems: store.todoItems,
 });
 

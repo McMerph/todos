@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
-import { IStore } from "../IStore";
+import IStore from "../IStore";
 import { filter } from "./filter";
-import { todoItemsReducer } from "./todo-items/todo-items-reducer";
+import { todoItems } from "./todo-items";
 
 export const combinedReducer = combineReducers<IStore>({
-  filterType: filter,
-  todoItems: todoItemsReducer,
+  filter,
+  todoItems,
 });

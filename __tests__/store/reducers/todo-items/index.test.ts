@@ -1,9 +1,9 @@
 import { actionCreator } from "../../../../src/model/actionCreator";
 import ITodoItem from "../../../../src/model/ITodoItem";
-import { todoItemsReducer } from "../../../../src/model/reducers/todo-items/todo-items-reducer";
+import { todoItems } from "../../../../src/model/reducers/todo-items";
 
 test("initial state", () => {
-  expect(todoItemsReducer(undefined, {type: "dummy"}).length).toBeGreaterThan(0);
+  expect(todoItems(undefined, { type: "dummy" }).length).toBeGreaterThan(0);
 });
 
 test("'add todo' action with empty initial state", () => {
@@ -13,7 +13,7 @@ test("'add todo' action with empty initial state", () => {
     id: 0,
     text: todoItemText,
   }];
-  expect(todoItemsReducer([], actionCreator.addTodo(todoItemText))).toEqual(expected);
+  expect(todoItems([], actionCreator.addTodo(todoItemText))).toEqual(expected);
 });
 
 test("'add todo' action with initial state", () => {
@@ -28,7 +28,7 @@ test("'add todo' action with initial state", () => {
     id: 1,
     text: todoItemText,
   });
-  expect(todoItemsReducer(initialState, actionCreator.addTodo(todoItemText))).toEqual(expected);
+  expect(todoItems(initialState, actionCreator.addTodo(todoItemText))).toEqual(expected);
 });
 
 test("'toggle todo' action", () => {
@@ -44,7 +44,7 @@ test("'toggle todo' action", () => {
       text: "initial2",
     }];
 
-  expect(todoItemsReducer(initialState, actionCreator.toggleTodo(0))).toEqual([
+  expect(todoItems(initialState, actionCreator.toggleTodo(0))).toEqual([
     {
       completed: true,
       id: 0,
@@ -55,7 +55,7 @@ test("'toggle todo' action", () => {
       id: 1,
       text: "initial2",
     }]);
-  expect(todoItemsReducer(initialState, actionCreator.toggleTodo(1))).toEqual([
+  expect(todoItems(initialState, actionCreator.toggleTodo(1))).toEqual([
     {
       completed: false,
       id: 0,

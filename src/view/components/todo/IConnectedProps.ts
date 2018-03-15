@@ -1,5 +1,5 @@
+import FilterType from "../../../model/FilterType";
 import ITodoItem from "../../../model/ITodoItem";
-import { FilterType } from "../../../model/reducers/filter";
 
 export interface IStateFromProps {
   filterType: FilterType;

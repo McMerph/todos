@@ -1,8 +1,9 @@
 import { actionCreator } from "../../../../src/model/actionCreator";
-import { filter, FilterType } from "../../../../src/model/reducers/filter";
+import FilterType from "../../../../src/model/FilterType";
+import { filter } from "../../../../src/model/reducers/filter";
 
 test("initial state", () => {
-  expect(filter(undefined, {type: "dummy"})).toBe(FilterType.All);
+  expect(filter(undefined, { type: "dummy" })).toBe(FilterType.All);
 });
 
 test("'set filter' action", () => {

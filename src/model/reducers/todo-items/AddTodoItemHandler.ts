@@ -1,6 +1,6 @@
 import IAction from "../../IAction";
 import ITodoItem from "../../ITodoItem";
-import TodoItemsHandler from "./todo-items-handler";
+import TodoItemsHandler from "./TodoItemsHandler";
 
 interface IAddTodoAction extends IAction {
   text: string;
@@ -10,15 +10,9 @@ export const ADD_TODO_ACTION_TYPE = "ADD_TODO";
 
 export default class AddTodoItemHandler extends TodoItemsHandler {
 
-  protected selfHandle(parameters: { todoItems: ITodoItem[], action: IAction }): ITodoItem[] {
-    return [
-      ...parameters.todoItems,
-      {
-        completed: false,
-        id: parameters.todoItems.length,
-        text: (parameters.action as IAddTodoAction).text,
-      },
-    ];
+  protected selfHandle(parameters: { todoItems: ITodoItem[], action: IAddTodoAction }): ITodoItem[] {
+    const { todoItems, action } = parameters;
+    return [...todoItems, { completed: false, id: todoItems.length, text: action.text }];
   }
 
   protected isSuitableAction(action: IAction): action is IAddTodoAction {

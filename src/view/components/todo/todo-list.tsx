@@ -1,8 +1,8 @@
 import Checkbox from "material-ui/Checkbox";
 import { FormControl, FormControlLabel, FormGroup, FormLabel } from "material-ui/Form";
 import * as React from "react";
+import FilterType from "../../../model/FilterType";
 import ITodoItem from "../../../model/ITodoItem";
-import { FilterType } from "../../../model/reducers/filter";
 import IConnectedProps from "./IConnectedProps";
 
 const TodoList: React.SFC<IConnectedProps> = (props) => (

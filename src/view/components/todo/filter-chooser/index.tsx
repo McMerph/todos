@@ -1,7 +1,7 @@
 import { FormControlLabel, FormLabel } from "material-ui/Form";
 import Radio, { RadioGroup } from "material-ui/Radio";
 import * as React from "react";
-import { FilterType } from "../../../../model/reducers/filter";
+import FilterType from "../../../../model/FilterType";
 import IConnectedProps from "../IConnectedProps";
 import { StyledFilterFormControl } from "./styled";
 
