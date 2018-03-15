@@ -1,12 +1,11 @@
-import IAction from "../../IAction";
+import ActionType from "../../actions/ActionType";
+import IAction from "../../actions/IAction";
 import ITodoItem from "../../ITodoItem";
 import TodoItemsHandler from "./TodoItemsHandler";
 
 interface IAddTodoAction extends IAction {
   text: string;
 }
-
-export const ADD_TODO_ACTION_TYPE = "ADD_TODO";
 
 export default class AddTodoItemHandler extends TodoItemsHandler {
 
@@ -16,7 +15,7 @@ export default class AddTodoItemHandler extends TodoItemsHandler {
 
   protected isSuitableAction(action: IAction): action is IAddTodoAction {
     const cast: IAddTodoAction = action as IAddTodoAction;
-    return cast.type === ADD_TODO_ACTION_TYPE && cast.text !== undefined;
+    return cast.type === ActionType.AddTodo && cast.text !== undefined;
   }
 
 }

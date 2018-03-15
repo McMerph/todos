@@ -1,4 +1,4 @@
-import IAction from "../../IAction";
+import IAction from "../../actions/IAction";
 import ITodoItem from "../../ITodoItem";
 import AddTodoItemHandler from "./AddTodoItemHandler";
 import ToggleTodoItemHandler from "./ToggleTodoItemHandler";

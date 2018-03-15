@@ -2,10 +2,6 @@ import actionCreator from "../../../../src/model/actionCreator";
 import ITodoItem from "../../../../src/model/ITodoItem";
 import { todoItems } from "../../../../src/model/reducers/todo-items";
 
-test("initial state", () => {
-  expect(todoItems(undefined, { type: "dummy" }).length).toBeGreaterThan(0);
-});
-
 test("'add todo' action with empty initial state", () => {
   const todoItemText: string = "dummy";
   const expected: ITodoItem[] = [{
