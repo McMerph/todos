@@ -1,23 +1,23 @@
-import { connect } from 'react-redux';
-import Todo from './todo';
-import { AppStore } from '../../store/store';
-import { Dispatch } from 'redux';
-import { actionProducer } from '../../store/actions/actions-producer';
-import { Filters } from '../../store/actions/filter/set-filter-action';
-import { DispatchFromProps, StateFromProps } from './connected-props';
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { Filters } from "../../store/actions/filter/ISetFilterAction";
+import { actionProducer } from "../../store/actions/IActionProducer";
+import { IAppStore } from "../../store/store";
+import { IDispatchFromProps, IStateFromProps } from "./IConnectedProps";
+import Todo from "./todo";
 
 // TODO Rename file to index.tsx?
-const mapStateToProps: (store: AppStore) => StateFromProps = store => ({
+const mapStateToProps: (store: IAppStore) => IStateFromProps = (store) => ({
   filter: store.filter,
-  todoItems: store.todoItems
+  todoItems: store.todoItems,
 });
 
-const mapDispatchToProps: (dispatch: Dispatch<AppStore>) => DispatchFromProps = dispatch => ({
+const mapDispatchToProps: (dispatch: Dispatch<IAppStore>) => IDispatchFromProps = (dispatch) => ({
   actions: {
-    onToggle: (id: number) => dispatch(actionProducer.toggleTodo(id)),
     onAdd: (text: string) => dispatch(actionProducer.addTodo(text)),
-    onSetFilter: (filter: Filters) => dispatch(actionProducer.setFilter(filter))
-  }
+    onSetFilter: (filter: Filters) => dispatch(actionProducer.setFilter(filter)),
+    onToggle: (id: number) => dispatch(actionProducer.toggleTodo(id)),
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Todo);

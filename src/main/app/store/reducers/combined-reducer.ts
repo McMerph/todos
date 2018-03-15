@@ -1,9 +1,9 @@
-import { AppStore } from '../store';
-import { combineReducers } from 'redux';
-import { filterReducer } from './filter/filter-reducer';
-import { todoItemsReducer } from './todo-items/todo-items-reducer';
+import { combineReducers } from "redux";
+import { IAppStore } from "../store";
+import { filterReducer } from "./filter/filter-reducer";
+import { todoItemsReducer } from "./todo-items/todo-items-reducer";
 
-export const combinedReducer = combineReducers<AppStore>({
+export const combinedReducer = combineReducers<IAppStore>({
+  filter: filterReducer,
   todoItems: todoItemsReducer,
-  filter: filterReducer
 });

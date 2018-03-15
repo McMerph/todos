@@ -1,22 +1,22 @@
-import TodoItemsHandler from './todo-items-handler';
-import AppAction from '../../actions/app-action';
-import { isToggleTodoAction, ToggleTodoAction } from '../../actions/todo-item/toggle-todo-action';
-import TodoItem from '../../todo-item';
+import IAction from "../../actions/IAction";
+import { isToggleTodoAction, IToggleTodoAction } from "../../actions/todo-item/IToggleTodoAction";
+import TodoItem from "../../todo-item";
+import TodoItemsHandler from "./todo-items-handler";
 
 export default class ToggleTodoItemHandler extends TodoItemsHandler {
 
-  protected isSuitableAction(action: AppAction): action is ToggleTodoAction {
-    return isToggleTodoAction(action);
-  }
-
-  public selfHandle(parameters: { todoItems: TodoItem[], action: AppAction }): TodoItem[] {
-    return parameters.todoItems.map(todo =>
-      todo.id === (parameters.action as ToggleTodoAction).id ?
+  public selfHandle(parameters: { todoItems: TodoItem[], action: IAction }): TodoItem[] {
+    return parameters.todoItems.map((todo) =>
+      todo.id === (parameters.action as IToggleTodoAction).id ?
         {
           ...todo,
-          completed: !todo.completed
+          completed: !todo.completed,
         } :
         todo);
+  }
+
+  protected isSuitableAction(action: IAction): action is IToggleTodoAction {
+    return isToggleTodoAction(action);
   }
 
 }

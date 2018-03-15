@@ -1,19 +1,15 @@
-import TodoItem from '../../todo-item';
-import AppAction from '../../actions/app-action';
+import IAction from "../../actions/IAction";
+import TodoItem from "../../todo-item";
 
 export default abstract class TodoItemsHandler {
 
   private next: TodoItemsHandler | undefined;
 
-  protected abstract isSuitableAction(action: AppAction): boolean;
-
-  protected abstract selfHandle(parameters: { todoItems: TodoItem[], action: AppAction }): TodoItem[];
-
   public constructor(next?: TodoItemsHandler) {
     this.next = next;
   }
 
-  public handle(parameters: { todoItems: TodoItem[], action: AppAction }): TodoItem[] {
+  public handle(parameters: { todoItems: TodoItem[], action: IAction }): TodoItem[] {
     if (this.isSuitableAction(parameters.action)) {
       return this.selfHandle(parameters);
     } else if (this.next) {
@@ -22,5 +18,9 @@ export default abstract class TodoItemsHandler {
       return parameters.todoItems;
     }
   }
+
+  protected abstract isSuitableAction(action: IAction): boolean;
+
+  protected abstract selfHandle(parameters: { todoItems: TodoItem[], action: IAction }): TodoItem[];
 
 }

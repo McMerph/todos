@@ -1,12 +1,12 @@
-import { createStore } from 'redux';
-import TodoItem from './todo-item';
-import { Filters } from './actions/filter/set-filter-action';
-import { combinedReducer } from './reducers/combined-reducer';
+import { createStore } from "redux";
+import { Filters } from "./actions/filter/ISetFilterAction";
+import { combinedReducer } from "./reducers/combined-reducer";
+import TodoItem from "./todo-item";
 
-const enhancer = window['devToolsExtension'] ? window['devToolsExtension']()(createStore) : createStore;
+const enhancer = (window as any).devToolsExtension ? (window as any).devToolsExtension()(createStore) : createStore;
 export const store = enhancer(combinedReducer);
 
-export interface AppStore {
+export interface IAppStore {
 
   filter: Filters;
   todoItems: TodoItem[];

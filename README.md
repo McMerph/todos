@@ -1,4 +1,4 @@
-# todo-example
+# TODOs
 This is a web-based application of todo-list based on [https://github.com/reactjs/redux/tree/master/examples/todos](https://github.com/reactjs/redux/tree/master/examples/todos)
 
 ## Getting Started

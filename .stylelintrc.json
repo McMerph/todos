@@ -1,11 +1,6 @@
 {
   "processors": [
-    [
-      "stylelint-processor-styled-components",
-      {
-        "moduleName": "styled"
-      }
-    ]
+    "stylelint-processor-styled-components"
   ],
   "extends": [
     "stylelint-config-standard",

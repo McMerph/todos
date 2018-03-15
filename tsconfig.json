@@ -1,23 +1,19 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
-    "module": "commonjs",
     "sourceMap": true,
     "lib": [
       "es2017",
       "dom"
     ],
+    "jsx": "react",
     "target": "es5",
     "allowJs": true,
-    "jsx": "react",
-    "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
-    "strict": true,
     "noUnusedLocals": true,
-    "suppressImplicitAnyIndexErrors": true
+    "strict": true,
+    "strictPropertyInitialization": false
   },
   "exclude": [
-    "node_modules",
-    "trash"
+    "node_modules"
   ]
 }

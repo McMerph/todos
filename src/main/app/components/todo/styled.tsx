@@ -1,9 +1,9 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import TextField, { TextFieldProps } from 'material-ui/TextField';
-import Button, { ButtonProps } from 'material-ui/Button';
-import Card, { CardProps } from 'material-ui/Card';
-import ClassNameProps from '../classname-props';
+import Button, { ButtonProps } from "material-ui/Button";
+import Card, { CardProps } from "material-ui/Card";
+import TextField, { TextFieldProps } from "material-ui/TextField";
+import * as React from "react";
+import styled from "styled-components";
+import ClassNameProps from "../classname-props";
 
 const offset: number = 12;
 
@@ -12,7 +12,7 @@ const StyledForm = styled.form`
   margin: 0 0 ${offset * 2}px 0;
 `;
 
-const TodoCard: React.SFC<ClassNameProps & CardProps> = props =>
+const TodoCard: React.SFC<ClassNameProps & CardProps> = (props) =>
   <Card className={props.className} {...props}/>;
 
 const StyledTodoCard = styled(TodoCard)`
@@ -21,14 +21,14 @@ const StyledTodoCard = styled(TodoCard)`
   margin: ${offset}px auto;
 `;
 
-const TodoTextField: React.SFC<ClassNameProps & TextFieldProps> = props =>
+const TodoTextField: React.SFC<ClassNameProps & TextFieldProps> = (props) =>
   <TextField className={props.className} {...props}/>;
 
 const StyledTextField = styled(TodoTextField)`
   flex: auto;
 `;
 
-const AddTodoButton: React.SFC<ClassNameProps & ButtonProps> = props =>
+const AddTodoButton: React.SFC<ClassNameProps & ButtonProps> = (props) =>
   <Button className={props.className} {...props}/>;
 
 const StyledAddTodoButton = styled(AddTodoButton)`
