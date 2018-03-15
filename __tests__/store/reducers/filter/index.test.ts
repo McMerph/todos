@@ -1,13 +1,12 @@
-import { actionCreator } from "../../../../src/model/actions/actionCreator";
-import { Filter } from "../../../../src/model/actions/filter/ISetFilterAction";
-import { filterReducer } from "../../../../src/model/reducers/filter/filter-reducer";
+import { actionCreator } from "../../../../src/model/actionCreator";
+import { filter, FilterType } from "../../../../src/model/reducers/filter";
 
 test("initial state", () => {
-  expect(filterReducer(undefined, {type: "dummy"})).toBe(Filter.All);
+  expect(filter(undefined, {type: "dummy"})).toBe(FilterType.All);
 });
 
 test("'set filter' action", () => {
-  expect(filterReducer(undefined, actionCreator.setFilter(Filter.All))).toBe(Filter.All);
-  expect(filterReducer(undefined, actionCreator.setFilter(Filter.Completed))).toBe(Filter.Completed);
-  expect(filterReducer(undefined, actionCreator.setFilter(Filter.Active))).toBe(Filter.Active);
+  expect(filter(undefined, actionCreator.setFilterType(FilterType.All))).toBe(FilterType.All);
+  expect(filter(undefined, actionCreator.setFilterType(FilterType.Completed))).toBe(FilterType.Completed);
+  expect(filter(undefined, actionCreator.setFilterType(FilterType.Active))).toBe(FilterType.Active);
 });

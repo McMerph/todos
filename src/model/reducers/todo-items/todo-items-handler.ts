@@ -1,4 +1,4 @@
-import IAction from "../../actions/IAction";
+import IAction from "../../IAction";
 import ITodoItem from "../../ITodoItem";
 
 export default abstract class TodoItemsHandler {

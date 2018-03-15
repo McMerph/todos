@@ -1,8 +1,8 @@
 import Checkbox from "material-ui/Checkbox";
 import { FormControl, FormControlLabel, FormGroup, FormLabel } from "material-ui/Form";
 import * as React from "react";
-import { Filter } from "../../../model/actions/filter/ISetFilterAction";
 import ITodoItem from "../../../model/ITodoItem";
+import { FilterType } from "../../../model/reducers/filter";
 import IConnectedProps from "./IConnectedProps";
 
 const TodoList: React.SFC<IConnectedProps> = (props) => (
@@ -21,8 +21,8 @@ const TodoList: React.SFC<IConnectedProps> = (props) => (
 );
 
 const isVisible: (props: IConnectedProps, todo: ITodoItem) => boolean = (props, todo) => {
-  return props.filter === Filter.Completed ? todo.completed :
-    props.filter === Filter.Active ? !todo.completed : true;
+  return props.filterType === FilterType.Completed ? todo.completed :
+    props.filterType === FilterType.Active ? !todo.completed : true;
 };
 
 export default TodoList;

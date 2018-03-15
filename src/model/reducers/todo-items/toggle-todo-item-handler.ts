@@ -1,5 +1,5 @@
-import IAction from "../../actions/IAction";
 import { isToggleTodoAction, IToggleTodoAction } from "../../actions/todo-item/IToggleTodoAction";
+import IAction from "../../IAction";
 import ITodoItem from "../../ITodoItem";
 import TodoItemsHandler from "./todo-items-handler";
 

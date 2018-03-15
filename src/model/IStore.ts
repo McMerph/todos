@@ -1,7 +1,7 @@
-import { Filter } from "./actions/filter/ISetFilterAction";
 import ITodoItem from "./ITodoItem";
+import { FilterType } from "./reducers/filter";
 
 export interface IStore {
-  filter: Filter;
+  filterType: FilterType;
   todoItems: ITodoItem[];
 }

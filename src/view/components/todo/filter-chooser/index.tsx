@@ -1,7 +1,7 @@
 import { FormControlLabel, FormLabel } from "material-ui/Form";
 import Radio, { RadioGroup } from "material-ui/Radio";
 import * as React from "react";
-import { Filter } from "../../../../model/actions/filter/ISetFilterAction";
+import { FilterType } from "../../../../model/reducers/filter";
 import IConnectedProps from "../IConnectedProps";
 import { StyledFilterFormControl } from "./styled";
 
@@ -11,12 +11,12 @@ const FilterChooser: React.SFC<IConnectedProps> = (props) => (
     <RadioGroup
       aria-label="filter"
       name="filter"
-      value={props.filter}
-      onChange={(event: React.ChangeEvent<{}>, value: string) => props.actions.onSetFilter(value as Filter)}
+      value={props.filterType}
+      onChange={(event: React.ChangeEvent<{}>, value: string) => props.actions.onSetFilter(value as FilterType)}
     >
-      <FormControlLabel value={Filter.All} control={<Radio/>} label="All"/>
-      <FormControlLabel value={Filter.Completed} control={<Radio/>} label="Completed"/>
-      <FormControlLabel value={Filter.Active} control={<Radio/>} label="Active"/>
+      <FormControlLabel value={FilterType.All} control={<Radio/>} label="All"/>
+      <FormControlLabel value={FilterType.Completed} control={<Radio/>} label="Completed"/>
+      <FormControlLabel value={FilterType.Active} control={<Radio/>} label="Active"/>
     </RadioGroup>
   </StyledFilterFormControl>
 );

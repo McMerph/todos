@@ -2,7 +2,7 @@ import { CardContent } from "material-ui/Card";
 import Divider from "material-ui/Divider";
 import * as React from "react";
 import { FormEvent } from "react";
-import FilterChooser from "./filter-chooser/index";
+import FilterChooser from "./filter-chooser";
 import IConnectedProps from "./IConnectedProps";
 import { StyledAddTodoButton, StyledForm, StyledTextField, StyledTodoCard } from "./styled";
 import TodoList from "./todo-list";
