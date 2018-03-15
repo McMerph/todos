@@ -10,9 +10,9 @@ export const ADD_TODO_ACTION_TYPE = "ADD_TODO";
 
 export default class AddTodoItemHandler extends TodoItemsHandler {
 
-  protected selfHandle(parameters: { todoItems: ITodoItem[], action: IAddTodoAction }): ITodoItem[] {
-    const { todoItems, action } = parameters;
-    return [...todoItems, { completed: false, id: todoItems.length, text: action.text }];
+  protected selfHandle(parameters: { state: ITodoItem[], action: IAddTodoAction }): ITodoItem[] {
+    const { state, action } = parameters;
+    return [...state, { completed: false, id: state.length, text: action.text }];
   }
 
   protected isSuitableAction(action: IAction): action is IAddTodoAction {

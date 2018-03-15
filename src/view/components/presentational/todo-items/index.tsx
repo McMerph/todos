@@ -6,15 +6,15 @@ import ITodoItem from "../../../../model/ITodoItem";
 
 interface IProps {
   todoItems: ITodoItem[];
-  filterType: FilterType;
+  filter: FilterType;
   onToggle: (id: number) => void;
 }
 
-const TodosList: React.SFC<IProps> = (props) => (
+const TodoItems: React.SFC<IProps> = (props) => (
   <FormControl component="fieldset" fullWidth={true}>
     <FormLabel component="legend">Todo's list:</FormLabel>
     <FormGroup>
-      {props.todoItems.filter((todo) => isVisible(props.filterType, todo)).map((todo) => (
+      {props.todoItems.filter((todo) => isVisible(props.filter, todo)).map((todo) => (
         <FormControlLabel
           key={todo.id}
           control={<Checkbox checked={todo.completed} onChange={() => props.onToggle(todo.id)}/>}
@@ -25,9 +25,9 @@ const TodosList: React.SFC<IProps> = (props) => (
   </FormControl>
 );
 
-const isVisible = (filterType: FilterType, todo: ITodoItem): boolean => {
-  return filterType === FilterType.Completed ? todo.completed :
-    filterType === FilterType.Active ? !todo.completed : true;
+const isVisible = (filter: FilterType, todo: ITodoItem): boolean => {
+  return filter === FilterType.Completed ? todo.completed :
+    filter === FilterType.Active ? !todo.completed : true;
 };
 
-export default TodosList;
+export default TodoItems;

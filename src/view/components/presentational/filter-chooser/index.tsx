@@ -5,8 +5,8 @@ import FilterType from "../../../../model/FilterType";
 import { StyledFormControl } from "./styled";
 
 interface IProps {
-  filterType: FilterType;
-  onSetFilter: (filterType: FilterType) => void;
+  filter: FilterType;
+  onSetFilter: (filter: FilterType) => void;
 }
 
 const FilterChooser: React.SFC<IProps> = (props) => (
@@ -15,9 +15,9 @@ const FilterChooser: React.SFC<IProps> = (props) => (
     <RadioGroup
       aria-label="filter"
       name="filter"
-      value={props.filterType}
-      onChange={(event: React.ChangeEvent<{}>, filterType: string) =>
-        props.onSetFilter(filterType as FilterType)}
+      value={props.filter}
+      onChange={(event: React.ChangeEvent<{}>, filter: string) =>
+        props.onSetFilter(filter as FilterType)}
     >
       <FormControlLabel value={FilterType.All} control={<Radio/>} label="All"/>
       <FormControlLabel value={FilterType.Completed} control={<Radio/>} label="Completed"/>

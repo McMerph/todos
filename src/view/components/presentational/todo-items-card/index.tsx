@@ -5,11 +5,11 @@ import { FormEvent } from "react";
 import FilterType from "../../../../model/FilterType";
 import ITodoItem from "../../../../model/ITodoItem";
 import FilterChooser from "../filter-chooser";
-import TodosList from "../todos-list";
+import TodoItems from "../todo-items";
 import { StyledAddTodoButton, StyledForm, StyledTextField, StyledTodoCard } from "./styled";
 
 interface IProps {
-  filterType: FilterType;
+  filter: FilterType;
   todoItems: ITodoItem[];
   onToggle: (id: number) => void;
   onAdd: (text: string) => void;
@@ -17,7 +17,7 @@ interface IProps {
 }
 
 // TODO Fix TodoTextField behavior after submit. Controlled component?
-export default class TodosCard extends React.PureComponent<IProps, {}> {
+export default class TodoItemsCard extends React.PureComponent<IProps, {}> {
 
   private input: HTMLInputElement;
 
@@ -34,14 +34,14 @@ export default class TodosCard extends React.PureComponent<IProps, {}> {
             <StyledTextField label="Todo" inputRef={(input: HTMLInputElement) => this.input = input}/>
             <StyledAddTodoButton variant="raised" color="primary" type="submit">Add</StyledAddTodoButton>
           </StyledForm>
-          <TodosList
-            filterType={this.props.filterType}
+          <TodoItems
+            filter={this.props.filter}
             todoItems={this.props.todoItems}
             onToggle={this.props.onToggle}
           />
           <Divider/>
           <FilterChooser
-            filterType={this.props.filterType}
+            filter={this.props.filter}
             onSetFilter={this.props.onSetFilter}
           />
         </CardContent>

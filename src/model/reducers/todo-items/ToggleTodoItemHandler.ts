@@ -10,9 +10,9 @@ export const TOGGLE_TODO_ACTION_TYPE = "TOGGLE_TODO";
 
 export default class ToggleTodoItemHandler extends TodoItemsHandler {
 
-  public selfHandle(parameters: { todoItems: ITodoItem[], action: IToggleTodoAction }): ITodoItem[] {
-    const { todoItems, action } = parameters;
-    return todoItems.map((todo) =>
+  public selfHandle(parameters: { state: ITodoItem[], action: IToggleTodoAction }): ITodoItem[] {
+    const { state, action } = parameters;
+    return state.map((todo) =>
       todo.id === action.id ? { ...todo, completed: !todo.completed } : todo);
   }
 

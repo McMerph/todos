@@ -1,4 +1,4 @@
-import { actionCreator } from "../../../../src/model/actionCreator";
+import actionCreator from "../../../../src/model/actionCreator";
 import ITodoItem from "../../../../src/model/ITodoItem";
 import { todoItems } from "../../../../src/model/reducers/todo-items";
 
