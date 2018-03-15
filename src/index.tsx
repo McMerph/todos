@@ -2,7 +2,7 @@ import * as React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { store } from "./model/store";
-import ConnectedTodo from "./view/components/todo/connected-todo";
+import ConnectedApp from "./view/components/containers/ConnectedApp";
 
 import "normalize.css/normalize.css";
 
@@ -11,7 +11,7 @@ import "./view/inject-global";
 document.addEventListener("DOMContentLoaded", () => {
   render(
     <Provider store={store}>
-      <ConnectedTodo/>
+      <ConnectedApp/>
     </Provider>,
     document.getElementsByTagName("main")[0] as HTMLElement,
   );
