@@ -5,12 +5,12 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: './src/main/app/index.tsx'
+    app: './src/index.tsx'
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),
-    new HtmlWebpackPlugin({template: './src/main/app/index.html'}),
-    new FaviconsWebpackPlugin('./src/main/resources/favicon.svg')
+    new HtmlWebpackPlugin({template: './src/view/index.html'}),
+    new FaviconsWebpackPlugin('./src/view/resources/favicon.svg')
   ],
   module: {
     rules: [
