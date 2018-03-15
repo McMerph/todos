@@ -9,18 +9,18 @@ export default abstract class TodoItemsHandler {
     this.next = next;
   }
 
-  public handle(parameters: { state: ITodoItem[], action: IAction }): ITodoItem[] {
-    if (this.isSuitableAction(parameters.action)) {
-      return this.selfHandle(parameters);
+  public handle(state: ITodoItem[], action: IAction): ITodoItem[] {
+    if (this.isSuitableAction(action)) {
+      return this.selfHandle(state, action);
     } else if (this.next) {
-      return this.next.handle(parameters);
+      return this.next.handle(state, action);
     } else {
-      return parameters.state;
+      return state;
     }
   }
 
   protected abstract isSuitableAction(action: IAction): boolean;
 
-  protected abstract selfHandle(parameters: { state: ITodoItem[], action: IAction }): ITodoItem[];
+  protected abstract selfHandle(state: ITodoItem[], action: IAction): ITodoItem[];
 
 }

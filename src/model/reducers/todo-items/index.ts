@@ -24,5 +24,5 @@ const initial: ITodoItem[] = [
 ];
 
 export const todoItems = (state: ITodoItem[] = initial, action: IAction): ITodoItem[] => {
-  return new AddTodoItemHandler(new ToggleTodoItemHandler()).handle({ state, action });
+  return new AddTodoItemHandler(new ToggleTodoItemHandler()).handle(state, action);
 };
