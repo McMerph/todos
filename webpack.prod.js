@@ -6,17 +6,12 @@ const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
   entry: {
-    app: './src/main/app/index.tsx',
     vendor: [
       'normalize.css'
     ]
   },
   devtool: 'source-map',
   plugins: [
-    new webpack.NormalModuleReplacementPlugin(
-      /store\.ts/,
-      './store.production.ts'
-    ),
     new UglifyJSPlugin({
       sourceMap: true
     }),

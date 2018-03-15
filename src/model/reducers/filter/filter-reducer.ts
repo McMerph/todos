@@ -1,7 +1,7 @@
-import { Filters, isSetFilterAction } from "../../actions/filter/ISetFilterAction";
+import { Filter, isSetFilterAction } from "../../actions/filter/ISetFilterAction";
 import IAction from "../../actions/IAction";
 
-export const filterReducer = (filter: Filters = Filters.All, action: IAction): Filters => {
+export const filterReducer = (filter: Filter = Filter.All, action: IAction): Filter => {
   if (isSetFilterAction(action)) {
     return action.filter;
   } else {

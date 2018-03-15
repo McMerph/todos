@@ -1,8 +1,8 @@
-import { Filters } from "../../../model/actions/filter/ISetFilterAction";
+import { Filter } from "../../../model/actions/filter/ISetFilterAction";
 import ITodoItem from "../../../model/ITodoItem";
 
 export interface IStateFromProps {
-  filter: Filters;
+  filter: Filter;
   todoItems: ITodoItem[];
 }
 
@@ -10,7 +10,7 @@ export interface IDispatchFromProps {
   actions: {
     onToggle: (id: number) => void;
     onAdd: (text: string) => void;
-    onSetFilter: (filter: Filters) => void;
+    onSetFilter: (filter: Filter) => void;
   };
 }
 
