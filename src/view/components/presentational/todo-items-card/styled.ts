@@ -1,6 +1,5 @@
 import Button from "material-ui/Button";
 import Card from "material-ui/Card";
-import TextField from "material-ui/TextField";
 import styled from "styled-components";
 
 const offset: number = 12;
@@ -16,13 +15,9 @@ const StyledTodoCard = styled(Card)`
   margin: ${offset}px auto;
 `;
 
-const StyledTextField = styled(TextField)`
-  flex: auto;
-`;
-
 const StyledAddTodoButton = styled(Button)`
   flex: 0 1 100px;
   margin-left: ${offset}px !important;
 `;
 
-export { StyledForm, StyledTodoCard, StyledTextField, StyledAddTodoButton };
+export { StyledForm, StyledTodoCard, StyledAddTodoButton };

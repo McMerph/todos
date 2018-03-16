@@ -14,6 +14,7 @@ const TodoItems: React.SFC<IProps> = (props) => (
   <FormControl component="fieldset" fullWidth={true}>
     <FormLabel component="legend">Todo's list:</FormLabel>
     <FormGroup>
+      {/*tslint:disable-next-line jsx-no-multiline-js*/}
       {props.todoItems.filter((todo) => isVisible(props.filter, todo)).map((todo) => (
         <FormControlLabel
           key={todo.id}

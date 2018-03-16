@@ -5,8 +5,6 @@
     "tslint-react"
   ],
   "jsRules": {},
-  "rules": {
-    "jsx-no-multiline-js": false
-  },
+  "rules": {},
   "rulesDirectory": []
 }
