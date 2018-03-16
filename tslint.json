@@ -6,7 +6,6 @@
   ],
   "jsRules": {},
   "rules": {
-    "jsx-no-lambda": false,
     "jsx-no-multiline-js": false
   },
   "rulesDirectory": []

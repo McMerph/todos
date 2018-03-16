@@ -6,7 +6,8 @@ import FilterType from "../../../../model/FilterType";
 import ITodoItem from "../../../../model/ITodoItem";
 import FilterChooser from "../filter-chooser";
 import TodoItems from "../todo-items";
-import { StyledAddTodoButton, StyledForm, StyledTextField, StyledTodoCard } from "./styled";
+import TodoTextField from "../todo-text-field";
+import { StyledAddTodoButton, StyledForm, StyledTodoCard } from "./styled";
 
 interface IProps {
   filter: FilterType;
@@ -16,14 +17,17 @@ interface IProps {
   onSetFilter: (filter: FilterType) => void;
 }
 
-// TODO Fix TodoTextField behavior after submit. Controlled component?
-export default class TodoItemsCard extends React.PureComponent<IProps, {}> {
+interface IState {
+  value: string;
+}
 
-  private input: HTMLInputElement;
+export default class TodoItemsCard extends React.PureComponent<IProps, IState> {
 
   public constructor(props: Readonly<IProps>) {
     super(props);
+    this.state = { value: "" };
     this.onSubmit = this.onSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   public render(): React.ReactNode {
@@ -31,7 +35,7 @@ export default class TodoItemsCard extends React.PureComponent<IProps, {}> {
       <StyledTodoCard>
         <CardContent>
           <StyledForm onSubmit={this.onSubmit}>
-            <StyledTextField label="Todo" inputRef={(input: HTMLInputElement) => this.input = input}/>
+            <TodoTextField value={this.state.value} onChange={this.onChange}/>
             <StyledAddTodoButton variant="raised" color="primary" type="submit">Add</StyledAddTodoButton>
           </StyledForm>
           <TodoItems
@@ -51,11 +55,15 @@ export default class TodoItemsCard extends React.PureComponent<IProps, {}> {
 
   private onSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-    if (this.input.value.length > 0) {
-      const value: string = this.input.value;
-      this.input.value = "";
-      this.props.onAdd(value);
+    if (this.state.value.length > 0) {
+      this.props.onAdd(this.state.value);
+      this.setState({ value: "" });
     }
+  }
+
+  private onChange(event: FormEvent<HTMLInputElement>): void {
+    const value: string = event.currentTarget.value;
+    this.setState({ value });
   }
 
 }

@@ -17,6 +17,7 @@ const TodoItems: React.SFC<IProps> = (props) => (
       {props.todoItems.filter((todo) => isVisible(props.filter, todo)).map((todo) => (
         <FormControlLabel
           key={todo.id}
+          // tslint:disable-next-line jsx-no-lambda
           control={<Checkbox checked={todo.completed} onChange={() => props.onToggle(todo.id)}/>}
           label={todo.text}
         />),
