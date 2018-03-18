@@ -1,0 +1,109 @@
+package ru.mcmerphy.todos.rest.server.filters;
+
+import ru.mcmerphy.todos.rest.server.ErrorMessage;
+import ru.mcmerphy.todos.rest.server.resources.TodoItemResource;
+
+import javax.ws.rs.HttpMethod;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.PreMatching;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.PathSegment;
+import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+@PreMatching
+public class TodoItemResourceGetRequestFilter implements ContainerRequestFilter {
+
+    @Override
+    public void filter(ContainerRequestContext requestContext) {
+        if (isGetTodoItemResource(requestContext)) {
+            List<String> paths = requestContext.getUriInfo().getPathSegments().stream()
+                    .map(PathSegment::getPath)
+                    .collect(Collectors.toList());
+            if (isRootRequest(paths)) {
+                validateTodoItemResourceQueryParameters(requestContext);
+            } else {
+                validateTodoItemResourcePaths(paths, requestContext);
+            }
+        }
+    }
+
+    private boolean isGetTodoItemResource(ContainerRequestContext requestContext) {
+        URI todoItemResource = requestContext.getUriInfo().getBaseUriBuilder()
+                .path(TodoItemResource.class)
+                .build();
+        URI currentResource = requestContext.getUriInfo().getBaseUriBuilder().build();
+
+        return Objects.equals(requestContext.getMethod(), HttpMethod.GET) &&
+                Objects.equals(todoItemResource, currentResource);
+    }
+
+    private boolean isRootRequest(List<String> paths) {
+        return paths.size() == 1 && paths.get(0).isEmpty();
+    }
+
+    private void validateTodoItemResourceQueryParameters(ContainerRequestContext requestContext) {
+        MultivaluedMap<String, String> queryParameters = requestContext.getUriInfo().getQueryParameters();
+        String[] integerQueryParameters = {"firstResult", "maxResults"};
+        if (queryParameters.keySet().containsAll(Arrays.asList(integerQueryParameters))) {
+            validateTodoItemResourceIntegerQueryParameters(requestContext, queryParameters, integerQueryParameters);
+        } else {
+            abortBadRequest(
+                    requestContext,
+                    new ErrorMessage("Please provide 'firstResult' and 'maxResults' query parameters")
+            );
+        }
+    }
+
+    private void validateTodoItemResourceIntegerQueryParameters(
+            ContainerRequestContext requestContext,
+            MultivaluedMap<String, String> queryParameters,
+            String[] integerQueryParameters) {
+        queryParameters.keySet().stream()
+                .filter(queryParameter -> Arrays.asList(integerQueryParameters).contains(queryParameter))
+                .forEach(queryParameter -> {
+                    try {
+                        Integer.parseInt(queryParameters.get(queryParameter).get(0));
+                    } catch (NumberFormatException e) {
+                        abortBadRequest(
+                                requestContext,
+                                new ErrorMessage("Query parameter '" + queryParameter + "' should be integer")
+                        );
+                    }
+                });
+    }
+
+    private void validateTodoItemResourcePaths(List<String> paths, ContainerRequestContext requestContext) {
+        if (paths.size() == 1) {
+            try {
+                Long.parseLong(paths.get(0));
+            } catch (NumberFormatException e) {
+                abortBadRequest(
+                        requestContext,
+                        new ErrorMessage("Todo item id from request path should be integer")
+                );
+            }
+        } else if (paths.size() > 1) {
+            abortBadRequest(
+                    requestContext,
+                    new ErrorMessage("Too many paths in request. Please provide single integer path for todo item")
+            );
+        }
+    }
+
+    private void abortBadRequest(ContainerRequestContext requestContext, ErrorMessage errorMessage) {
+        Response response = Response.
+                status(Response.Status.BAD_REQUEST).
+                entity(errorMessage).
+                type(MediaType.APPLICATION_JSON_TYPE).
+                build();
+        requestContext.abortWith(response);
+    }
+
+}

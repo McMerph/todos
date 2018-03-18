@@ -15,7 +15,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
 
 @RequestScoped
 @Path("/")
@@ -44,8 +43,6 @@ public class TodoItemResource {
         int count = service.count();
         Integer firstResult = searchRequest.getFirstResult();
         Integer maxResults = searchRequest.getMaxResults();
-        firstResult = Objects.isNull(firstResult) ? 0 : firstResult;
-        maxResults = Objects.isNull(maxResults) ? 10 : maxResults;
         List<TodoItem> todoItems = service.findRange(firstResult, maxResults);
 
         return new SearchResponse(count, todoItems);

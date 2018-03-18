@@ -20,8 +20,6 @@ public class ErrorResponseFilter implements ContainerResponseFilter {
         int status = responseContext.getStatus();
         Response.Status[] filteredStatuses = {
                 UNSUPPORTED_MEDIA_TYPE,
-                BAD_REQUEST,
-                NOT_FOUND,
                 METHOD_NOT_ALLOWED,
                 INTERNAL_SERVER_ERROR
         };
