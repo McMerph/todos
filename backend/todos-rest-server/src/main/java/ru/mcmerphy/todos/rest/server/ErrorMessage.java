@@ -22,6 +22,14 @@ public class ErrorMessage {
         this.errorMessages = errorMessages;
     }
 
+    public void add(String error) {
+        this.errorMessages.add(error);
+    }
+
+    public boolean isEmpty() {
+        return this.errorMessages.isEmpty();
+    }
+
     public Set<String> getErrorMessages() {
         return errorMessages;
     }

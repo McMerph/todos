@@ -5,6 +5,9 @@ import ru.mcmerphy.todos.dao.TodoItemService;
 import ru.mcmerphy.todos.domain.TodoItem;
 import ru.mcmerphy.todos.rest.server.SearchRequest;
 import ru.mcmerphy.todos.rest.server.SearchResponse;
+import ru.mcmerphy.todos.rest.server.validators.RequestParametersException;
+import ru.mcmerphy.todos.rest.server.validators.SearchRequestValidator;
+import ru.mcmerphy.todos.rest.server.validators.TodoItemValidator;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -23,9 +26,17 @@ public class TodoItemResource {
     @Inject
     private TodoItemService service;
 
+    @Inject
+    private TodoItemValidator todoItemValidator;
+
+    @Inject
+    private SearchRequestValidator searchRequestValidator;
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createTodoItem(TodoItem todoItem, @Context UriInfo uriInfo) {
+    public Response createTodoItem(TodoItem todoItem, @Context UriInfo uriInfo)
+            throws RequestParametersException {
+        todoItemValidator.validate(todoItem);
         TodoItem createdTodoItem = service.create(todoItem);
         URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(todoItem.getId()))
@@ -39,7 +50,9 @@ public class TodoItemResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public SearchResponse getTodoItems(@BeanParam SearchRequest searchRequest) {
+    public SearchResponse getTodoItems(@BeanParam SearchRequest searchRequest)
+            throws RequestParametersException {
+        searchRequestValidator.validate(searchRequest);
         int count = service.count();
         Integer firstResult = searchRequest.getFirstResult();
         Integer maxResults = searchRequest.getMaxResults();
@@ -60,9 +73,10 @@ public class TodoItemResource {
     @Path("/{todoItemId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public TodoItem updateTodoItem(@PathParam("todoItemId") int id, TodoItem jointedTrackPart)
-            throws TodoItemNotFoundException {
-        return service.update(id, jointedTrackPart);
+    public TodoItem updateTodoItem(@PathParam("todoItemId") int id, TodoItem todoItem)
+            throws TodoItemNotFoundException, RequestParametersException {
+        todoItemValidator.validate(todoItem);
+        return service.update(id, todoItem);
     }
 
     @DELETE

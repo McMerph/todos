@@ -1,9 +1,10 @@
 package ru.mcmerphy.todos.rest.server;
 
 import ru.mcmerphy.todos.rest.server.exception.mappers.ConstraintViolationExceptionMapper;
+import ru.mcmerphy.todos.rest.server.exception.mappers.RequestValidatorExceptionMapper;
 import ru.mcmerphy.todos.rest.server.exception.mappers.TodoItemNotFoundExceptionMapper;
 import ru.mcmerphy.todos.rest.server.filters.ErrorResponseFilter;
-import ru.mcmerphy.todos.rest.server.filters.TodoItemResourceGetRequestFilter;
+import ru.mcmerphy.todos.rest.server.filters.RequestFilter;
 import ru.mcmerphy.todos.rest.server.resources.TodoItemResource;
 
 import javax.ws.rs.ApplicationPath;
@@ -21,9 +22,10 @@ public class ApplicationConfig extends Application {
 
         resources.add(TodoItemNotFoundExceptionMapper.class);
         resources.add(ConstraintViolationExceptionMapper.class);
+        resources.add(RequestValidatorExceptionMapper.class);
 
         resources.add(ErrorResponseFilter.class);
-        resources.add(TodoItemResourceGetRequestFilter.class);
+        resources.add(RequestFilter.class);
 
         return resources;
     }

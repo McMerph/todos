@@ -18,11 +18,11 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @PreMatching
-public class TodoItemResourceGetRequestFilter implements ContainerRequestFilter {
+public class RequestFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
-        if (isGetTodoItemResource(requestContext)) {
+        if (isGetOrDeleteTodoItemResource(requestContext)) {
             List<String> paths = requestContext.getUriInfo().getPathSegments().stream()
                     .map(PathSegment::getPath)
                     .collect(Collectors.toList());
@@ -34,13 +34,14 @@ public class TodoItemResourceGetRequestFilter implements ContainerRequestFilter 
         }
     }
 
-    private boolean isGetTodoItemResource(ContainerRequestContext requestContext) {
+    private boolean isGetOrDeleteTodoItemResource(ContainerRequestContext requestContext) {
         URI todoItemResource = requestContext.getUriInfo().getBaseUriBuilder()
                 .path(TodoItemResource.class)
                 .build();
         URI currentResource = requestContext.getUriInfo().getBaseUriBuilder().build();
 
-        return Objects.equals(requestContext.getMethod(), HttpMethod.GET) &&
+        return (Objects.equals(requestContext.getMethod(), HttpMethod.GET) ||
+                Objects.equals(requestContext.getMethod(), HttpMethod.DELETE)) &&
                 Objects.equals(todoItemResource, currentResource);
     }
 

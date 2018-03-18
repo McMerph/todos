@@ -26,7 +26,7 @@ public class TodoItemService extends Service<TodoItem> {
 
     public TodoItem update(long id, TodoItem todoItem) throws TodoItemNotFoundException {
         TodoItem existedTodoItem = find(id);
-        existedTodoItem.setCompleted(todoItem.isCompleted());
+        existedTodoItem.setCompleted(todoItem.getCompleted());
         existedTodoItem.setText(todoItem.getText());
 
         edit(existedTodoItem);

@@ -21,7 +21,7 @@ public class TodoItem implements Serializable {
     private Long id;
 
     private String text;
-    private boolean completed;
+    private Boolean completed;
 
     public Long getId() {
         return id;
@@ -39,12 +39,11 @@ public class TodoItem implements Serializable {
         this.text = text;
     }
 
-    public boolean isCompleted() {
+    public Boolean getCompleted() {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
+    public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
-
 }
