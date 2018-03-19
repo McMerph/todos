@@ -35,16 +35,6 @@ public abstract class Service<T> {
         return entity;
     }
 
-    void edit(T entity) {
-        entityManager.merge(entity);
-        logger.info("Entity " + entity + " merged", entity);
-    }
-
-    public void remove(T entity) {
-        entityManager.remove(entityManager.merge(entity));
-        logger.info("Entity " + entity + " removed", entity);
-    }
-
     public T find(Long id) {
         logger.info("Search of " + entityClass + " with id=" + id, id);
         return entityManager.find(entityClass, id);
@@ -66,6 +56,25 @@ public abstract class Service<T> {
         inititializeCriteriaRequest();
         criteriaQuery.select((Selection<T>) criteriaBuilder.count(root));
         return count(criteriaQuery);
+    }
+
+    void edit(T entity) {
+        entityManager.merge(entity);
+        logger.info("Entity " + entity + " merged", entity);
+    }
+
+    public T remove(T entity) {
+        entityManager.remove(entityManager.merge(entity));
+        logger.info("Entity " + entity + " removed", entity);
+
+        return entity;
+    }
+
+    public List<T> removeAll() {
+        List<T> all = findAll();
+        all.forEach(this::remove);
+
+        return all;
     }
 
     public CriteriaBuilder getCriteriaBuilder() {

@@ -82,12 +82,16 @@ public class TodoItemResource {
     @DELETE
     @Path("/{todoItemId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public TodoItem deleteJointedTrackPart(@PathParam("todoItemId") long id)
+    public TodoItem deleteTodoItem(@PathParam("todoItemId") long id)
             throws TodoItemNotFoundException {
         TodoItem todoItem = service.find(id);
-        service.remove(todoItem);
+        return service.remove(todoItem);
+    }
 
-        return todoItem;
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<TodoItem> deleteAllTodoItems() {
+        return service.removeAll();
     }
 
 }

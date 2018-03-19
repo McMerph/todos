@@ -23,34 +23,35 @@ public class RequestFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
-        if (isGetOrDeleteTodoItemResource(requestContext)) {
+        if (isTodoItemResource(requestContext)) {
             List<String> paths = requestContext.getUriInfo().getPathSegments().stream()
                     .map(PathSegment::getPath)
                     .collect(Collectors.toList());
-            if (isRootRequest(paths)) {
-                validateTodoItemResourceQueryParameters(requestContext);
-            } else {
+            boolean rootRequest = isRootRequest(paths);
+            boolean getRequest = Objects.equals(requestContext.getMethod(), HttpMethod.GET);
+            boolean deleteRequest = Objects.equals(requestContext.getMethod(), HttpMethod.DELETE);
+            if (rootRequest && getRequest) {
+                validateGetTodoItemsQueryParameters(requestContext);
+            } else if (!rootRequest && (getRequest || deleteRequest)) {
                 validateTodoItemResourcePaths(paths, requestContext);
             }
         }
     }
 
-    private boolean isGetOrDeleteTodoItemResource(ContainerRequestContext requestContext) {
+    private boolean isTodoItemResource(ContainerRequestContext requestContext) {
         URI todoItemResource = requestContext.getUriInfo().getBaseUriBuilder()
                 .path(TodoItemResource.class)
                 .build();
         URI currentResource = requestContext.getUriInfo().getBaseUriBuilder().build();
 
-        return (Objects.equals(requestContext.getMethod(), HttpMethod.GET) ||
-                Objects.equals(requestContext.getMethod(), HttpMethod.DELETE)) &&
-                Objects.equals(todoItemResource, currentResource);
+        return Objects.equals(todoItemResource, currentResource);
     }
 
     private boolean isRootRequest(List<String> paths) {
         return paths.size() == 1 && paths.get(0).isEmpty();
     }
 
-    private void validateTodoItemResourceQueryParameters(ContainerRequestContext requestContext) {
+    private void validateGetTodoItemsQueryParameters(ContainerRequestContext requestContext) {
         MultivaluedMap<String, String> queryParameters = requestContext.getUriInfo().getQueryParameters();
         String[] integerQueryParameters = {"firstResult", "maxResults"};
         if (queryParameters.keySet().containsAll(Arrays.asList(integerQueryParameters))) {

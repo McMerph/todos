@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -22,6 +23,14 @@ public class TodoItem implements Serializable {
 
     private String text;
     private Boolean completed;
+
+    public TodoItem() {
+    }
+
+    public TodoItem(String text, Boolean completed) {
+        this.text = text;
+        this.completed = completed;
+    }
 
     public Long getId() {
         return id;
@@ -46,4 +55,27 @@ public class TodoItem implements Serializable {
     public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TodoItem todoItem = (TodoItem) o;
+        return Objects.equals(text, todoItem.text) &&
+                Objects.equals(completed, todoItem.completed);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(text, completed);
+    }
+
+    @Override
+    public String toString() {
+        return "TodoItem{" +
+                "text='" + text + '\'' +
+                ", completed=" + completed +
+                '}';
+    }
+
 }
