@@ -40,8 +40,8 @@ public class ErrorResponseFilter implements ContainerResponseFilter {
                         if (Objects.equals(todoItemResource, currentResource) &&
                                 Objects.equals(requestContext.getMethod(), HttpMethod.POST)) {
                             ErrorMessage errorMessage =
-                                    new ErrorMessage("Please provide \"text\": \"string\"" +
-                                            " and \"completed\": \"boolean\" fields in json body");
+                                    new ErrorMessage("Please provide 'text': 'string'" +
+                                            " and 'completed': 'boolean' fields in json body");
                             responseContext.setEntity(errorMessage, null, MediaType.APPLICATION_JSON_TYPE);
                             responseContext.setStatusInfo(filteredStatus);
                         }

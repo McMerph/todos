@@ -1,6 +1,5 @@
 package ru.mcmerphy.todos.rest.server.exception.mappers;
 
-
 import ru.mcmerphy.todos.rest.server.validators.RequestParametersException;
 
 import javax.ws.rs.core.MediaType;

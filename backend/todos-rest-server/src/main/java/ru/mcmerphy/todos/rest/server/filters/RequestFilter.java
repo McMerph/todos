@@ -15,6 +15,7 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @PreMatching
@@ -57,8 +58,7 @@ public class RequestFilter implements ContainerRequestFilter {
         } else {
             abortBadRequest(
                     requestContext,
-                    new ErrorMessage("Please provide 'firstResult' and 'maxResults' query parameters")
-            );
+                    new ErrorMessage("Please provide 'firstResult' and 'maxResults' query parameters"));
         }
     }
 
@@ -66,18 +66,25 @@ public class RequestFilter implements ContainerRequestFilter {
             ContainerRequestContext requestContext,
             MultivaluedMap<String, String> queryParameters,
             String[] integerQueryParameters) {
-        queryParameters.keySet().stream()
+        List<String> nonIntegerQueryParameters = queryParameters.keySet().stream()
                 .filter(queryParameter -> Arrays.asList(integerQueryParameters).contains(queryParameter))
-                .forEach(queryParameter -> {
+                .filter(queryParameter -> {
                     try {
                         Integer.parseInt(queryParameters.get(queryParameter).get(0));
                     } catch (NumberFormatException e) {
-                        abortBadRequest(
-                                requestContext,
-                                new ErrorMessage("Query parameter '" + queryParameter + "' should be integer")
-                        );
+                        return true;
                     }
-                });
+                    return false;
+                })
+                .collect(Collectors.toList());
+        if (nonIntegerQueryParameters.size() > 0) {
+            Set<String> errors = nonIntegerQueryParameters.stream()
+                    .map(parameter -> "Query parameter '" + parameter + "' should be integer")
+                    .collect(Collectors.toSet());
+            abortBadRequest(
+                    requestContext,
+                    new ErrorMessage(errors));
+        }
     }
 
     private void validateTodoItemResourcePaths(List<String> paths, ContainerRequestContext requestContext) {
