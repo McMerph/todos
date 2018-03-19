@@ -73,7 +73,8 @@ public class TodoItem implements Serializable {
     @Override
     public String toString() {
         return "TodoItem{" +
-                "text='" + text + '\'' +
+                "id=" + id +
+                ", text='" + text + '\'' +
                 ", completed=" + completed +
                 '}';
     }

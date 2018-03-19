@@ -1,17 +1,10 @@
 package ru.mcmerphy.todos.rest.server.resources;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
+import org.apache.http.message.BasicNameValuePair;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,13 +13,8 @@ import ru.mcmerphy.todos.rest.server.ErrorMessage;
 import ru.mcmerphy.todos.rest.server.SearchResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
+import java.net.URISyntaxException;
+import java.util.*;
 
 public class TodoItemResourceIT {
 
@@ -47,147 +35,165 @@ public class TodoItemResourceIT {
     }
 
     @Test
-    public void testCreate() throws IOException {
-        testRequest(
-                new HttpPost(ROOT_URI),
-                HttpStatus.SC_BAD_REQUEST,
-                new ErrorMessage("Please provide 'text': 'string' and 'completed': 'boolean' fields in json body"),
-                ErrorMessage.class);
-        testRequest(
-                generateCreateRequest("{\"text\":\"Text content of todo-item\"}"),
-                HttpStatus.SC_BAD_REQUEST,
-                new ErrorMessage("Please provide 'text': 'string' and 'completed': 'boolean' fields in json body"),
-                ErrorMessage.class);
-        testRequest(
-                generateCreateRequest("{\"completed\":false}"),
-                HttpStatus.SC_BAD_REQUEST,
-                new ErrorMessage("Please provide 'text': 'string' and 'completed': 'boolean' fields in json body"),
-                ErrorMessage.class);
+    public void testCreate() throws IOException, URISyntaxException {
+        testIncompleteCreateTodoItemRequestBody("");
+        testIncompleteCreateTodoItemRequestBody("{\"text\":\"Text content of todo-item\"}");
+        testIncompleteCreateTodoItemRequestBody("{\"completed\":false}");
 
-        testRequest(
-                generateCreateRequest("{\"text\":\"Text content of todo-item\",\"completed\":false}"),
-                HttpStatus.SC_CREATED,
-                new TodoItem("Text content of todo-item", false),
-                TodoItem.class);
-        testRequest(
-                generateCreateRequest("{\"text\":\"Text content of todo-item\",\"completed\":true}"),
-                HttpStatus.SC_CREATED,
-                new TodoItem("Text content of todo-item", true),
-                TodoItem.class);
+        testSuccessCreateTodoItemRequest(new TodoItem("Text of incomplete item", false));
+        testSuccessCreateTodoItemRequest(new TodoItem("Text of completed item", true));
     }
 
     @Test
-    public void testRead() throws IOException {
-        testRequest(
-                new HttpGet(ROOT_URI),
-                HttpStatus.SC_BAD_REQUEST,
-                new ErrorMessage("Please provide 'firstResult' and 'maxResults' query parameters"),
-                ErrorMessage.class);
-        testRequest(
-                new HttpGet(ROOT_URI + "?firstResult=0"),
-                HttpStatus.SC_BAD_REQUEST,
-                new ErrorMessage("Please provide 'firstResult' and 'maxResults' query parameters"),
-                ErrorMessage.class);
-        testRequest(
-                new HttpGet(ROOT_URI + "?maxResults=10"),
-                HttpStatus.SC_BAD_REQUEST,
-                new ErrorMessage("Please provide 'firstResult' and 'maxResults' query parameters"),
-                ErrorMessage.class);
-        testRequest(
-                new HttpGet(ROOT_URI + "?firstResult=asd"),
-                HttpStatus.SC_BAD_REQUEST,
-                new ErrorMessage("Please provide 'firstResult' and 'maxResults' query parameters"),
-                ErrorMessage.class);
-        testRequest(
-                new HttpGet(ROOT_URI + "?maxResults=qwe"),
-                HttpStatus.SC_BAD_REQUEST,
-                new ErrorMessage("Please provide 'firstResult' and 'maxResults' query parameters"),
-                ErrorMessage.class);
+    public void testBatchRead() throws IOException, URISyntaxException {
+        testIncompleteQueryParametersBatchReadRequest(new HashSet<>());
+        testIncompleteQueryParametersBatchReadRequest(
+                Collections.singleton(new BasicNameValuePair("firstResult", "0")));
+        testIncompleteQueryParametersBatchReadRequest(
+                Collections.singleton(new BasicNameValuePair("firstResult", "asd")));
+        testIncompleteQueryParametersBatchReadRequest(
+                Collections.singleton(new BasicNameValuePair("maxResults", "10")));
+        testIncompleteQueryParametersBatchReadRequest(
+                Collections.singleton(new BasicNameValuePair("maxResults", "qwe")));
 
-        testRequest(
-                new HttpGet(ROOT_URI + "?firstResult=asd&maxResults=10"),
-                HttpStatus.SC_BAD_REQUEST,
-                new ErrorMessage("Query parameter 'firstResult' should be integer"),
-                ErrorMessage.class);
-        testRequest(
-                new HttpGet(ROOT_URI + "?firstResult=0&maxResults=asd"),
-                HttpStatus.SC_BAD_REQUEST,
-                new ErrorMessage("Query parameter 'maxResults' should be integer"),
-                ErrorMessage.class);
-        testRequest(
-                new HttpGet(ROOT_URI + "?firstResult=asd&maxResults=asd"),
-                HttpStatus.SC_BAD_REQUEST,
-                new ErrorMessage(new HashSet<>(Arrays.asList(
+        testBadBatchReadRequest(
+                new HashSet<>(Arrays.asList(
+                        new BasicNameValuePair("firstResult", "asd"),
+                        new BasicNameValuePair("maxResults", "10"))),
+                Collections.singleton("Query parameter 'firstResult' should be integer"));
+        testBadBatchReadRequest(
+                new HashSet<>(Arrays.asList(
+                        new BasicNameValuePair("firstResult", "0"),
+                        new BasicNameValuePair("maxResults", "asd"))),
+                Collections.singleton("Query parameter 'maxResults' should be integer"));
+        testBadBatchReadRequest(
+                new HashSet<>(Arrays.asList(
+                        new BasicNameValuePair("firstResult", "qwe"),
+                        new BasicNameValuePair("maxResults", "asd"))),
+                new HashSet<>(Arrays.asList(
                         "Query parameter 'firstResult' should be integer",
-                        "Query parameter 'maxResults' should be integer"))),
-                ErrorMessage.class);
+                        "Query parameter 'maxResults' should be integer")));
 
-        testRequest(
-                new HttpGet(ROOT_URI + "asd"),
-                HttpStatus.SC_BAD_REQUEST,
-                new ErrorMessage("Todo item id from request path should be integer"),
-                ErrorMessage.class);
-
-        testRequest(
-                new HttpGet(ROOT_URI + "asd/1"),
-                HttpStatus.SC_BAD_REQUEST,
-                new ErrorMessage("Too many paths in request. Please provide single integer path for todo item"),
-                ErrorMessage.class);
-        testRequest(
-                new HttpGet(ROOT_URI + "1/asd"),
-                HttpStatus.SC_BAD_REQUEST,
-                new ErrorMessage("Too many paths in request. Please provide single integer path for todo item"),
-                ErrorMessage.class);
-
-        testRequest(
-                new HttpGet(ROOT_URI + "?firstResult=0&maxResults=10"),
-                HttpStatus.SC_OK,
-                new SearchResponse(0, new ArrayList<>()),
-                SearchResponse.class);
-
+        testSuccessBatchReadRequest(new HashSet<>(Arrays.asList(
+                new BasicNameValuePair("firstResult", "0"),
+                new BasicNameValuePair("maxResults", "10"))),
+                new SearchResponse(0, new ArrayList<>()));
         List<TodoItem> todoItems = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
-            TodoItem cratedTodoItem = createTodoItem(String.valueOf(i));
-            todoItems.add(cratedTodoItem);
+            TodoItem todoItem = new TodoItem(String.valueOf(i), i % 2 == 0);
+            testSuccessCreateTodoItemRequest(todoItem);
+            todoItems.add(todoItem);
         }
-        testRequest(
-                new HttpGet(ROOT_URI + "?firstResult=0&maxResults=10"),
-                HttpStatus.SC_OK,
-                new SearchResponse(15, todoItems.subList(0, 10)),
-                SearchResponse.class);
-        testRequest(
-                new HttpGet(ROOT_URI + "?firstResult=7&maxResults=10"),
-                HttpStatus.SC_OK,
-                new SearchResponse(15, todoItems.subList(7, todoItems.size())),
-                SearchResponse.class);
+        testSuccessBatchReadRequest(new HashSet<>(Arrays.asList(
+                new BasicNameValuePair("firstResult", "0"),
+                new BasicNameValuePair("maxResults", "10"))),
+                new SearchResponse(15, todoItems.subList(0, 10)));
+        testSuccessBatchReadRequest(new HashSet<>(Arrays.asList(
+                new BasicNameValuePair("firstResult", "7"),
+                new BasicNameValuePair("maxResults", "10"))),
+                new SearchResponse(15, todoItems.subList(7, todoItems.size())));
     }
 
-    private TodoItem createTodoItem(String text) throws IOException {
-        TodoItem todoItem = new TodoItem(text, false);
-        String json = new ObjectMapper().writeValueAsString(todoItem);
-        HttpClientBuilder.create().build().execute(generateCreateRequest(json));
+    @Test
+    public void testRead() throws IOException, URISyntaxException {
+        testBadReadRequest("asd", Collections.singleton(
+                "Todo item id from request path should be integer"));
+        testBadReadRequest("asd/1", Collections.singleton(
+                "Too many paths in request. Please provide single integer path for todo item"));
+        testBadReadRequest("1/asd", Collections.singleton(
+                "Too many paths in request. Please provide single integer path for todo item"));
 
-        return todoItem;
+        testNotFoundReadRequest(1, Collections.singleton("Todo item with id=1 not found in database"));
+
+        TodoItem incompleteTodoItem = testSuccessCreateTodoItemRequest(
+                new TodoItem("Text of incomplete item", false));
+        TodoItem completedTodoItem = testSuccessCreateTodoItemRequest(
+                new TodoItem("Text of completed item", true));
+        testSuccessReadRequest(incompleteTodoItem.getId(), incompleteTodoItem);
+        testSuccessReadRequest(completedTodoItem.getId(), completedTodoItem);
     }
 
-    private HttpUriRequest generateCreateRequest(String json) {
-        HttpPost postMethod = new HttpPost(ROOT_URI);
-        StringEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
-        postMethod.setEntity(entity);
-
-        return postMethod;
+    private void testIncompleteCreateTodoItemRequestBody(String json)
+            throws IOException, URISyntaxException {
+        new ResponseTester<ErrorMessage>()
+                .setUri(ROOT_URI)
+                .setJsonBody(json)
+                .setExpectedStatusCode(HttpStatus.SC_BAD_REQUEST)
+                .setExpectedResource(new ErrorMessage(
+                        "Please provide 'text': 'string' and 'completed': 'boolean' fields in json body"))
+                .setClazz(ErrorMessage.class)
+                .testPostMethod();
     }
 
-    private <T> void testRequest(HttpUriRequest request, int expectedStatusCode, T expectedResource, Class<T> clazz)
-            throws IOException {
-        HttpResponse response = HttpClientBuilder.create().build().execute(request);
-        String jsonFromResponse = EntityUtils.toString(response.getEntity());
-        ObjectMapper mapper = new ObjectMapper()
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    private TodoItem testSuccessCreateTodoItemRequest(TodoItem expectedTodoItem)
+            throws IOException, URISyntaxException {
+        return new ResponseTester<TodoItem>()
+                .setUri(ROOT_URI)
+                .setJsonBody(new ObjectMapper().writeValueAsString(expectedTodoItem))
+                .setExpectedStatusCode(HttpStatus.SC_CREATED)
+                .setExpectedResource(expectedTodoItem)
+                .setClazz(TodoItem.class)
+                .testPostMethod();
+    }
 
-        assertThat(response.getStatusLine().getStatusCode(), equalTo(expectedStatusCode));
-        assertThat(ContentType.getOrDefault(response.getEntity()).getMimeType(), equalTo("application/json"));
-        assertThat(mapper.readValue(jsonFromResponse, clazz), equalTo(expectedResource));
+    private void testIncompleteQueryParametersBatchReadRequest(Set<BasicNameValuePair> queryParameters)
+            throws IOException, URISyntaxException {
+        testBadBatchReadRequest(queryParameters, Collections.singleton(
+                "Please provide 'firstResult' and 'maxResults' query parameters"));
+    }
+
+    private void testBadBatchReadRequest(Set<BasicNameValuePair> queryParameters, Set<String> expectedErrors)
+            throws IOException, URISyntaxException {
+        new ResponseTester<ErrorMessage>()
+                .setUri(ROOT_URI)
+                .setQueryParameters(queryParameters)
+                .setExpectedStatusCode(HttpStatus.SC_BAD_REQUEST)
+                .setExpectedResource(new ErrorMessage(expectedErrors))
+                .setClazz(ErrorMessage.class)
+                .testGetMethod();
+    }
+
+    private void testSuccessBatchReadRequest(
+            Set<BasicNameValuePair> queryParameters,
+            SearchResponse expectedSearchResponse)
+            throws IOException, URISyntaxException {
+        new ResponseTester<SearchResponse>()
+                .setUri(ROOT_URI)
+                .setQueryParameters(queryParameters)
+                .setExpectedStatusCode(HttpStatus.SC_OK)
+                .setExpectedResource(expectedSearchResponse)
+                .setClazz(SearchResponse.class)
+                .testGetMethod();
+    }
+
+    private void testBadReadRequest(String pathSuffix, Set<String> expectedErrors)
+            throws IOException, URISyntaxException {
+        new ResponseTester<ErrorMessage>()
+                .setUri(ROOT_URI + pathSuffix)
+                .setExpectedStatusCode(HttpStatus.SC_BAD_REQUEST)
+                .setExpectedResource(new ErrorMessage(expectedErrors))
+                .setClazz(ErrorMessage.class)
+                .testGetMethod();
+    }
+
+    private void testNotFoundReadRequest(long id, Set<String> expectedErrors)
+            throws IOException, URISyntaxException {
+        new ResponseTester<ErrorMessage>()
+                .setUri(ROOT_URI + id)
+                .setExpectedStatusCode(HttpStatus.SC_NOT_FOUND)
+                .setExpectedResource(new ErrorMessage(expectedErrors))
+                .setClazz(ErrorMessage.class)
+                .testGetMethod();
+    }
+
+    private void testSuccessReadRequest(long id, TodoItem expectedTodoItem)
+            throws IOException, URISyntaxException {
+        new ResponseTester<TodoItem>()
+                .setUri(ROOT_URI + id)
+                .setExpectedStatusCode(HttpStatus.SC_OK)
+                .setExpectedResource(expectedTodoItem)
+                .setClazz(TodoItem.class)
+                .testGetMethod();
     }
 
 }

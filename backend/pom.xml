@@ -10,6 +10,10 @@
 
     <name>todos</name>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <modules>
         <module>todos-rest-server</module>
         <module>todos-domain</module>
