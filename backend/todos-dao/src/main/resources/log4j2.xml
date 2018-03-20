@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="TodosDaoConfiguration" packages="">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %p %c{1.} [%t] %m%n"/>
+        </Console>
+        
+        <RollingFile name="TodosDaoRollingFile"
+                     fileName="logs/todos-dao.log"
+                     filePattern="logs/$${date:yyyy-MM-dd}/todos-dao-%d{yyyy-MM-dd}_%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="300 KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+    </Appenders>
+    
+    <Loggers>
+        <Root level="ALL">
+            <AppenderRef ref="Console"/>
+        </Root>
+        
+        <Logger name="todos-dao" level="ALL">
+            <AppenderRef ref="TodosDaoRollingFile"/>
+        </Logger>
+    </Loggers>
+</Configuration>

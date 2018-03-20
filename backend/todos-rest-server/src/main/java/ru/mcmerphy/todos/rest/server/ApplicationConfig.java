@@ -4,6 +4,7 @@ import ru.mcmerphy.todos.rest.server.exception.mappers.ConstraintViolationExcept
 import ru.mcmerphy.todos.rest.server.exception.mappers.RequestValidatorExceptionMapper;
 import ru.mcmerphy.todos.rest.server.exception.mappers.TodoItemNotFoundExceptionMapper;
 import ru.mcmerphy.todos.rest.server.filters.ErrorResponseFilter;
+import ru.mcmerphy.todos.rest.server.filters.LoggingFilter;
 import ru.mcmerphy.todos.rest.server.filters.RequestFilter;
 import ru.mcmerphy.todos.rest.server.resources.TodoItemResource;
 
@@ -24,6 +25,7 @@ public class ApplicationConfig extends Application {
         resources.add(ConstraintViolationExceptionMapper.class);
         resources.add(RequestValidatorExceptionMapper.class);
 
+        resources.add(LoggingFilter.class);
         resources.add(ErrorResponseFilter.class);
         resources.add(RequestFilter.class);
 

@@ -14,7 +14,7 @@ import java.util.List;
 
 public abstract class Service<T> {
 
-    private static final Logger logger = LogManager.getLogger("akz-dao");
+    private static final Logger logger = LogManager.getLogger("todos-dao");
 
     @PersistenceContext
     private EntityManager entityManager;

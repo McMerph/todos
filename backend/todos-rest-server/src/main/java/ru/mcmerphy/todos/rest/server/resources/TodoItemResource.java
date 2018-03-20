@@ -5,6 +5,7 @@ import ru.mcmerphy.todos.dao.TodoItemService;
 import ru.mcmerphy.todos.domain.TodoItem;
 import ru.mcmerphy.todos.rest.server.SearchRequest;
 import ru.mcmerphy.todos.rest.server.SearchResponse;
+import ru.mcmerphy.todos.rest.server.filters.Logged;
 import ru.mcmerphy.todos.rest.server.validators.RequestParametersException;
 import ru.mcmerphy.todos.rest.server.validators.SearchRequestValidator;
 import ru.mcmerphy.todos.rest.server.validators.TodoItemValidator;
@@ -32,6 +33,7 @@ public class TodoItemResource {
     @Inject
     private SearchRequestValidator searchRequestValidator;
 
+    @Logged
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response createTodoItem(TodoItem todoItem, @Context UriInfo uriInfo)
@@ -48,6 +50,7 @@ public class TodoItemResource {
                 .build();
     }
 
+    @Logged
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public SearchResponse getTodoItems(@BeanParam SearchRequest searchRequest)
@@ -61,6 +64,7 @@ public class TodoItemResource {
         return new SearchResponse(count, todoItems);
     }
 
+    @Logged
     @GET
     @Path("/{todoItemId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -69,6 +73,7 @@ public class TodoItemResource {
         return service.find(todoItemId);
     }
 
+    @Logged
     @PUT
     @Path("/{todoItemId}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -79,6 +84,7 @@ public class TodoItemResource {
         return service.update(id, todoItem);
     }
 
+    @Logged
     @DELETE
     @Path("/{todoItemId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -88,6 +94,7 @@ public class TodoItemResource {
         return service.remove(todoItem);
     }
 
+    @Logged
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public List<TodoItem> deleteAllTodoItems() {
