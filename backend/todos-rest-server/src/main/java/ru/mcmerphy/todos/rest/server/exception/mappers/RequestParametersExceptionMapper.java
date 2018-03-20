@@ -8,7 +8,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class RequestValidatorExceptionMapper implements ExceptionMapper<RequestParametersException> {
+public class RequestParametersExceptionMapper implements ExceptionMapper<RequestParametersException> {
 
     @Override
     public Response toResponse(RequestParametersException e) {

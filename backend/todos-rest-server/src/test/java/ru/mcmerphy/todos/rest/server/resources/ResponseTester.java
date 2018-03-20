@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -66,7 +67,9 @@ public class ResponseTester<T> {
 
     public T testPostMethod() throws IOException, URISyntaxException {
         HttpPost postMethod = new HttpPost(this.generateUri());
-        postMethod.setEntity(new StringEntity(this.jsonBody, ContentType.APPLICATION_JSON));
+        if (Objects.nonNull(this.jsonBody)) {
+            postMethod.setEntity(new StringEntity(this.jsonBody, ContentType.APPLICATION_JSON));
+        }
         return test(postMethod);
     }
 
@@ -76,7 +79,9 @@ public class ResponseTester<T> {
 
     public T testPutMethod() throws IOException, URISyntaxException {
         HttpPut putMethod = new HttpPut(this.generateUri());
-        putMethod.setEntity(new StringEntity(this.jsonBody, ContentType.APPLICATION_JSON));
+        if (Objects.nonNull(this.jsonBody)) {
+            putMethod.setEntity(new StringEntity(this.jsonBody, ContentType.APPLICATION_JSON));
+        }
         return test(putMethod);
     }
 
@@ -96,7 +101,6 @@ public class ResponseTester<T> {
         ObjectMapper mapper = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         T resource = mapper.readValue(jsonFromResponse, clazz);
-
 
         assertThat(response.getStatusLine().getStatusCode(), equalTo(expectedStatusCode));
         assertThat(ContentType.getOrDefault(response.getEntity()).getMimeType(), equalTo("application/json"));

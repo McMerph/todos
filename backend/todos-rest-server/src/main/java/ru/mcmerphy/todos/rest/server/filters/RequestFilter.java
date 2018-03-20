@@ -30,9 +30,10 @@ public class RequestFilter implements ContainerRequestFilter {
             boolean rootRequest = isRootRequest(paths);
             boolean getRequest = Objects.equals(requestContext.getMethod(), HttpMethod.GET);
             boolean deleteRequest = Objects.equals(requestContext.getMethod(), HttpMethod.DELETE);
+            boolean putRequest = Objects.equals(requestContext.getMethod(), HttpMethod.PUT);
             if (rootRequest && getRequest) {
                 validateGetTodoItemsQueryParameters(requestContext);
-            } else if (!rootRequest && (getRequest || deleteRequest)) {
+            } else if (!rootRequest && (getRequest || deleteRequest || putRequest)) {
                 validateTodoItemResourcePaths(paths, requestContext);
             }
         }
