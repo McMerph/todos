@@ -1,4 +1,4 @@
-package ru.mcmerphy.todos.rest.server.resources;
+package ru.mcmerphy.todos.rest.server.resources.testers;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,21 +21,26 @@ import java.util.Set;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class ResponseTester<T> {
+public abstract class ResponseTester<T> {
+
+    private final T expectedResource;
 
     private String uri;
     private Set<BasicNameValuePair> queryParameters = new HashSet<>();
     private String jsonBody;
     private int expectedStatusCode;
-    private T expectedResource;
     private Class<T> clazz;
+
+    ResponseTester(T expectedResource) {
+        this.expectedResource = expectedResource;
+    }
 
     public ResponseTester<T> setUri(String uri) {
         this.uri = uri;
         return this;
     }
 
-    public ResponseTester<T> addQueryParameter(BasicNameValuePair queryParameter) {
+    ResponseTester<T> addQueryParameter(BasicNameValuePair queryParameter) {
         queryParameters.add(queryParameter);
         return this;
     }
@@ -45,22 +50,17 @@ public class ResponseTester<T> {
         return this;
     }
 
-    public ResponseTester<T> setJsonBody(String jsonBody) {
+    ResponseTester<T> setJsonBody(String jsonBody) {
         this.jsonBody = jsonBody;
         return this;
     }
 
-    public ResponseTester<T> setExpectedStatusCode(int expectedStatusCode) {
+    ResponseTester<T> setExpectedStatusCode(int expectedStatusCode) {
         this.expectedStatusCode = expectedStatusCode;
         return this;
     }
 
-    public ResponseTester<T> setExpectedResource(T expectedResource) {
-        this.expectedResource = expectedResource;
-        return this;
-    }
-
-    public ResponseTester<T> setClazz(Class<T> clazz) {
+    ResponseTester<T> setClazz(Class<T> clazz) {
         this.clazz = clazz;
         return this;
     }

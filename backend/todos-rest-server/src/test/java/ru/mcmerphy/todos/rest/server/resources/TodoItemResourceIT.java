@@ -1,28 +1,22 @@
 package ru.mcmerphy.todos.rest.server.resources;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import ru.mcmerphy.todos.domain.TodoItem;
-import ru.mcmerphy.todos.rest.server.ErrorMessage;
 import ru.mcmerphy.todos.rest.server.SearchResponse;
+import ru.mcmerphy.todos.rest.server.resources.testers.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static ru.mcmerphy.todos.rest.server.resources.Utils.*;
 
 public class TodoItemResourceIT {
-
-    private static final String ROOT_URI = "http://localhost:48702/todos-webapi/";
-
-    private static void deleteAll() throws IOException {
-        HttpClientBuilder.create().build().execute(new HttpDelete(ROOT_URI));
-    }
 
     @Before
     public void before() throws IOException {
@@ -36,202 +30,102 @@ public class TodoItemResourceIT {
 
     @Test
     public void testCreate() throws IOException, URISyntaxException {
-        testIncompleteCreateTodoItemRequestBody("");
-        testIncompleteCreateTodoItemRequestBody("{\"text\":\"Text content of todo-item\"}");
-        testIncompleteCreateTodoItemRequestBody("{\"completed\":false}");
+        new IncompleteRequestBodyTester(null)
+                .setUri(ROOT_URI).testPostMethod();
+        new IncompleteRequestBodyTester("{\"text\":\"Text content of todo-item\"}")
+                .setUri(ROOT_URI).testPostMethod();
+        new IncompleteRequestBodyTester("{\"completed\":false}")
+                .setUri(ROOT_URI).testPostMethod();
 
-        testSuccessCreateTodoItemRequest(new TodoItem("Text of incomplete item", false));
-        testSuccessCreateTodoItemRequest(new TodoItem("Text of completed item", true));
+        new CreateTodoItemTester(new TodoItem("Text of incomplete item", false))
+                .setUri(ROOT_URI).testPostMethod();
+        new CreateTodoItemTester(new TodoItem("Text of completed item", true))
+                .setUri(ROOT_URI).testPostMethod();
     }
 
     @Test
     public void testBatchRead() throws IOException, URISyntaxException {
-        testIncompleteQueryParametersBatchReadRequest(new HashSet<>());
-        testIncompleteQueryParametersBatchReadRequest(
-                Collections.singleton(new BasicNameValuePair("firstResult", "0")));
-        testIncompleteQueryParametersBatchReadRequest(
-                Collections.singleton(new BasicNameValuePair("firstResult", "asd")));
-        testIncompleteQueryParametersBatchReadRequest(
-                Collections.singleton(new BasicNameValuePair("maxResults", "10")));
-        testIncompleteQueryParametersBatchReadRequest(
-                Collections.singleton(new BasicNameValuePair("maxResults", "qwe")));
+        new InvalidQueryParametersTester(InvalidQueryParametersError.INCOMPLETE)
+                .setUri(ROOT_URI).testGetMethod();
+        new InvalidQueryParametersTester(InvalidQueryParametersError.INCOMPLETE)
+                .addFirstResult("0").setUri(ROOT_URI).testGetMethod();
+        new InvalidQueryParametersTester(InvalidQueryParametersError.INCOMPLETE)
+                .addFirstResult("asd").setUri(ROOT_URI).testGetMethod();
+        new InvalidQueryParametersTester(InvalidQueryParametersError.INCOMPLETE)
+                .addMaxResults("10").setUri(ROOT_URI).testGetMethod();
+        new InvalidQueryParametersTester(InvalidQueryParametersError.INCOMPLETE)
+                .addMaxResults("qwe").setUri(ROOT_URI).testGetMethod();
+        new InvalidQueryParametersTester(InvalidQueryParametersError.NON_INTEGER_FIRST_RESULT)
+                .addFirstResult("asd").addMaxResults("10").setUri(ROOT_URI).testGetMethod();
+        new InvalidQueryParametersTester(InvalidQueryParametersError.NON_INTEGER_MAX_RESULTS)
+                .addFirstResult("0").addMaxResults("asd").setUri(ROOT_URI).testGetMethod();
+        new InvalidQueryParametersTester(InvalidQueryParametersError.NON_INTEGER_FIRST_RESULT_AND_MAX_RESULTS)
+                .addFirstResult("qwe").addMaxResults("asd").setUri(ROOT_URI).testGetMethod();
 
-        testInvalidQueryParametersBatchReadRequest(
-                new HashSet<>(Arrays.asList(
-                        new BasicNameValuePair("firstResult", "asd"),
-                        new BasicNameValuePair("maxResults", "10"))),
-                Collections.singleton("Query parameter 'firstResult' should be integer"));
-        testInvalidQueryParametersBatchReadRequest(
-                new HashSet<>(Arrays.asList(
-                        new BasicNameValuePair("firstResult", "0"),
-                        new BasicNameValuePair("maxResults", "asd"))),
-                Collections.singleton("Query parameter 'maxResults' should be integer"));
-        testInvalidQueryParametersBatchReadRequest(
-                new HashSet<>(Arrays.asList(
-                        new BasicNameValuePair("firstResult", "qwe"),
-                        new BasicNameValuePair("maxResults", "asd"))),
-                new HashSet<>(Arrays.asList(
-                        "Query parameter 'firstResult' should be integer",
-                        "Query parameter 'maxResults' should be integer")));
+        new OkSearchResponseTester(new SearchResponse(0, new ArrayList<>()))
+                .addFirstResult("0").addMaxResults("10").setUri(ROOT_URI).testGetMethod();
 
-        testSuccessBatchReadRequest(new HashSet<>(Arrays.asList(
-                new BasicNameValuePair("firstResult", "0"),
-                new BasicNameValuePair("maxResults", "10"))),
-                new SearchResponse(0, new ArrayList<>()));
-        List<TodoItem> todoItems = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            TodoItem todoItem = new TodoItem(String.valueOf(i), i % 2 == 0);
-            testSuccessCreateTodoItemRequest(todoItem);
-            todoItems.add(todoItem);
-        }
-        testSuccessBatchReadRequest(new HashSet<>(Arrays.asList(
-                new BasicNameValuePair("firstResult", "0"),
-                new BasicNameValuePair("maxResults", "10"))),
-                new SearchResponse(15, todoItems.subList(0, 10)));
-        testSuccessBatchReadRequest(new HashSet<>(Arrays.asList(
-                new BasicNameValuePair("firstResult", "7"),
-                new BasicNameValuePair("maxResults", "10"))),
-                new SearchResponse(15, todoItems.subList(7, todoItems.size())));
+        List<TodoItem> todoItems = IntStream.rangeClosed(0, 14).boxed()
+                .map(i -> new TodoItem(String.valueOf(i), i % 2 == 0))
+                .collect(Collectors.toList());
+        addTodoItems(todoItems);
+        new OkSearchResponseTester(new SearchResponse(15, todoItems.subList(0, 10)))
+                .addFirstResult("0").addMaxResults("10").setUri(ROOT_URI).testGetMethod();
+        new OkSearchResponseTester(new SearchResponse(15, todoItems.subList(7, todoItems.size())))
+                .addFirstResult("7").addMaxResults("10").setUri(ROOT_URI).testGetMethod();
     }
 
     @Test
     public void testRead() throws IOException, URISyntaxException {
-        testBadReadRequestPath("asd", Collections.singleton(
-                "Todo item id from request path should be integer"));
-        testBadReadRequestPath("asd/1", Collections.singleton(
-                "Too many paths in request. Please provide single integer path for todo item"));
-        testBadReadRequestPath("1/asd", Collections.singleton(
-                "Too many paths in request. Please provide single integer path for todo item"));
+        new BadPathTester(BadPathError.NON_INTEGER)
+                .setUri(ROOT_URI + "asd").testGetMethod();
+        new BadPathTester(BadPathError.TOO_MANY_PATHS)
+                .setUri(ROOT_URI + "asd/1").testGetMethod();
+        new BadPathTester(BadPathError.TOO_MANY_PATHS)
+                .setUri(ROOT_URI + "1/asd").testGetMethod();
 
-        testNotFoundReadRequest(1, Collections.singleton("Todo item with id=1 not found in database"));
+        new NotFoundTester(1)
+                .setUri(ROOT_URI + 1).testGetMethod();
 
-        TodoItem incompleteTodoItem = testSuccessCreateTodoItemRequest(
-                new TodoItem("Text of incomplete item", false));
-        TodoItem completedTodoItem = testSuccessCreateTodoItemRequest(
-                new TodoItem("Text of completed item", true));
-        testSuccessReadRequest(incompleteTodoItem.getId(), incompleteTodoItem);
-        testSuccessReadRequest(completedTodoItem.getId(), completedTodoItem);
+        TodoItem todoItem1 = new TodoItem("Text of incomplete item", false);
+        long id1 = addTodoItem(todoItem1);
+        new OkTodoItemTester(todoItem1)
+                .setUri(ROOT_URI + id1).testGetMethod();
+
+        TodoItem todoItem2 = new TodoItem("Text of completed item", true);
+        long id2 = addTodoItem(todoItem2);
+        new OkTodoItemTester(todoItem2)
+                .setUri(ROOT_URI + id2).testGetMethod();
     }
 
     @Test
     public void testUpdate() throws IOException, URISyntaxException {
-        testBadUpdateRequestPath("asd", Collections.singleton(
-                "Please provide 'text': 'string' and 'completed': 'boolean' fields in json body"));
-        testBadUpdateRequestPath("asd/1", Collections.singleton(
-                "Please provide 'text': 'string' and 'completed': 'boolean' fields in json body"));
-        testBadUpdateRequestPath("1/asd", Collections.singleton(
-                "Please provide 'text': 'string' and 'completed': 'boolean' fields in json body"));
+        new BadRequestTester(BadRequestError.TO_UPDATE)
+                .setUri(ROOT_URI + 1).testPutMethod();
+//        new IncompleteRequestBodyTester("asd")
+//                .setUri(ROOT_URI + 1).testPutMethod();
+//        new IncompleteRequestBodyTester("asd/1")
+//                .setUri(ROOT_URI + 1).testPutMethod();
+//        new IncompleteRequestBodyTester("1/asd")
+//                .setUri(ROOT_URI + 1).testPutMethod();
+//
+//        new IncompleteRequestBodyTester("")
+//                .setUri(ROOT_URI + 1).testPutMethod();
+//        new IncompleteRequestBodyTester("{\"text\":\"Text content of todo-item\"}")
+//                .setUri(ROOT_URI + 1).testPutMethod();
+//        new IncompleteRequestBodyTester("{\"completed\":false}")
+//                .setUri(ROOT_URI + 1).testPutMethod();
 
-        testIncompleteUpdateTodoItemRequestBody(1, "");
-        testIncompleteUpdateTodoItemRequestBody(1, "{\"text\":\"Text content of todo-item\"}");
-        testIncompleteUpdateTodoItemRequestBody(1, "{\"completed\":false}");
-    }
-
-    private void testIncompleteCreateTodoItemRequestBody(String json)
-            throws IOException, URISyntaxException {
-        getIncompleteRequestBodyTester(json).setUri(ROOT_URI).testPostMethod();
-    }
-
-    private void testIncompleteUpdateTodoItemRequestBody(long id, String json)
-            throws IOException, URISyntaxException {
-        getIncompleteRequestBodyTester(json).setUri(ROOT_URI + id).testPutMethod();
-    }
-
-    private void testIncompleteQueryParametersBatchReadRequest(Set<BasicNameValuePair> queryParameters)
-            throws IOException, URISyntaxException {
-        testInvalidQueryParametersBatchReadRequest(queryParameters, Collections.singleton(
-                "Please provide 'firstResult' and 'maxResults' query parameters"));
-    }
-
-    private void testInvalidQueryParametersBatchReadRequest(
-            Set<BasicNameValuePair> queryParameters, Set<String> expectedErrors)
-            throws IOException, URISyntaxException {
-        new ResponseTester<ErrorMessage>()
-                .setUri(ROOT_URI)
-                .setQueryParameters(queryParameters)
-                .setExpectedStatusCode(HttpStatus.SC_BAD_REQUEST)
-                .setExpectedResource(new ErrorMessage(expectedErrors))
-                .setClazz(ErrorMessage.class)
-                .testGetMethod();
-    }
-
-    private TodoItem testSuccessCreateTodoItemRequest(TodoItem expectedTodoItem)
-            throws IOException, URISyntaxException {
-        return new ResponseTester<TodoItem>()
-                .setUri(ROOT_URI)
-                .setJsonBody(new ObjectMapper().writeValueAsString(expectedTodoItem))
-                .setExpectedStatusCode(HttpStatus.SC_CREATED)
-                .setExpectedResource(expectedTodoItem)
-                .setClazz(TodoItem.class)
-                .testPostMethod();
-    }
-
-    private void testSuccessBatchReadRequest(
-            Set<BasicNameValuePair> queryParameters,
-            SearchResponse expectedSearchResponse)
-            throws IOException, URISyntaxException {
-        new ResponseTester<SearchResponse>()
-                .setUri(ROOT_URI)
-                .setQueryParameters(queryParameters)
-                .setExpectedStatusCode(HttpStatus.SC_OK)
-                .setExpectedResource(expectedSearchResponse)
-                .setClazz(SearchResponse.class)
-                .testGetMethod();
-    }
-
-    private void testSuccessReadRequest(long id, TodoItem expectedTodoItem)
-            throws IOException, URISyntaxException {
-        new ResponseTester<TodoItem>()
-                .setUri(ROOT_URI + id)
-                .setExpectedStatusCode(HttpStatus.SC_OK)
-                .setExpectedResource(expectedTodoItem)
-                .setClazz(TodoItem.class)
-                .testGetMethod();
-    }
-
-    private void testBadReadRequestPath(String pathSuffix, Set<String> expectedErrors)
-            throws IOException, URISyntaxException {
-        getBadPathTester(pathSuffix, expectedErrors).testGetMethod();
-    }
-
-    private void testBadUpdateRequestPath(String pathSuffix, Set<String> expectedErrors)
-            throws IOException, URISyntaxException {
-        getBadPathTester(pathSuffix, expectedErrors).testPutMethod();
-    }
-
-    private void testNotFoundReadRequest(long id, Set<String> expectedErrors)
-            throws IOException, URISyntaxException {
-        getNotFoundTester(id, expectedErrors).testGetMethod();
-    }
-
-    private void testNotFoundUpdateRequest(long id, Set<String> expectedErrors)
-            throws IOException, URISyntaxException {
-        getNotFoundTester(id, expectedErrors).testPutMethod();
-    }
-
-    private ResponseTester<ErrorMessage> getBadPathTester(String pathSuffix, Set<String> expectedErrors) {
-        return new ResponseTester<ErrorMessage>()
-                .setUri(ROOT_URI + pathSuffix)
-                .setExpectedStatusCode(HttpStatus.SC_BAD_REQUEST)
-                .setExpectedResource(new ErrorMessage(expectedErrors))
-                .setClazz(ErrorMessage.class);
-    }
-
-    private ResponseTester<ErrorMessage> getNotFoundTester(long id, Set<String> expectedErrors) {
-        return new ResponseTester<ErrorMessage>()
-                .setUri(ROOT_URI + id)
-                .setExpectedStatusCode(HttpStatus.SC_NOT_FOUND)
-                .setExpectedResource(new ErrorMessage(expectedErrors))
-                .setClazz(ErrorMessage.class);
-    }
-
-    private ResponseTester<ErrorMessage> getIncompleteRequestBodyTester(String json) {
-        return new ResponseTester<ErrorMessage>()
-                .setJsonBody(json)
-                .setExpectedStatusCode(HttpStatus.SC_BAD_REQUEST)
-                .setExpectedResource(new ErrorMessage(
-                        "Please provide 'text': 'string' and 'completed': 'boolean' fields in json body"))
-                .setClazz(ErrorMessage.class);
+//        TodoItem todoItem = new TodoItem("asd", true);
+//        String json = new ObjectMapper().writeValueAsString(todoItem);
+//        String json = "{\"text\":\"asd\",\"completed\":true}";
+//        System.out.println(json);
+//        new BadPathTester(BadPathError.NON_INTEGER)
+//                .setUri(ROOT_URI + "asd").setJsonBody(json).testPutMethod();
+//        new BadPathTester(BadPathError.TOO_MANY_PATHS)
+//                .setUri(ROOT_URI + "asd/1").setJsonBody(json).testPutMethod();
+//        new BadPathTester(BadPathError.TOO_MANY_PATHS)
+//                .setUri(ROOT_URI + "1/asd").setJsonBody(json).testPutMethod();
     }
 
 }

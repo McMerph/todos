@@ -40,12 +40,17 @@ public class ErrorResponseFilter implements ContainerResponseFilter {
                         boolean isTodoItemResource = Objects.equals(todoItemResource, currentResource);
                         boolean postMethod = Objects.equals(requestContext.getMethod(), HttpMethod.POST);
                         boolean putMethod = Objects.equals(requestContext.getMethod(), HttpMethod.PUT);
-                        if (isTodoItemResource & (postMethod || putMethod)) {
-                            ErrorMessage errorMessage = new ErrorMessage(
-                                    "Please provide 'text': 'string' and 'completed': 'boolean' fields in json body");
+                        if (isTodoItemResource && (postMethod || putMethod)) {
+                            ErrorMessage errorMessage;
+                            if (postMethod) {
+                                errorMessage = new ErrorMessage(
+                                        "Service for creating todo-items is available at root. Please provide 'text': 'string' and 'completed': 'boolean' fields in json body");
+                            } else {
+                                errorMessage = new ErrorMessage(
+                                        "Service for updating todo-items is available at root/{id}. Please provide 'text': 'string' and 'completed': 'boolean' fields in json body");
+                            }
                             responseContext.setEntity(errorMessage, null, MediaType.APPLICATION_JSON_TYPE);
                             responseContext.setStatusInfo(filteredStatus);
-
                         }
                     } else {
                         ErrorMessage errorMessage = new ErrorMessage(filteredStatus.getReasonPhrase());
