@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpStatus;
 import ru.mcmerphy.todos.domain.TodoItem;
 
-public class CreateTodoItemTester extends ResponseTester<TodoItem> {
+public class CreatedTodoItemTester extends ResponseTester<TodoItem> {
 
-    public CreateTodoItemTester(TodoItem expectedTodoItem) throws JsonProcessingException {
+    public CreatedTodoItemTester(TodoItem expectedTodoItem) throws JsonProcessingException {
         super(expectedTodoItem);
 
         setJsonBody(new ObjectMapper().writeValueAsString(expectedTodoItem));

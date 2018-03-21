@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpStatus;
 import ru.mcmerphy.todos.rest.server.SearchResponse;
 
-public class OkSearchResponseTester extends SearchTester<SearchResponse> {
+public class OkSearchResponseTester extends ResponseTester<SearchResponse> {
 
     public OkSearchResponseTester(SearchResponse expectedSearchResponse) throws JsonProcessingException {
         super(expectedSearchResponse);

@@ -3,7 +3,7 @@ package ru.mcmerphy.todos.rest.server.resources;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.impl.client.HttpClientBuilder;
 import ru.mcmerphy.todos.domain.TodoItem;
-import ru.mcmerphy.todos.rest.server.resources.testers.CreateTodoItemTester;
+import ru.mcmerphy.todos.rest.server.resources.testers.CreatedTodoItemTester;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -18,7 +18,7 @@ class Utils {
     }
 
     static long addTodoItem(TodoItem todoItem) throws IOException, URISyntaxException {
-        return new CreateTodoItemTester(todoItem)
+        return new CreatedTodoItemTester(todoItem)
                 .setUri(ROOT_URI)
                 .testPostMethod()
                 .getId();

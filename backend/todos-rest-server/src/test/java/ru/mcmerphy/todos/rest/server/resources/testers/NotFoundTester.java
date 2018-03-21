@@ -6,7 +6,7 @@ import ru.mcmerphy.todos.rest.server.ErrorMessage;
 public class NotFoundTester extends ResponseTester<ErrorMessage> {
 
     public NotFoundTester(long id) {
-        super(new ErrorMessage("Todo item with id=" + id + " not found in database"));
+        super(new ErrorMessage(RequestError.NOT_FOUND_PREFIX + id + RequestError.NOT_FOUND_SUFFIX));
 
         setExpectedStatusCode(HttpStatus.SC_NOT_FOUND);
         setClazz(ErrorMessage.class);

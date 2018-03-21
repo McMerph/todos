@@ -7,7 +7,6 @@ import ru.mcmerphy.todos.rest.server.SearchRequest;
 import ru.mcmerphy.todos.rest.server.SearchResponse;
 import ru.mcmerphy.todos.rest.server.filters.Logged;
 import ru.mcmerphy.todos.rest.server.validators.RequestParametersException;
-import ru.mcmerphy.todos.rest.server.validators.SearchRequestValidator;
 import ru.mcmerphy.todos.rest.server.validators.TodoItemValidator;
 
 import javax.enterprise.context.RequestScoped;
@@ -30,9 +29,6 @@ public class TodoItemResource {
     @Inject
     private TodoItemValidator todoItemValidator;
 
-    @Inject
-    private SearchRequestValidator searchRequestValidator;
-
     @Logged
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -53,9 +49,7 @@ public class TodoItemResource {
     @Logged
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public SearchResponse getTodoItems(@BeanParam SearchRequest searchRequest)
-            throws RequestParametersException {
-        searchRequestValidator.validate(searchRequest);
+    public SearchResponse getTodoItems(@BeanParam SearchRequest searchRequest) {
         int count = service.count();
         Integer firstResult = searchRequest.getFirstResult();
         Integer maxResults = searchRequest.getMaxResults();
@@ -78,27 +72,29 @@ public class TodoItemResource {
     @Path("/{todoItemId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public TodoItem updateTodoItem(@PathParam("todoItemId") int id, TodoItem todoItem)
+    public TodoItem updateTodoItem(@PathParam("todoItemId") long todoItemId, TodoItem todoItem)
             throws TodoItemNotFoundException, RequestParametersException {
         todoItemValidator.validate(todoItem);
-        return service.update(id, todoItem);
+        return service.update(todoItemId, todoItem);
     }
 
     @Logged
     @DELETE
     @Path("/{todoItemId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public TodoItem deleteTodoItem(@PathParam("todoItemId") long id)
+    public TodoItem deleteTodoItem(@PathParam("todoItemId") long todoItemId)
             throws TodoItemNotFoundException {
-        TodoItem todoItem = service.find(id);
+        TodoItem todoItem = service.find(todoItemId);
         return service.remove(todoItem);
     }
 
     @Logged
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public List<TodoItem> deleteAllTodoItems() {
-        return service.removeAll();
+    public Response deleteAllTodoItems() {
+        service.removeAll();
+
+        return Response.noContent().build();
     }
 
 }

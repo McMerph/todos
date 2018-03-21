@@ -18,12 +18,12 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 public abstract class ResponseTester<T> {
 
-    private final T expectedResource;
+    final T expectedResource;
 
     private String uri;
     private Set<BasicNameValuePair> queryParameters = new HashSet<>();
@@ -40,29 +40,27 @@ public abstract class ResponseTester<T> {
         return this;
     }
 
-    ResponseTester<T> addQueryParameter(BasicNameValuePair queryParameter) {
-        queryParameters.add(queryParameter);
+    public ResponseTester<T> addFirstResultQueryParameter(String firstResult) {
+        queryParameters.add(new BasicNameValuePair("firstResult", firstResult));
         return this;
     }
 
-    public ResponseTester<T> setQueryParameters(Set<BasicNameValuePair> queryParameters) {
-        this.queryParameters = queryParameters;
+    public ResponseTester<T> addMaxResultsQueryParameter(String maxResults) {
+        queryParameters.add(new BasicNameValuePair("maxResults", maxResults));
         return this;
     }
 
-    ResponseTester<T> setJsonBody(String jsonBody) {
+    public ResponseTester<T> setJsonBody(String jsonBody) {
         this.jsonBody = jsonBody;
         return this;
     }
 
-    ResponseTester<T> setExpectedStatusCode(int expectedStatusCode) {
+    void setExpectedStatusCode(int expectedStatusCode) {
         this.expectedStatusCode = expectedStatusCode;
-        return this;
     }
 
-    ResponseTester<T> setClazz(Class<T> clazz) {
+    void setClazz(Class<T> clazz) {
         this.clazz = clazz;
-        return this;
     }
 
     public T testPostMethod() throws IOException, URISyntaxException {
@@ -73,20 +71,20 @@ public abstract class ResponseTester<T> {
         return test(postMethod);
     }
 
-    public T testGetMethod() throws IOException, URISyntaxException {
-        return test(new HttpGet(this.generateUri()));
+    public void testGetMethod() throws IOException, URISyntaxException {
+        test(new HttpGet(this.generateUri()));
     }
 
-    public T testPutMethod() throws IOException, URISyntaxException {
+    public void testPutMethod() throws IOException, URISyntaxException {
         HttpPut putMethod = new HttpPut(this.generateUri());
         if (Objects.nonNull(this.jsonBody)) {
             putMethod.setEntity(new StringEntity(this.jsonBody, ContentType.APPLICATION_JSON));
         }
-        return test(putMethod);
+        test(putMethod);
     }
 
-    public T testDeleteMethod() throws IOException, URISyntaxException {
-        return test(new HttpDelete(this.generateUri()));
+    public void testDeleteMethod() throws IOException, URISyntaxException {
+        test(new HttpDelete(this.generateUri()));
     }
 
     private URI generateUri() throws URISyntaxException {
