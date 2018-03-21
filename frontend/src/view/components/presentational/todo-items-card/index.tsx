@@ -5,6 +5,7 @@ import { FormEvent } from "react";
 import FilterType from "../../../../model/FilterType";
 import ITodoItem from "../../../../model/ITodoItem";
 import FilterChooser from "../filter-chooser";
+import RetrieveButton from "../retrieve-button";
 import TodoItems from "../todo-items";
 import TodoTextField from "../todo-text-field";
 import { StyledAddTodoButton, StyledForm, StyledTodoCard } from "./styled";
@@ -48,6 +49,7 @@ export default class TodoItemsCard extends React.PureComponent<IProps, IState> {
             filter={this.props.filter}
             onSetFilter={this.props.onSetFilter}
           />
+          <RetrieveButton/>
         </CardContent>
       </StyledTodoCard>
     );
