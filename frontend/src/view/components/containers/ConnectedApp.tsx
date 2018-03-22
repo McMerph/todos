@@ -10,8 +10,9 @@ const mapStateToProps: (store: IStore) => IStateFromProps = (store) => store;
 const mapDispatchToProps: (dispatch: Dispatch<IStore>) => IDispatchFromProps = (dispatch) => ({
   actions: {
     onAdd: (text: string) => dispatch(actionCreator.addTodo(text)),
+    onRetrieve: () => dispatch(actionCreator.retrieveTodoItems()),
     onSetFilter: (filter: FilterType) => dispatch(actionCreator.setFilter(filter)),
-    onToggle: (id: number) => dispatch(actionCreator.toggleTodo(id)),
+    onToggle: (index: number) => dispatch(actionCreator.toggleTodo(index)),
   },
 });
 

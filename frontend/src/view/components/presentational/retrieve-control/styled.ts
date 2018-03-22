@@ -1,10 +1,10 @@
 import Button from "material-ui/Button";
 import green from "material-ui/colors/green";
+import red from "material-ui/colors/red";
 import { CircularProgress } from "material-ui/Progress";
 import { css } from "styled-components";
+import DatabaseStatus from "../../../../model/DatabaseStatus";
 import styled from "./styled-components";
-
-const color = green[500];
 
 const Wrapper = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ const RightButtonWrapper = ButtonWrapper.extend`
 `;
 
 const StyledCircularProgress = styled(CircularProgress)`
-  color: ${color} !important;
+  color: ${green[500]} !important;
   position: absolute;
 `;
 
@@ -43,15 +43,24 @@ const ButtonCircularProgress = StyledCircularProgress.extend`
 `;
 
 const successButtonCss = css`
-  background-color: ${color} !important;
+  background-color: ${green[500]} !important;
 
   &:hover {
     background-color: ${green[700]} !important;
   }
 `;
 
+const errorButtonCss = css`
+  background-color: ${red[500]} !important;
+
+  &:hover {
+    background-color: ${red[700]} !important;
+  }
+`;
+
 const StyledButton = styled(Button)`
-  ${(props) => props.theme.success ? successButtonCss : ""}
+  ${(props) => props.theme.status === DatabaseStatus.Success ? successButtonCss : ""}
+  ${(props) => props.theme.status === DatabaseStatus.Error ? errorButtonCss : ""}
 `;
 
 export { Wrapper, LeftButtonWrapper, RightButtonWrapper, FabCircularProgress, ButtonCircularProgress, StyledButton };

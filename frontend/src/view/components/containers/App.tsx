@@ -1,4 +1,5 @@
 import * as React from "react";
+import DatabaseStatus from "../../../model/DatabaseStatus";
 import FilterType from "../../../model/FilterType";
 import ITodoItem from "../../../model/ITodoItem";
 import TodoItemsCard from "../presentational/todo-items-card";
@@ -6,13 +7,15 @@ import TodoItemsCard from "../presentational/todo-items-card";
 export interface IStateFromProps {
   filter: FilterType;
   todoItems: ITodoItem[];
+  databaseStatus: DatabaseStatus;
 }
 
 export interface IDispatchFromProps {
   actions: {
-    onToggle: (id: number) => void;
     onAdd: (text: string) => void;
+    onRetrieve: () => void;
     onSetFilter: (filter: FilterType) => void;
+    onToggle: (index: number) => void;
   };
 }
 
@@ -20,15 +23,17 @@ interface IAppProps extends IStateFromProps, IDispatchFromProps {
 }
 
 const App: React.SFC<IAppProps> = (props) => {
-  const { todoItems, filter, actions } = props;
-  const { onSetFilter, onAdd, onToggle } = actions;
+  const { databaseStatus, todoItems, filter, actions } = props;
+  const { onAdd, onRetrieve, onSetFilter, onToggle } = actions;
 
   return (
     <TodoItemsCard
+      databaseStatus={databaseStatus}
       todoItems={todoItems}
       filter={filter}
-      onSetFilter={onSetFilter}
       onAdd={onAdd}
+      onRetrieve={onRetrieve}
+      onSetFilter={onSetFilter}
       onToggle={onToggle}
     />
   );

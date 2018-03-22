@@ -7,7 +7,7 @@ import ITodoItem from "../../../../model/ITodoItem";
 interface IProps {
   todoItems: ITodoItem[];
   filter: FilterType;
-  onToggle: (id: number) => void;
+  onToggle: (index: number) => void;
 }
 
 const TodoItems: React.SFC<IProps> = (props) => (
@@ -15,11 +15,11 @@ const TodoItems: React.SFC<IProps> = (props) => (
     <FormLabel component="legend">Todo's list:</FormLabel>
     <FormGroup>
       {/*tslint:disable-next-line jsx-no-multiline-js*/}
-      {props.todoItems.filter((todo) => isVisible(props.filter, todo)).map((todo) => (
+      {props.todoItems.filter((todo) => isVisible(props.filter, todo)).map((todo, index) => (
         <FormControlLabel
-          key={todo.id}
+          key={index}
           // tslint:disable-next-line jsx-no-lambda
-          control={<Checkbox checked={todo.completed} onChange={() => props.onToggle(todo.id)}/>}
+          control={<Checkbox checked={todo.completed} onChange={() => props.onToggle(index)}/>}
           label={todo.text}
         />),
       )}

@@ -1,10 +1,29 @@
+import { Dispatch } from "redux";
 import ActionType from "./actions/ActionType";
+import { retrieve } from "./api";
+import DatabaseStatus from "./DatabaseStatus";
 import FilterType from "./FilterType";
+import IStore from "./IStore";
 
 const actionCreator = {
   addTodo: (text: string) => ({ type: ActionType.AddTodo, text }),
+  retrieveTodoItems: () => {
+    return (dispatch: Dispatch<IStore>) => {
+      dispatch({ type: ActionType.SetDatabaseStatus, status: DatabaseStatus.Loading });
+      retrieve("http://localhost:48702/todos-webapi/?firstResult=0&maxResults=10")
+        .then((response) => {
+          dispatch({ type: ActionType.SetTodoItems, todoItems: response.todoItems });
+          dispatch({ type: ActionType.SetDatabaseStatus, status: DatabaseStatus.Success });
+        })
+        .catch((error) => {
+          console.log(error);
+          dispatch({ type: ActionType.SetDatabaseStatus, status: DatabaseStatus.Error });
+        });
+    };
+  },
+  setDatabaseStatus: (status: DatabaseStatus) => ({ type: ActionType.SetDatabaseStatus, status }),
   setFilter: (filter: FilterType) => ({ type: ActionType.SetFilter, filter }),
-  toggleTodo: (id: number) => ({ type: ActionType.ToggleTodo, id }),
+  toggleTodo: (index: number) => ({ type: ActionType.ToggleTodo, index }),
 };
 
 export default actionCreator;

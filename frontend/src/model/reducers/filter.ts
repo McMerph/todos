@@ -8,7 +8,8 @@ interface ISetFilterAction extends IAction {
 
 function isSetFilterAction(action: IAction): action is ISetFilterAction {
   const cast: ISetFilterAction = action as ISetFilterAction;
-  return cast.type === ActionType.SetFilter && Object.keys(FilterType).includes(cast.filter);
+  return cast.type === ActionType.SetFilter &&
+    Object.values(FilterType).includes(cast.filter);
 }
 
 export const filter = (state: FilterType = FilterType.All, action: IAction): FilterType => {

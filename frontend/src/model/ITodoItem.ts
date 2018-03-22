@@ -1,5 +1,12 @@
 export default interface ITodoItem {
-  id: number;
+  id?: number;
   text: string;
   completed: boolean;
+}
+
+export function isTodoItem(object: any): object is ITodoItem {
+  const cast: ITodoItem = object as ITodoItem;
+  return typeof cast.id === "number"
+    && typeof cast.text === "string"
+    && typeof cast.completed === "boolean";
 }

@@ -1,6 +1,6 @@
-import actionCreator from "../../../../src/model/actionCreator";
-import ITodoItem from "../../../../src/model/ITodoItem";
-import { todoItems } from "../../../../src/model/reducers/todo-items";
+import actionCreator from "../../../src/model/actionCreator";
+import ITodoItem from "../../../src/model/ITodoItem";
+import { todoItems } from "../../../src/model/reducers/todoItems";
 
 test("'add todo' action with empty initial state", () => {
   const todoItemText: string = "dummy";
@@ -31,35 +31,29 @@ test("'toggle todo' action", () => {
   const initialState: ITodoItem[] = [
     {
       completed: false,
-      id: 0,
       text: "initial1",
     },
     {
       completed: true,
-      id: 1,
       text: "initial2",
     }];
 
   expect(todoItems(initialState, actionCreator.toggleTodo(0))).toEqual([
     {
       completed: true,
-      id: 0,
       text: "initial1",
     },
     {
       completed: true,
-      id: 1,
       text: "initial2",
     }]);
   expect(todoItems(initialState, actionCreator.toggleTodo(1))).toEqual([
     {
       completed: false,
-      id: 0,
       text: "initial1",
     },
     {
       completed: false,
-      id: 1,
       text: "initial2",
     }]);
 });

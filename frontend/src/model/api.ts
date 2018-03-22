@@ -1,4 +1,4 @@
-import ITodoItem from "../../../../model/ITodoItem";
+import ITodoItem, { isTodoItem } from "./ITodoItem";
 
 interface ISearchResponse {
   count: number;
@@ -12,29 +12,20 @@ function isSearchResponse(json: any): json is ISearchResponse {
     && cast.todoItems.every((item) => isTodoItem(item));
 }
 
-function isTodoItem(object: any): object is ITodoItem {
-  const cast: ITodoItem = object as ITodoItem;
-  return typeof cast.id === "number"
-    && typeof cast.text === "string"
-    && typeof cast.completed === "boolean";
-}
-
 export function retrieve(uri: string): Promise<ISearchResponse> {
   return fetch(uri)
     .then((response) => {
       if (response.ok) {
         return response.json();
       } else {
-        console.error("Network response was not ok");
-        throw new Error();
+        throw new Error("Network response was not ok");
       }
     })
     .then((json) => {
       if (isSearchResponse(json)) {
         return json;
       } else {
-        console.error("Client info is not properly formatted");
-        throw new Error();
+        throw new Error("Client info is not properly formatted");
       }
     })
     .catch((error) => {

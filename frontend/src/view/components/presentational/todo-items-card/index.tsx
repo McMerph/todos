@@ -2,10 +2,11 @@ import { CardContent } from "material-ui/Card";
 import Divider from "material-ui/Divider";
 import * as React from "react";
 import { FormEvent } from "react";
+import DatabaseStatus from "../../../../model/DatabaseStatus";
 import FilterType from "../../../../model/FilterType";
 import ITodoItem from "../../../../model/ITodoItem";
 import FilterChooser from "../filter-chooser";
-import RetrieveButton from "../retrieve-button";
+import RetrieveControl from "../retrieve-control";
 import TodoItems from "../todo-items";
 import TodoTextField from "../todo-text-field";
 import { StyledAddTodoButton, StyledForm, StyledTodoCard } from "./styled";
@@ -13,9 +14,11 @@ import { StyledAddTodoButton, StyledForm, StyledTodoCard } from "./styled";
 interface IProps {
   filter: FilterType;
   todoItems: ITodoItem[];
-  onToggle: (id: number) => void;
+  databaseStatus: DatabaseStatus;
   onAdd: (text: string) => void;
+  onRetrieve: () => void;
   onSetFilter: (filter: FilterType) => void;
+  onToggle: (index: number) => void;
 }
 
 interface IState {
@@ -49,7 +52,10 @@ export default class TodoItemsCard extends React.PureComponent<IProps, IState> {
             filter={this.props.filter}
             onSetFilter={this.props.onSetFilter}
           />
-          <RetrieveButton/>
+          <RetrieveControl
+            status={this.props.databaseStatus}
+            onRetrieve={this.props.onRetrieve}
+          />
         </CardContent>
       </StyledTodoCard>
     );
