@@ -78,6 +78,26 @@ public class TodoItemResource {
         return service.update(todoItemId, todoItem);
     }
 
+//    TODO Implement
+//    @Logged
+//    @PUT
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<TodoItem> sync(List<TodoItem> transmittedTodoItems)
+//            throws RequestParametersException {
+//        for (TodoItem item : transmittedTodoItems) {
+//            todoItemValidator.validate(item);
+//            Long id = item.getId();
+//            try {
+//                TodoItem itemFromDatabase = service.find(id);
+//            } catch (TodoItemNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        return new ArrayList<>();
+//    }
+
     @Logged
     @DELETE
     @Path("/{todoItemId}")

@@ -3,7 +3,7 @@ enum ActionType {
   AddTodo = "ADD_TODO",
   ToggleTodo = "TOGGLE_TODO",
   SetTodoItems = "SET_TODO_ITEMS",
-  SetDatabaseStatus = "SET_DATABASE_STATUS",
+  SetReadFromDatabaseStatus = "SET_READ_FROM_DATABASE_STATUS",
 }
 
 export default ActionType;

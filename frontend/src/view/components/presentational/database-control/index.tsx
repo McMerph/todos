@@ -1,7 +1,7 @@
-import CloudIcon from "material-ui-icons/Cloud";
 import CloudDoneIcon from "material-ui-icons/CloudDone";
 import CloudDownloadIcon from "material-ui-icons/CloudDownload";
 import CloudOffIcon from "material-ui-icons/CloudOff";
+import CloudUploadIcon from "material-ui-icons/CloudUpload";
 import * as React from "react";
 import DatabaseStatus from "../../../../model/DatabaseStatus";
 import {
@@ -15,14 +15,12 @@ import {
 
 interface IProps {
   onRetrieve: () => void;
+  type: Type;
   status: DatabaseStatus;
+  text: string;
 }
 
-const iconsByStatus = new Map<DatabaseStatus, React.ReactNode>();
-iconsByStatus.set(DatabaseStatus.Idle, <CloudIcon/>);
-iconsByStatus.set(DatabaseStatus.Loading, <CloudDownloadIcon/>);
-iconsByStatus.set(DatabaseStatus.Success, <CloudDoneIcon/>);
-iconsByStatus.set(DatabaseStatus.Error, <CloudOffIcon/>);
+enum Type { Download, Upload }
 
 function handleButtonClick(props: IProps): void {
   const { status, onRetrieve } = props;
@@ -32,8 +30,19 @@ function handleButtonClick(props: IProps): void {
   }
 }
 
-const RetrieveControl: React.SFC<IProps> = (props) => {
-  const { status: status } = props;
+function getIcon(props: IProps): React.ReactNode {
+  let Icon = props.type === Type.Download ? <CloudDownloadIcon/> : <CloudUploadIcon/>;
+  if (props.status === DatabaseStatus.Success) {
+    Icon = <CloudDoneIcon/>;
+  } else if (props.status === DatabaseStatus.Error) {
+    Icon = <CloudOffIcon/>;
+  }
+
+  return Icon;
+}
+
+const DatabaseControl: React.SFC<IProps> = (props) => {
+  const { status, text } = props;
 
   return (
     <Wrapper>
@@ -45,7 +54,7 @@ const RetrieveControl: React.SFC<IProps> = (props) => {
           // tslint:disable-next-line jsx-no-lambda
           onClick={() => handleButtonClick(props)}
         >
-          {iconsByStatus.get(status)}
+          {getIcon(props)}
         </StyledButton>
         {status === DatabaseStatus.Loading && <FabCircularProgress size={68}/>}
       </LeftButtonWrapper>
@@ -59,7 +68,7 @@ const RetrieveControl: React.SFC<IProps> = (props) => {
           // tslint:disable-next-line jsx-no-lambda
           onClick={() => handleButtonClick(props)}
         >
-          Retrieve data from database
+          {text}
         </StyledButton>
         {status === DatabaseStatus.Loading && <ButtonCircularProgress size={24}/>}
       </RightButtonWrapper>
@@ -67,4 +76,6 @@ const RetrieveControl: React.SFC<IProps> = (props) => {
   );
 };
 
-export default RetrieveControl;
+export default DatabaseControl;
+
+export { Type };

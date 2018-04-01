@@ -6,7 +6,7 @@ export default interface ITodoItem {
 
 export function isTodoItem(object: any): object is ITodoItem {
   const cast: ITodoItem = object as ITodoItem;
-  return typeof cast.id === "number"
-    && typeof cast.text === "string"
-    && typeof cast.completed === "boolean";
+  return (!cast.id || typeof cast.id === "number") &&
+    typeof cast.text === "string" &&
+    typeof cast.completed === "boolean";
 }

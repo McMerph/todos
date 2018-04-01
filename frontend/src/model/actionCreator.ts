@@ -9,19 +9,19 @@ const actionCreator = {
   addTodo: (text: string) => ({ type: ActionType.AddTodo, text }),
   retrieveTodoItems: () => {
     return (dispatch: Dispatch<IStore>) => {
-      dispatch({ type: ActionType.SetDatabaseStatus, status: DatabaseStatus.Loading });
+      dispatch({ type: ActionType.SetReadFromDatabaseStatus, status: DatabaseStatus.Loading });
       retrieve("http://localhost:48702/todos-webapi/?firstResult=0&maxResults=10")
         .then((response) => {
           dispatch({ type: ActionType.SetTodoItems, todoItems: response.todoItems });
-          dispatch({ type: ActionType.SetDatabaseStatus, status: DatabaseStatus.Success });
+          dispatch({ type: ActionType.SetReadFromDatabaseStatus, status: DatabaseStatus.Success });
         })
         .catch((error) => {
           console.log(error);
-          dispatch({ type: ActionType.SetDatabaseStatus, status: DatabaseStatus.Error });
+          dispatch({ type: ActionType.SetReadFromDatabaseStatus, status: DatabaseStatus.Error });
         });
     };
   },
-  setDatabaseStatus: (status: DatabaseStatus) => ({ type: ActionType.SetDatabaseStatus, status }),
+  setDatabaseStatus: (status: DatabaseStatus) => ({ type: ActionType.SetReadFromDatabaseStatus, status }),
   setFilter: (filter: FilterType) => ({ type: ActionType.SetFilter, filter }),
   toggleTodo: (index: number) => ({ type: ActionType.ToggleTodo, index }),
 };

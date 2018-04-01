@@ -5,8 +5,8 @@ import { FormEvent } from "react";
 import DatabaseStatus from "../../../../model/DatabaseStatus";
 import FilterType from "../../../../model/FilterType";
 import ITodoItem from "../../../../model/ITodoItem";
+import DatabaseControl, { Type } from "../database-control";
 import FilterChooser from "../filter-chooser";
-import RetrieveControl from "../retrieve-control";
 import TodoItems from "../todo-items";
 import TodoTextField from "../todo-text-field";
 import { StyledAddTodoButton, StyledForm, StyledTodoCard } from "./styled";
@@ -52,8 +52,16 @@ export default class TodoItemsCard extends React.PureComponent<IProps, IState> {
             filter={this.props.filter}
             onSetFilter={this.props.onSetFilter}
           />
-          <RetrieveControl
+          <DatabaseControl
+            type={Type.Download}
             status={this.props.databaseStatus}
+            text="Retrieve from database"
+            onRetrieve={this.props.onRetrieve}
+          />
+          <DatabaseControl
+            type={Type.Upload}
+            status={this.props.databaseStatus}
+            text="Write to database"
             onRetrieve={this.props.onRetrieve}
           />
         </CardContent>

@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
-import { databaseStatus } from "./databaseStatus";
+import { readFromDatabaseStatus } from "./readFromDatabaseStatus";
 import { filter } from "./filter";
 import { todoItems } from "./todoItems";
 
 const combinedReducer = combineReducers({
-  databaseStatus,
+  databaseStatus: readFromDatabaseStatus,
   filter,
   todoItems,
 });
