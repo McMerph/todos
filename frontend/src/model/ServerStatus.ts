@@ -1,8 +1,8 @@
-enum DatabaseStatus {
+enum ServerStatus {
   Idle = "IDLE",
   Loading = "LOADING",
   Success = "SUCCESS",
   Error = "ERROR",
 }
 
-export default DatabaseStatus;
+export default ServerStatus;

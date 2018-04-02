@@ -1,13 +1,14 @@
 import * as React from "react";
-import DatabaseStatus from "../../../model/DatabaseStatus";
 import FilterType from "../../../model/FilterType";
 import ITodoItem from "../../../model/ITodoItem";
+import ServerStatus from "../../../model/ServerStatus";
+import ApplicationBar from "../presentational/application-bar";
 import TodoItemsCard from "../presentational/todo-items-card";
 
 export interface IStateFromProps {
   filter: FilterType;
   todoItems: ITodoItem[];
-  databaseStatus: DatabaseStatus;
+  serverStatus: ServerStatus;
 }
 
 export interface IDispatchFromProps {
@@ -19,24 +20,29 @@ export interface IDispatchFromProps {
   };
 }
 
-interface IAppProps extends IStateFromProps, IDispatchFromProps {
+export default class App extends React.PureComponent<IStateFromProps & IDispatchFromProps, {}> {
+
+  public componentDidMount(): void {
+    this.props.actions.onRetrieve();
+  }
+
+  public render(): React.ReactNode {
+    const { serverStatus, todoItems, filter, actions } = this.props;
+    const { onAdd, onRetrieve, onSetFilter, onToggle } = actions;
+
+    return (
+      <React.Fragment>
+        <ApplicationBar serverStatus={serverStatus}/>
+        <TodoItemsCard
+          serverStatus={serverStatus}
+          todoItems={todoItems}
+          filter={filter}
+          onAdd={onAdd}
+          onRetrieve={onRetrieve}
+          onSetFilter={onSetFilter}
+          onToggle={onToggle}
+        />
+      </React.Fragment>
+    );
+  }
 }
-
-const App: React.SFC<IAppProps> = (props) => {
-  const { databaseStatus, todoItems, filter, actions } = props;
-  const { onAdd, onRetrieve, onSetFilter, onToggle } = actions;
-
-  return (
-    <TodoItemsCard
-      databaseStatus={databaseStatus}
-      todoItems={todoItems}
-      filter={filter}
-      onAdd={onAdd}
-      onRetrieve={onRetrieve}
-      onSetFilter={onSetFilter}
-      onToggle={onToggle}
-    />
-  );
-};
-
-export default App;

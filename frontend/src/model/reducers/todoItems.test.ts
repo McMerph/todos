@@ -1,6 +1,6 @@
-import actionCreator from "../../../src/model/actionCreator";
-import ITodoItem from "../../../src/model/ITodoItem";
-import { todoItems } from "../../../src/model/reducers/todoItems";
+import actionCreator from "../actionCreator";
+import ITodoItem from "../ITodoItem";
+import { todoItems } from "./todoItems";
 
 test("'add todo' action with empty initial state", () => {
   const todoItemText: string = "dummy";

@@ -1,6 +1,6 @@
-import actionCreator from "../../../src/model/actionCreator";
-import FilterType from "../../../src/model/FilterType";
-import { filter } from "../../../src/model/reducers/filter";
+import actionCreator from "../actionCreator";
+import FilterType from "../FilterType";
+import { filter } from "./filter";
 
 test("'set filter' action", () => {
   expect(filter(undefined, actionCreator.setFilter(FilterType.All)))

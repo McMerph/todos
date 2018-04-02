@@ -1,0 +1,14 @@
+{
+  "name": "todos-init",
+  "version": "0.0.1",
+  "description": "Initialization of todo's project",
+  "main": "init.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1"
+  }
+}

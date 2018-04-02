@@ -1,9 +1,9 @@
-import DatabaseStatus from "./DatabaseStatus";
 import FilterType from "./FilterType";
 import ITodoItem from "./ITodoItem";
+import ServerStatus from "./ServerStatus";
 
 export default interface IStore {
   filter: FilterType;
+  serverStatus: ServerStatus;
   todoItems: ITodoItem[];
-  databaseStatus: DatabaseStatus;
 }

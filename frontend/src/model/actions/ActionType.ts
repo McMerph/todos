@@ -1,9 +1,9 @@
 enum ActionType {
-  SetFilter = "SET_FILTER",
   AddTodo = "ADD_TODO",
-  ToggleTodo = "TOGGLE_TODO",
+  SetFilter = "SET_FILTER",
+  SetServerStatus = "SET_SERVER_STATUS",
   SetTodoItems = "SET_TODO_ITEMS",
-  SetReadFromDatabaseStatus = "SET_READ_FROM_DATABASE_STATUS",
+  ToggleTodo = "TOGGLE_TODO",
 }
 
 export default ActionType;

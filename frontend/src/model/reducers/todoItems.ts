@@ -14,21 +14,6 @@ interface ISetTodoItemsAction extends IAction {
   todoItems: ITodoItem[];
 }
 
-const initial: ITodoItem[] = [
-  {
-    completed: true,
-    text: "Work",
-  },
-  {
-    completed: false,
-    text: "Learn",
-  },
-  {
-    completed: false,
-    text: "Drink beer",
-  },
-];
-
 function isAddTodoAction(action: IAction): action is IAddTodoAction {
   const cast: IAddTodoAction = action as IAddTodoAction;
   return cast.type === ActionType.AddTodo && typeof cast.text === "string";
@@ -46,7 +31,7 @@ function isSetTodoItemsAction(action: IAction): action is ISetTodoItemsAction {
     cast.todoItems.every((item) => isTodoItem(item));
 }
 
-export const todoItems = (state: ITodoItem[] = initial, action: IAction): ITodoItem[] => {
+export const todoItems = (state: ITodoItem[] = [], action: IAction): ITodoItem[] => {
     if (isAddTodoAction(action)) {
       return [...state, { completed: false, id: state.length, text: action.text }];
     } else if (isToggleTodoAction(action)) {
