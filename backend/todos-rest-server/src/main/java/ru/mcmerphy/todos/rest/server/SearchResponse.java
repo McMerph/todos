@@ -10,22 +10,22 @@ import java.util.Objects;
 @XmlRootElement
 public class SearchResponse {
 
-    private int count;
+    private long count;
     private List<TodoItem> todoItems = new ArrayList<>();
 
     public SearchResponse() {
     }
 
-    public SearchResponse(int count, List<TodoItem> todoItems) {
+    public SearchResponse(long count, List<TodoItem> todoItems) {
         this.count = count;
         this.todoItems = todoItems;
     }
 
-    public int getCount() {
+    public long getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(long count) {
         this.count = count;
     }
 

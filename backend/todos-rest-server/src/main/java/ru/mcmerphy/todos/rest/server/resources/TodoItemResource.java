@@ -5,6 +5,7 @@ import ru.mcmerphy.todos.dao.TodoItemService;
 import ru.mcmerphy.todos.domain.TodoItem;
 import ru.mcmerphy.todos.rest.server.SearchRequest;
 import ru.mcmerphy.todos.rest.server.SearchResponse;
+import ru.mcmerphy.todos.rest.server.SyncResponse;
 import ru.mcmerphy.todos.rest.server.filters.Logged;
 import ru.mcmerphy.todos.rest.server.validators.RequestParametersException;
 import ru.mcmerphy.todos.rest.server.validators.TodoItemValidator;
@@ -18,6 +19,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 @RequestScoped
 @Path("/")
@@ -50,7 +52,7 @@ public class TodoItemResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public SearchResponse getTodoItems(@BeanParam SearchRequest searchRequest) {
-        int count = service.count();
+        long count = service.count();
         Integer firstResult = searchRequest.getFirstResult();
         Integer maxResults = searchRequest.getMaxResults();
         List<TodoItem> todoItems = service.findRange(firstResult, maxResults);
@@ -78,25 +80,18 @@ public class TodoItemResource {
         return service.update(todoItemId, todoItem);
     }
 
-//    TODO Implement
-//    @Logged
-//    @PUT
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public List<TodoItem> sync(List<TodoItem> transmittedTodoItems)
-//            throws RequestParametersException {
-//        for (TodoItem item : transmittedTodoItems) {
-//            todoItemValidator.validate(item);
-//            Long id = item.getId();
-//            try {
-//                TodoItem itemFromDatabase = service.find(id);
-//            } catch (TodoItemNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        return new ArrayList<>();
-//    }
+    @Logged
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public SyncResponse sync(List<TodoItem> todoItems) throws RequestParametersException {
+        for (TodoItem item : todoItems) {
+            todoItemValidator.validate(item);
+        }
+        Set<TodoItem> syncedTodoItems = service.sync(todoItems);
+
+        return new SyncResponse(syncedTodoItems);
+    }
 
     @Logged
     @DELETE

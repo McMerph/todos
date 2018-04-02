@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -149,6 +150,30 @@ public class TodoItemResourceIT {
         new OkTodoItemTester(todoItem2)
                 .setUri(ROOT_URI + id2)
                 .testGetMethod();
+    }
+
+    @Test
+    public void testSync() throws IOException, URISyntaxException {
+        new BadRequestTester(ROOT_URI)
+                .addExpectedError(RequestError.SYNC_INVALID_ARRAY)
+                .setJsonBody("{\"valid\":\"true\"}")
+                .testPutMethod();
+
+        Set<TodoItem> todoItems = IntStream.rangeClosed(0, 14).boxed()
+                .map(i -> new TodoItem(String.valueOf(i), i % 2 == 0))
+                .collect(Collectors.toSet());
+        addTodoItems(todoItems);
+        new SyncResponseTester(todoItems)
+                .setUri(ROOT_URI)
+                .testPutMethod();
+
+        Set<TodoItem> updatedTodoItems = todoItems.stream()
+                .filter(todoItem -> Integer.parseInt(todoItem.getText()) < 8)
+                .map(todoItem -> new TodoItem("Updated " + todoItem.getText(), true))
+                .collect(Collectors.toSet());
+        new SyncResponseTester(updatedTodoItems)
+                .setUri(ROOT_URI)
+                .testPutMethod();
     }
 
     @Test

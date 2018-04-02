@@ -16,4 +16,6 @@ public interface RequestError {
     String NOT_FOUND_PREFIX = "Todo item with id=";
     String NOT_FOUND_SUFFIX = " not found in database";
 
+    String SYNC_INVALID_ARRAY = "Please provide valid list of todoItems";
+
 }

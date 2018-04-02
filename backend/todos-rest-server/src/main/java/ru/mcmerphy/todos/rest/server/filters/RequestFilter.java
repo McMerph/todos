@@ -1,7 +1,6 @@
 package ru.mcmerphy.todos.rest.server.filters;
 
 import ru.mcmerphy.todos.rest.server.ErrorMessage;
-import ru.mcmerphy.todos.rest.server.resources.TodoItemResource;
 
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -11,12 +10,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
-import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static ru.mcmerphy.todos.rest.server.Utils.isTodoItemResource;
 
 @PreMatching
 public class RequestFilter implements ContainerRequestFilter {
@@ -37,15 +37,6 @@ public class RequestFilter implements ContainerRequestFilter {
                 validateTodoItemResourcePaths(paths, requestContext);
             }
         }
-    }
-
-    private boolean isTodoItemResource(ContainerRequestContext requestContext) {
-        URI todoItemResource = requestContext.getUriInfo().getBaseUriBuilder()
-                .path(TodoItemResource.class)
-                .build();
-        URI currentResource = requestContext.getUriInfo().getBaseUriBuilder().build();
-
-        return Objects.equals(todoItemResource, currentResource);
     }
 
     private boolean isRootRequest(List<String> paths) {
