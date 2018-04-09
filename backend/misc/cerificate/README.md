@@ -12,7 +12,7 @@
     cd {THIS_DIR}
     generate-certificate-via-docker
 
-3. Check integrity of PKCS12 bundle
+3. Check alias of PKCS12 bundle
 
 
     cd ./target
@@ -31,18 +31,19 @@
 
     keytool -importkeystore -destkeystore cacerts.jks -srckeystore cert.p12 -srcstoretype PKCS12 -alias domain1_certificate
 
-7. Check alias of your certificate
+7. Add certificate to the list of trusted certificates on your machine
+    
 
+    cd {JDK_DIR}\jre\lib\security\
+    keytool -importkeystore -destkeystore cacerts -srckeystore cert.p12 -srcstoretype PKCS12 -alias domain1_certificate
 
-    keytool -list -keystore cert.p12
-
-8. Start domain
+7. Start domain
 
 
     cd {PAYARA_DIR}\bin\
     asadmin start-domain
 
-9. Go to [Payara server console](http://localhost:4848)
+8. Go to [Payara server console](http://localhost:4848)
 
 
     Configurations -> server-config -> HTTP Service -> HTTP Listeners -> http-listener-2 -> SSL
