@@ -2,12 +2,13 @@
 
 openssl \
     req -x509 \
-    -newkey rsa:4096 \
     -nodes \
-    -days 365 \
-    -subj "/C=RU/ST=Khabarovsk Krai/L=Khabarovsk/O=OrganizationName/OU=IT Department/CN=localhost" \
+    -days 730 \
+    -newkey rsa:4096 \
     -keyout cert.key \
-    -out cert.crt
+    -out cert.crt \
+    -config /tmp/req.cnf \
+    -sha256
 
 openssl \
     pkcs12 \

@@ -46,6 +46,8 @@
 8. Go to [Payara server console](http://localhost:4848)
 
 
+    Configurations -> server-config -> HTTP Service -> HTTP Listeners -> http-listener-2
+        "Port": "443"
     Configurations -> server-config -> HTTP Service -> HTTP Listeners -> http-listener-2 -> SSL
         "Certificate NickName": "domain1_certificate"
 
@@ -56,3 +58,10 @@
     cd {PAYARA_DIR}\glassfish\domains\domain1\config\
     keytool -delete -alias domain1_certificate -keystore keystore.jks
     keytool -delete -alias domain1_certificate -keystore cacerts.jks
+    
+**. To delete windows installed certificates
+
+
+    certmgr.msc    
+
+P.S. Not works in Firefox :-(
