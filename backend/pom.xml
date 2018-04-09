@@ -19,6 +19,7 @@
         <module>todos-domain</module>
         <module>todos-dao</module>
         <module>todos-ear</module>
+        <module>todos-login</module>
     </modules>
 
     <dependencyManagement>
