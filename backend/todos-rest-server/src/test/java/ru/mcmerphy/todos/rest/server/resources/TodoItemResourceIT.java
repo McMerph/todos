@@ -38,19 +38,19 @@ public class TodoItemResourceIT {
 
     @Test
     public void testCreate() throws IOException, URISyntaxException {
-        new BadRequestTester(ROOT_URI)
+        new ErrorTester(ROOT_URI, HttpStatus.SC_BAD_REQUEST)
                 .addExpectedError(RequestError.EMPTY_TODO_ITEM)
                 .testPostMethod();
-        new BadRequestTester(ROOT_URI)
+        new ErrorTester(ROOT_URI, HttpStatus.SC_BAD_REQUEST)
                 .addExpectedError(RequestError.TEXT_FIELD_IS_EMPTY)
                 .addExpectedError(RequestError.COMPLETED_FIELD_IS_EMPTY)
                 .setJsonBody("{\"valid\":\"true\"}")
                 .testPostMethod();
-        new BadRequestTester(ROOT_URI)
+        new ErrorTester(ROOT_URI, HttpStatus.SC_BAD_REQUEST)
                 .addExpectedError(RequestError.COMPLETED_FIELD_IS_EMPTY)
                 .setJsonBody("{\"text\":\"Text content of todo-item\"}")
                 .testPostMethod();
-        new BadRequestTester(ROOT_URI)
+        new ErrorTester(ROOT_URI, HttpStatus.SC_BAD_REQUEST)
                 .addExpectedError(RequestError.TEXT_FIELD_IS_EMPTY)
                 .setJsonBody("{\"completed\":false}")
                 .testPostMethod();
@@ -65,34 +65,39 @@ public class TodoItemResourceIT {
 
     @Test
     public void testBatchRead() throws IOException, URISyntaxException {
-        new BadRequestTester(ROOT_URI)
+        new ErrorTester(ROOT_URI, HttpStatus.SC_BAD_REQUEST)
                 .addExpectedError(RequestError.NON_INTEGER_FIRST_RESULT_QUERY_PARAMETER)
                 .addExpectedError(RequestError.NON_INTEGER_MAX_RESULTS_QUERY_PARAMETER)
                 .testGetMethod();
-        new BadRequestTester(ROOT_URI)
+        new ErrorTester(ROOT_URI, HttpStatus.SC_BAD_REQUEST)
                 .addExpectedError(RequestError.NON_INTEGER_MAX_RESULTS_QUERY_PARAMETER)
                 .addFirstResultQueryParameter("0")
                 .testGetMethod();
-        new BadRequestTester(ROOT_URI)
+        new ErrorTester(ROOT_URI, HttpStatus.SC_BAD_REQUEST)
                 .addExpectedError(RequestError.NON_INTEGER_FIRST_RESULT_QUERY_PARAMETER)
                 .addMaxResultsQueryParameter("10")
                 .testGetMethod();
 
-        new NotFoundTester(ROOT_URI)
+        new ErrorTester(ROOT_URI, HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND)
                 .addFirstResultQueryParameter("asd")
                 .testGetMethod();
-        new NotFoundTester(ROOT_URI)
+        new ErrorTester(ROOT_URI, HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND)
                 .addMaxResultsQueryParameter("qwe")
                 .testGetMethod();
-        new NotFoundTester(ROOT_URI)
+        new ErrorTester(ROOT_URI, HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND)
                 .addFirstResultQueryParameter("asd")
                 .addMaxResultsQueryParameter("10")
                 .testGetMethod();
-        new NotFoundTester(ROOT_URI)
+        new ErrorTester(ROOT_URI, HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND)
                 .addFirstResultQueryParameter("10")
                 .addMaxResultsQueryParameter("asd")
                 .testGetMethod();
-        new NotFoundTester(ROOT_URI)
+        new ErrorTester(ROOT_URI, HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND)
                 .addFirstResultQueryParameter("qwe")
                 .addMaxResultsQueryParameter("asd")
                 .testGetMethod();
@@ -121,17 +126,19 @@ public class TodoItemResourceIT {
 
     @Test
     public void testRead() throws IOException, URISyntaxException {
-        new BadRequestTester(ROOT_URI + "asd")
+        new ErrorTester(ROOT_URI + "asd", HttpStatus.SC_BAD_REQUEST)
                 .addExpectedError(RequestError.NON_INTEGER_ID_IN_PATH)
                 .testGetMethod();
 
-        new NotFoundTester(ROOT_URI + "asd/1")
+        new ErrorTester(ROOT_URI + "asd/1", HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND)
                 .testGetMethod();
-        new NotFoundTester(ROOT_URI + "1/asd")
+        new ErrorTester(ROOT_URI + "1/asd", HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND)
                 .testGetMethod();
 
-        new NotFoundByIdTester(1)
-                .setUri(ROOT_URI + 1)
+        new ErrorTester(ROOT_URI + 1, HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND_PREFIX + 1 + RequestError.NOT_FOUND_SUFFIX)
                 .testGetMethod();
 
         TodoItem todoItem1 = new TodoItem("Text of incomplete item", false);
@@ -149,7 +156,7 @@ public class TodoItemResourceIT {
 
     @Test
     public void testSync() throws IOException, URISyntaxException {
-        new InternalServerErrorTester(ROOT_URI)
+        new ErrorTester(ROOT_URI, HttpStatus.SC_INTERNAL_SERVER_ERROR)
                 .addExpectedError(RequestError.SYNC_INVALID_ARRAY)
                 .setJsonBody("{\"valid\":\"true\"}")
                 .testPutMethod();
@@ -173,37 +180,40 @@ public class TodoItemResourceIT {
 
     @Test
     public void testUpdate() throws IOException, URISyntaxException {
-        new BadRequestTester(ROOT_URI + 1)
+        new ErrorTester(ROOT_URI + 1, HttpStatus.SC_BAD_REQUEST)
                 .addExpectedError(RequestError.EMPTY_TODO_ITEM)
                 .testPutMethod();
-        new BadRequestTester(ROOT_URI + 1)
+        new ErrorTester(ROOT_URI + 1, HttpStatus.SC_BAD_REQUEST)
                 .addExpectedError(RequestError.TEXT_FIELD_IS_EMPTY)
                 .addExpectedError(RequestError.COMPLETED_FIELD_IS_EMPTY)
                 .setJsonBody("{\"valid\":\"true\"}")
                 .testPutMethod();
-        new BadRequestTester(ROOT_URI + 1)
+        new ErrorTester(ROOT_URI + 1, HttpStatus.SC_BAD_REQUEST)
                 .addExpectedError(RequestError.COMPLETED_FIELD_IS_EMPTY)
                 .setJsonBody("{\"text\":\"Text content of todo-item\"}")
                 .testPutMethod();
-        new BadRequestTester(ROOT_URI + 1)
+        new ErrorTester(ROOT_URI + 1, HttpStatus.SC_BAD_REQUEST)
                 .addExpectedError(RequestError.TEXT_FIELD_IS_EMPTY)
                 .setJsonBody("{\"completed\":false}")
                 .testPutMethod();
 
         TodoItem todoItem = new TodoItem("asd", true);
         String json = new ObjectMapper().writeValueAsString(todoItem);
-        new NotFoundTester(ROOT_URI + "asd")
+        new ErrorTester(ROOT_URI + "asd", HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND)
                 .setJsonBody(json)
                 .testPutMethod();
-        new NotFoundTester(ROOT_URI + "asd/1")
+        new ErrorTester(ROOT_URI + "asd/1", HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND)
                 .setJsonBody(json)
                 .testPutMethod();
-        new NotFoundTester(ROOT_URI + "1/asd")
+        new ErrorTester(ROOT_URI + "1/asd", HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND)
                 .setJsonBody(json)
                 .testPutMethod();
 
-        new NotFoundByIdTester(1)
-                .setUri(ROOT_URI + 1)
+        new ErrorTester(ROOT_URI + 1, HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND_PREFIX + 1 + RequestError.NOT_FOUND_SUFFIX)
                 .setJsonBody(json)
                 .testPutMethod();
 
@@ -224,15 +234,18 @@ public class TodoItemResourceIT {
 
     @Test
     public void testDelete() throws IOException, URISyntaxException {
-        new NotFoundTester(ROOT_URI + "asd")
+        new ErrorTester(ROOT_URI + "asd", HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND)
                 .testDeleteMethod();
-        new NotFoundTester(ROOT_URI + "asd/1")
+        new ErrorTester(ROOT_URI + "asd/1", HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND)
                 .testDeleteMethod();
-        new NotFoundTester(ROOT_URI + "1/asd")
+        new ErrorTester(ROOT_URI + "1/asd", HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND)
                 .testDeleteMethod();
 
-        new NotFoundByIdTester(1)
-                .setUri(ROOT_URI + 1)
+        new ErrorTester(ROOT_URI + 1, HttpStatus.SC_NOT_FOUND)
+                .addExpectedError(RequestError.NOT_FOUND_PREFIX + 1 + RequestError.NOT_FOUND_SUFFIX)
                 .testDeleteMethod();
 
         TodoItem todoItem1 = new TodoItem("Text of incomplete item", false);

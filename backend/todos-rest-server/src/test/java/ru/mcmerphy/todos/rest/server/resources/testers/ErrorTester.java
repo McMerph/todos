@@ -1,19 +1,18 @@
 package ru.mcmerphy.todos.rest.server.resources.testers;
 
-import org.apache.http.HttpStatus;
 import ru.mcmerphy.todos.rest.server.ErrorMessage;
 
-public class BadRequestTester extends ResponseTester<ErrorMessage> {
+public class ErrorTester extends ResponseTester<ErrorMessage> {
 
-    public BadRequestTester(String path) {
+    public ErrorTester(String path, int expectedStatusCode) {
         super(new ErrorMessage());
 
         setUri(path);
-        setExpectedStatusCode(HttpStatus.SC_BAD_REQUEST);
+        setExpectedStatusCode(expectedStatusCode);
         setClazz(ErrorMessage.class);
     }
 
-    public BadRequestTester addExpectedError(String expectedError) {
+    public ErrorTester addExpectedError(String expectedError) {
         expectedResource.add(expectedError);
         return this;
     }
