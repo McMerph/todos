@@ -10,7 +10,6 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.validation.constraints.NotNull;
 
 @Stateless
 public class UserService extends Service<User> {
@@ -22,7 +21,7 @@ public class UserService extends Service<User> {
         super(User.class);
     }
 
-    public User findUserByName(@NotNull final String name) {
+    public User findUserByName(String name) throws UserNotFoundException {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<User> criteria = builder.createQuery(User.class);
         Root<User> from = criteria.from(User.class);
@@ -32,7 +31,7 @@ public class UserService extends Service<User> {
         try {
             return typed.getSingleResult();
         } catch (final NoResultException e) {
-            return null;
+            throw new UserNotFoundException(name);
         }
     }
 

@@ -16,9 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Component which provides operations for parsing JWT tokens.
- *
- * @author cassiomolin
+ * Component which provides operations for parsing JWT tokens
  */
 @Dependent
 class AuthenticationTokenParser {

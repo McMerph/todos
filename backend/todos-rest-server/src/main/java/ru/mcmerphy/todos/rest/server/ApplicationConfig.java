@@ -1,12 +1,11 @@
 package ru.mcmerphy.todos.rest.server;
 
-import ru.mcmerphy.todos.rest.server.exception.mappers.ConstraintViolationExceptionMapper;
-import ru.mcmerphy.todos.rest.server.exception.mappers.ProcessingExceptionMapper;
-import ru.mcmerphy.todos.rest.server.exception.mappers.RequestParametersExceptionMapper;
-import ru.mcmerphy.todos.rest.server.exception.mappers.TodoItemNotFoundExceptionMapper;
+import ru.mcmerphy.todos.rest.server.exception.mappers.*;
 import ru.mcmerphy.todos.rest.server.filters.CorsFilter;
 import ru.mcmerphy.todos.rest.server.filters.LoggingFilter;
-import ru.mcmerphy.todos.rest.server.filters.ResponseFilter;
+import ru.mcmerphy.todos.rest.server.filters.UnhandledErrorsFilter;
+import ru.mcmerphy.todos.rest.server.resources.AuthenticationResource;
+import ru.mcmerphy.todos.rest.server.resources.TestResource;
 import ru.mcmerphy.todos.rest.server.resources.TodoItemResource;
 import ru.mcmerphy.todos.rest.server.resources.UserResource;
 
@@ -23,15 +22,18 @@ public class ApplicationConfig extends Application {
         Set<Class<?>> resources = new HashSet<>();
         resources.add(TodoItemResource.class);
         resources.add(UserResource.class);
+        resources.add(TestResource.class);
+        resources.add(AuthenticationResource.class);
 
         resources.add(TodoItemNotFoundExceptionMapper.class);
+        resources.add(UserNotFoundExceptionMapper.class);
         resources.add(ConstraintViolationExceptionMapper.class);
         resources.add(RequestParametersExceptionMapper.class);
         resources.add(ProcessingExceptionMapper.class);
 
         resources.add(LoggingFilter.class);
         resources.add(CorsFilter.class);
-        resources.add(ResponseFilter.class);
+        resources.add(UnhandledErrorsFilter.class);
 
         return resources;
     }

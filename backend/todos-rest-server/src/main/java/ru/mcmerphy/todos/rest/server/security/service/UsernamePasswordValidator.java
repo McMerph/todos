@@ -1,5 +1,6 @@
 package ru.mcmerphy.todos.rest.server.security.service;
 
+import ru.mcmerphy.todos.dao.UserNotFoundException;
 import ru.mcmerphy.todos.dao.UserService;
 import ru.mcmerphy.todos.domain.User;
 import ru.mcmerphy.todos.rest.server.security.service.exception.AuthenticationException;
@@ -9,8 +10,6 @@ import javax.inject.Inject;
 
 /**
  * Component for validating user credentials.
- *
- * @author cassiomolin
  */
 @ApplicationScoped
 public class UsernamePasswordValidator {
@@ -26,9 +25,10 @@ public class UsernamePasswordValidator {
      */
     public User validateCredentials(String name, String password) {
 
-        User user = userService.findUserByName(name);
-
-        if (user == null) {
+        User user = null;
+        try {
+            user = userService.findUserByName(name);
+        } catch (UserNotFoundException e) {
             // User cannot be found with the given username/email
             throw new AuthenticationException("Bad credentials.");
         }

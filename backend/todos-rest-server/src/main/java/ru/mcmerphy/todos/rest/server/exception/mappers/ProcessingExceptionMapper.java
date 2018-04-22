@@ -15,6 +15,7 @@ import java.util.Objects;
 
 import static ru.mcmerphy.todos.rest.server.Utils.isTodoItemResource;
 
+//TODO Delete class?
 @Provider
 public class ProcessingExceptionMapper implements ExceptionMapper<ProcessingException> {
 

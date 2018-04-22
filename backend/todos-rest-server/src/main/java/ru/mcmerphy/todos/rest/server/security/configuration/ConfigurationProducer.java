@@ -25,10 +25,9 @@ public class ConfigurationProducer {
         if (stream == null) {
             throw new RuntimeException("Cannot find application.properties configuration file.");
         }
-
         try {
             this.properties.load(stream);
-        } catch (final IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Configuration file cannot be loaded.");
         }
     }
