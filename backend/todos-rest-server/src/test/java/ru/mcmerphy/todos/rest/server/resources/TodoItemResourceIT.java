@@ -9,7 +9,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import ru.mcmerphy.todos.domain.TodoItem;
-import ru.mcmerphy.todos.rest.server.SearchResponse;
+import ru.mcmerphy.todos.rest.server.TodoItemsResponse;
 import ru.mcmerphy.todos.rest.server.resources.testers.*;
 
 import java.io.IOException;
@@ -101,7 +101,7 @@ public class TodoItemResourceIT {
                 .addMaxResultsQueryParameter("asd")
                 .testGetMethod();
 
-        new OkSearchResponseTester(new SearchResponse(0, new ArrayList<>()))
+        new OkTodoItemsResponseTester(new TodoItemsResponse(0, new ArrayList<>()))
                 .addFirstResultQueryParameter("0")
                 .addMaxResultsQueryParameter("10")
                 .setUri(ROOT_URI)
@@ -111,12 +111,12 @@ public class TodoItemResourceIT {
                 .map(i -> new TodoItem(String.valueOf(i), i % 2 == 0))
                 .collect(Collectors.toList());
         addTodoItems(todoItems);
-        new OkSearchResponseTester(new SearchResponse(15, todoItems.subList(0, 10)))
+        new OkTodoItemsResponseTester(new TodoItemsResponse(15, todoItems.subList(0, 10)))
                 .addFirstResultQueryParameter("0")
                 .addMaxResultsQueryParameter("10")
                 .setUri(ROOT_URI)
                 .testGetMethod();
-        new OkSearchResponseTester(new SearchResponse(15, todoItems.subList(7, todoItems.size())))
+        new OkTodoItemsResponseTester(new TodoItemsResponse(15, todoItems.subList(7, todoItems.size())))
                 .addFirstResultQueryParameter("7")
                 .addMaxResultsQueryParameter("10")
                 .setUri(ROOT_URI)

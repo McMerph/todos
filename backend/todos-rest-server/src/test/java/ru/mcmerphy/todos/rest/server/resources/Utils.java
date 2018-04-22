@@ -11,7 +11,7 @@ import java.util.Collection;
 
 class Utils {
 
-    static final String ROOT_URI = "https://localhost/todos-webapi/";
+    static final String ROOT_URI = "https://localhost/todos-webapi/todos/";
 
     static void deleteAll() throws IOException {
         HttpClientBuilder.create().build().execute(new HttpDelete(ROOT_URI));

@@ -9,6 +9,7 @@ import ru.mcmerphy.todos.rest.server.filters.LoggingFilter;
 import ru.mcmerphy.todos.rest.server.filters.RequestFilter;
 import ru.mcmerphy.todos.rest.server.filters.ResponseFilter;
 import ru.mcmerphy.todos.rest.server.resources.TodoItemResource;
+import ru.mcmerphy.todos.rest.server.resources.UserResource;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -22,6 +23,7 @@ public class ApplicationConfig extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new HashSet<>();
         resources.add(TodoItemResource.class);
+        resources.add(UserResource.class);
 
         resources.add(TodoItemNotFoundExceptionMapper.class);
         resources.add(ConstraintViolationExceptionMapper.class);

@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.Objects;
 
 @XmlRootElement
-public class SearchResponse {
+public class TodoItemsResponse {
 
     private long count;
     private List<TodoItem> todoItems = new ArrayList<>();
 
-    public SearchResponse() {
+    public TodoItemsResponse() {
     }
 
-    public SearchResponse(long count, List<TodoItem> todoItems) {
+    public TodoItemsResponse(long count, List<TodoItem> todoItems) {
         this.count = count;
         this.todoItems = todoItems;
     }
@@ -41,7 +41,7 @@ public class SearchResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SearchResponse that = (SearchResponse) o;
+        TodoItemsResponse that = (TodoItemsResponse) o;
         return count == that.count &&
                 Objects.equals(todoItems, that.todoItems);
     }
@@ -53,7 +53,7 @@ public class SearchResponse {
 
     @Override
     public String toString() {
-        return "SearchResponse{" +
+        return "TodoItemsResponse{" +
                 "count=" + count +
                 ", todoItems=" + todoItems +
                 '}';

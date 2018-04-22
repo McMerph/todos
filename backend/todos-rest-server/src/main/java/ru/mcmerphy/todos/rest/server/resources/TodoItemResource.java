@@ -4,7 +4,7 @@ import ru.mcmerphy.todos.dao.TodoItemNotFoundException;
 import ru.mcmerphy.todos.dao.TodoItemService;
 import ru.mcmerphy.todos.domain.TodoItem;
 import ru.mcmerphy.todos.rest.server.SearchRequest;
-import ru.mcmerphy.todos.rest.server.SearchResponse;
+import ru.mcmerphy.todos.rest.server.TodoItemsResponse;
 import ru.mcmerphy.todos.rest.server.SyncResponse;
 import ru.mcmerphy.todos.rest.server.filters.Logged;
 import ru.mcmerphy.todos.rest.server.validators.RequestParametersException;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 @RequestScoped
-@Path("/")
+@Path("/todos")
 public class TodoItemResource {
 
     @Inject
@@ -51,13 +51,13 @@ public class TodoItemResource {
     @Logged
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public SearchResponse getTodoItems(@BeanParam SearchRequest searchRequest) {
+    public TodoItemsResponse getTodoItems(@BeanParam SearchRequest searchRequest) {
         long count = service.count();
         Integer firstResult = searchRequest.getFirstResult();
         Integer maxResults = searchRequest.getMaxResults();
         List<TodoItem> todoItems = service.findRange(firstResult, maxResults);
 
-        return new SearchResponse(count, todoItems);
+        return new TodoItemsResponse(count, todoItems);
     }
 
     @Logged
@@ -108,7 +108,6 @@ public class TodoItemResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteAllTodoItems() {
         service.removeAll();
-
         return Response.noContent().build();
     }
 
