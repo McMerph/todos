@@ -13,6 +13,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
+/**
+ * JAX-RS resource class that provides operations for users.
+ */
 @RequestScoped
 @Path("/users")
 public class UserResource {
