@@ -66,37 +66,33 @@ public class TodoItemResourceIT {
     @Test
     public void testBatchRead() throws IOException, URISyntaxException {
         new BadRequestTester(ROOT_URI)
-                .addExpectedError(RequestError.INCOMPLETE_QUERY_PARAMETERS)
+                .addExpectedError(RequestError.NON_INTEGER_FIRST_RESULT_QUERY_PARAMETER)
+                .addExpectedError(RequestError.NON_INTEGER_MAX_RESULTS_QUERY_PARAMETER)
                 .testGetMethod();
         new BadRequestTester(ROOT_URI)
-                .addExpectedError(RequestError.INCOMPLETE_QUERY_PARAMETERS)
+                .addExpectedError(RequestError.NON_INTEGER_MAX_RESULTS_QUERY_PARAMETER)
                 .addFirstResultQueryParameter("0")
                 .testGetMethod();
         new BadRequestTester(ROOT_URI)
-                .addExpectedError(RequestError.INCOMPLETE_QUERY_PARAMETERS)
-                .addFirstResultQueryParameter("asd")
-                .testGetMethod();
-        new BadRequestTester(ROOT_URI)
-                .addExpectedError(RequestError.INCOMPLETE_QUERY_PARAMETERS)
+                .addExpectedError(RequestError.NON_INTEGER_FIRST_RESULT_QUERY_PARAMETER)
                 .addMaxResultsQueryParameter("10")
                 .testGetMethod();
-        new BadRequestTester(ROOT_URI)
-                .addExpectedError(RequestError.INCOMPLETE_QUERY_PARAMETERS)
+
+        new NotFoundTester(ROOT_URI)
+                .addFirstResultQueryParameter("asd")
+                .testGetMethod();
+        new NotFoundTester(ROOT_URI)
                 .addMaxResultsQueryParameter("qwe")
                 .testGetMethod();
-        new BadRequestTester(ROOT_URI)
-                .addExpectedError(RequestError.NON_INTEGER_FIRST_RESULT_QUERY_PARAMETER)
+        new NotFoundTester(ROOT_URI)
                 .addFirstResultQueryParameter("asd")
                 .addMaxResultsQueryParameter("10")
                 .testGetMethod();
-        new BadRequestTester(ROOT_URI)
-                .addExpectedError(RequestError.NON_INTEGER_MAX_RESULTS_QUERY_PARAMETER)
+        new NotFoundTester(ROOT_URI)
                 .addFirstResultQueryParameter("10")
                 .addMaxResultsQueryParameter("asd")
                 .testGetMethod();
-        new BadRequestTester(ROOT_URI)
-                .addExpectedError(RequestError.NON_INTEGER_FIRST_RESULT_QUERY_PARAMETER)
-                .addExpectedError(RequestError.NON_INTEGER_MAX_RESULTS_QUERY_PARAMETER)
+        new NotFoundTester(ROOT_URI)
                 .addFirstResultQueryParameter("qwe")
                 .addMaxResultsQueryParameter("asd")
                 .testGetMethod();
@@ -128,14 +124,13 @@ public class TodoItemResourceIT {
         new BadRequestTester(ROOT_URI + "asd")
                 .addExpectedError(RequestError.NON_INTEGER_ID_IN_PATH)
                 .testGetMethod();
-        new BadRequestTester(ROOT_URI + "asd/1")
-                .addExpectedError(RequestError.TOO_MANY_PATHS)
+
+        new NotFoundTester(ROOT_URI + "asd/1")
                 .testGetMethod();
-        new BadRequestTester(ROOT_URI + "1/asd")
-                .addExpectedError(RequestError.TOO_MANY_PATHS)
+        new NotFoundTester(ROOT_URI + "1/asd")
                 .testGetMethod();
 
-        new NotFoundTester(1)
+        new NotFoundByIdTester(1)
                 .setUri(ROOT_URI + 1)
                 .testGetMethod();
 
@@ -154,7 +149,7 @@ public class TodoItemResourceIT {
 
     @Test
     public void testSync() throws IOException, URISyntaxException {
-        new BadRequestTester(ROOT_URI)
+        new InternalServerErrorTester(ROOT_URI)
                 .addExpectedError(RequestError.SYNC_INVALID_ARRAY)
                 .setJsonBody("{\"valid\":\"true\"}")
                 .testPutMethod();
@@ -197,20 +192,17 @@ public class TodoItemResourceIT {
 
         TodoItem todoItem = new TodoItem("asd", true);
         String json = new ObjectMapper().writeValueAsString(todoItem);
-        new BadRequestTester(ROOT_URI + "asd")
-                .addExpectedError(RequestError.NON_INTEGER_ID_IN_PATH)
+        new NotFoundTester(ROOT_URI + "asd")
                 .setJsonBody(json)
                 .testPutMethod();
-        new BadRequestTester(ROOT_URI + "asd/1")
-                .addExpectedError(RequestError.TOO_MANY_PATHS)
+        new NotFoundTester(ROOT_URI + "asd/1")
                 .setJsonBody(json)
                 .testPutMethod();
-        new BadRequestTester(ROOT_URI + "1/asd")
-                .addExpectedError(RequestError.TOO_MANY_PATHS)
+        new NotFoundTester(ROOT_URI + "1/asd")
                 .setJsonBody(json)
                 .testPutMethod();
 
-        new NotFoundTester(1)
+        new NotFoundByIdTester(1)
                 .setUri(ROOT_URI + 1)
                 .setJsonBody(json)
                 .testPutMethod();
@@ -232,17 +224,14 @@ public class TodoItemResourceIT {
 
     @Test
     public void testDelete() throws IOException, URISyntaxException {
-        new BadRequestTester(ROOT_URI + "asd")
-                .addExpectedError(RequestError.NON_INTEGER_ID_IN_PATH)
+        new NotFoundTester(ROOT_URI + "asd")
                 .testDeleteMethod();
-        new BadRequestTester(ROOT_URI + "asd/1")
-                .addExpectedError(RequestError.TOO_MANY_PATHS)
+        new NotFoundTester(ROOT_URI + "asd/1")
                 .testDeleteMethod();
-        new BadRequestTester(ROOT_URI + "1/asd")
-                .addExpectedError(RequestError.TOO_MANY_PATHS)
+        new NotFoundTester(ROOT_URI + "1/asd")
                 .testDeleteMethod();
 
-        new NotFoundTester(1)
+        new NotFoundByIdTester(1)
                 .setUri(ROOT_URI + 1)
                 .testDeleteMethod();
 

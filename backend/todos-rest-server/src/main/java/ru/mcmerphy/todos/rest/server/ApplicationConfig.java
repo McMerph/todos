@@ -6,7 +6,6 @@ import ru.mcmerphy.todos.rest.server.exception.mappers.RequestParametersExceptio
 import ru.mcmerphy.todos.rest.server.exception.mappers.TodoItemNotFoundExceptionMapper;
 import ru.mcmerphy.todos.rest.server.filters.CorsFilter;
 import ru.mcmerphy.todos.rest.server.filters.LoggingFilter;
-import ru.mcmerphy.todos.rest.server.filters.RequestFilter;
 import ru.mcmerphy.todos.rest.server.filters.ResponseFilter;
 import ru.mcmerphy.todos.rest.server.resources.TodoItemResource;
 import ru.mcmerphy.todos.rest.server.resources.UserResource;
@@ -32,7 +31,6 @@ public class ApplicationConfig extends Application {
 
         resources.add(LoggingFilter.class);
         resources.add(CorsFilter.class);
-        resources.add(RequestFilter.class);
         resources.add(ResponseFilter.class);
 
         return resources;

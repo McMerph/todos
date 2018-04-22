@@ -9,7 +9,7 @@ public class RequestParametersException extends Exception {
     public RequestParametersException() {
     }
 
-    RequestParametersException(ErrorMessage errorMessage) {
+    public RequestParametersException(ErrorMessage errorMessage) {
         super();
         this.errorMessage = errorMessage;
     }

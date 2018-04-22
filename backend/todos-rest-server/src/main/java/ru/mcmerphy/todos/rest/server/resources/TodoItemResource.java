@@ -3,11 +3,13 @@ package ru.mcmerphy.todos.rest.server.resources;
 import ru.mcmerphy.todos.dao.TodoItemNotFoundException;
 import ru.mcmerphy.todos.dao.TodoItemService;
 import ru.mcmerphy.todos.domain.TodoItem;
+import ru.mcmerphy.todos.rest.server.ErrorMessage;
 import ru.mcmerphy.todos.rest.server.SearchRequest;
-import ru.mcmerphy.todos.rest.server.TodoItemsResponse;
 import ru.mcmerphy.todos.rest.server.SyncResponse;
+import ru.mcmerphy.todos.rest.server.TodoItemsResponse;
 import ru.mcmerphy.todos.rest.server.filters.Logged;
 import ru.mcmerphy.todos.rest.server.validators.RequestParametersException;
+import ru.mcmerphy.todos.rest.server.validators.SearchRequestValidator;
 import ru.mcmerphy.todos.rest.server.validators.TodoItemValidator;
 
 import javax.enterprise.context.RequestScoped;
@@ -31,6 +33,9 @@ public class TodoItemResource {
     @Inject
     private TodoItemValidator todoItemValidator;
 
+    @Inject
+    private SearchRequestValidator searchRequestValidator;
+
     @Logged
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -51,7 +56,9 @@ public class TodoItemResource {
     @Logged
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public TodoItemsResponse getTodoItems(@BeanParam SearchRequest searchRequest) {
+    public TodoItemsResponse getTodoItems(@BeanParam SearchRequest searchRequest)
+            throws RequestParametersException {
+        searchRequestValidator.validate(searchRequest);
         long count = service.count();
         Integer firstResult = searchRequest.getFirstResult();
         Integer maxResults = searchRequest.getMaxResults();
@@ -64,9 +71,15 @@ public class TodoItemResource {
     @GET
     @Path("/{todoItemId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public TodoItem getTodoItem(@PathParam("todoItemId") long todoItemId)
-            throws TodoItemNotFoundException {
-        return service.find(todoItemId);
+    public TodoItem getTodoItemById(@PathParam("todoItemId") String todoItemId)
+            throws RequestParametersException, TodoItemNotFoundException {
+        try {
+            long id = Long.parseLong(todoItemId);
+            return service.find(id);
+        } catch (NumberFormatException e) {
+            ErrorMessage errorMessage = new ErrorMessage("Todo item id should be integer");
+            throw new RequestParametersException(errorMessage);
+        }
     }
 
     @Logged
