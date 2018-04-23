@@ -70,7 +70,6 @@ public class AuthenticationTokenService {
      * Refresh a token.
      */
     public String refreshToken(AuthenticationTokenDetails currentTokenDetails) {
-
         if (!currentTokenDetails.isEligibleForRefreshment()) {
             throw new AuthenticationTokenRefreshmentException("This token cannot be refreshed");
         }

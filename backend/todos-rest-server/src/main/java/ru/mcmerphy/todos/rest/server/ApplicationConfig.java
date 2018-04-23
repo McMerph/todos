@@ -1,9 +1,7 @@
 package ru.mcmerphy.todos.rest.server;
 
 import ru.mcmerphy.todos.rest.server.exception.mappers.*;
-import ru.mcmerphy.todos.rest.server.filters.CorsFilter;
-import ru.mcmerphy.todos.rest.server.filters.LoggingFilter;
-import ru.mcmerphy.todos.rest.server.filters.UnhandledErrorsFilter;
+import ru.mcmerphy.todos.rest.server.filters.*;
 import ru.mcmerphy.todos.rest.server.resources.AuthenticationResource;
 import ru.mcmerphy.todos.rest.server.resources.TestResource;
 import ru.mcmerphy.todos.rest.server.resources.TodoItemResource;
@@ -34,6 +32,8 @@ public class ApplicationConfig extends Application {
         resources.add(LoggingFilter.class);
         resources.add(CorsFilter.class);
         resources.add(UnhandledErrorsFilter.class);
+        resources.add(AuthenticationFilter.class);
+        resources.add(AuthorizationFilter.class);
 
         return resources;
     }

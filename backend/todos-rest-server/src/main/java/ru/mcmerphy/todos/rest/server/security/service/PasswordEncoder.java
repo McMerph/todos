@@ -22,7 +22,6 @@ public class PasswordEncoder {
      * Checks a password against a stored hash using BCrypt.
      */
     public boolean checkPassword(String plainTextPassword, String hashedPassword) {
-
         if (null == hashedPassword || !hashedPassword.startsWith("$2a$")) {
             throw new RuntimeException("Hashed password is invalid");
         }
