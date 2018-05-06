@@ -6,6 +6,7 @@ import ru.mcmerphy.todos.rest.server.resources.AuthenticationResource;
 import ru.mcmerphy.todos.rest.server.resources.TestResource;
 import ru.mcmerphy.todos.rest.server.resources.TodoItemResource;
 import ru.mcmerphy.todos.rest.server.resources.UserResource;
+import ru.mcmerphy.todos.rest.server.security.TokenBasedSecurityContext;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -28,6 +29,10 @@ public class ApplicationConfig extends Application {
         resources.add(ConstraintViolationExceptionMapper.class);
         resources.add(RequestParametersExceptionMapper.class);
         resources.add(ProcessingExceptionMapper.class);
+        resources.add(AuthenticationExceptionMapper.class);
+        resources.add(InvalidAuthenticationTokenExceptionMapper.class);
+
+        resources.add(TokenBasedSecurityContext.class);
 
         resources.add(LoggingFilter.class);
         resources.add(CorsFilter.class);

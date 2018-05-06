@@ -20,7 +20,15 @@ public final class AuthenticationTokenDetails {
     private final int refreshCount;
     private final int refreshLimit;
 
-    private AuthenticationTokenDetails(String id, String username, Set<Authority> authorities, ZonedDateTime issuedDate, ZonedDateTime expirationDate, int refreshCount, int refreshLimit) {
+    private AuthenticationTokenDetails(
+            String id,
+            String username,
+            Set<Authority> authorities,
+            ZonedDateTime issuedDate,
+            ZonedDateTime expirationDate,
+            int refreshCount,
+            int refreshLimit
+    ) {
         this.id = id;
         this.username = username;
         this.authorities = authorities;
@@ -114,7 +122,15 @@ public final class AuthenticationTokenDetails {
         }
 
         public AuthenticationTokenDetails build() {
-            return new AuthenticationTokenDetails(id, username, authorities, issuedDate, expirationDate, refreshCount, refreshLimit);
+            return new AuthenticationTokenDetails(
+                    id,
+                    username,
+                    authorities,
+                    issuedDate,
+                    expirationDate,
+                    refreshCount,
+                    refreshLimit
+            );
         }
 
     }

@@ -29,18 +29,15 @@ public class UsernamePasswordValidator {
         try {
             user = userService.findUserByName(name);
         } catch (UserNotFoundException e) {
-            // User cannot be found with the given username/email
-            throw new AuthenticationException("Bad credentials.");
+            throw new AuthenticationException("User with the given name cannot be found.");
         }
 
         if (!user.isActive()) {
-            // User is not active
             throw new AuthenticationException("The user is inactive.");
         }
 
         if (!passwordEncoder.checkPassword(password, user.getPassword())) {
-            // Invalid password
-            throw new AuthenticationException("Bad credentials.");
+            throw new AuthenticationException("Invalid password.");
         }
 
         return user;

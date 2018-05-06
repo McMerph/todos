@@ -35,6 +35,7 @@ class AuthenticationTokenParser {
                     .setAllowedClockSkewSeconds(settings.getClockSkew())
                     .parseClaimsJws(token)
                     .getBody();
+
             return new AuthenticationTokenDetails.Builder()
                     .withId(extractTokenIdFromClaims(claims))
                     .withUsername(extractUsernameFromClaims(claims))
@@ -73,8 +74,10 @@ class AuthenticationTokenParser {
      * Extract the user authorities from the token claims.
      */
     private Set<Authority> extractAuthoritiesFromClaims(@NotNull Claims claims) {
-        List<String> rolesAsString = (List<String>) claims.getOrDefault(settings.getAuthoritiesClaimName(), new ArrayList<>());
-        return rolesAsString.stream().map(Authority::valueOf).collect(Collectors.toSet());
+        return ((List<String>) claims.getOrDefault(settings.getAuthoritiesClaimName(), new ArrayList<>()))
+                .stream()
+                .map(Authority::valueOf)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -104,4 +107,5 @@ class AuthenticationTokenParser {
     private int extractRefreshLimitFromClaims(@NotNull Claims claims) {
         return (int) claims.get(settings.getRefreshLimitClaimName());
     }
+
 }

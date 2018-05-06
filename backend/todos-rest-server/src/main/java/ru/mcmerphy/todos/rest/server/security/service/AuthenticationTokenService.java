@@ -41,7 +41,6 @@ public class AuthenticationTokenService {
      * Issue a token for a user with the given authorities.
      */
     public String issueToken(String username, Set<Authority> authorities) {
-
         String id = generateTokenIdentifier();
         ZonedDateTime issuedDate = ZonedDateTime.now();
         ZonedDateTime expirationDate = calculateExpirationDate(issuedDate);
@@ -78,7 +77,7 @@ public class AuthenticationTokenService {
         ZonedDateTime expirationDate = calculateExpirationDate(issuedDate);
 
         AuthenticationTokenDetails newTokenDetails = new AuthenticationTokenDetails.Builder()
-                .withId(currentTokenDetails.getId()) // Reuse the same id
+                .withId(currentTokenDetails.getId())
                 .withUsername(currentTokenDetails.getUsername())
                 .withAuthorities(currentTokenDetails.getAuthorities())
                 .withIssuedDate(issuedDate)

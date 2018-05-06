@@ -14,7 +14,11 @@ public class TokenBasedSecurityContext implements SecurityContext {
     private AuthenticationTokenDetails authenticationTokenDetails;
     private final boolean secure;
 
-    public TokenBasedSecurityContext(AuthenticatedUserDetails authenticatedUserDetails, AuthenticationTokenDetails authenticationTokenDetails, boolean secure) {
+    public TokenBasedSecurityContext(
+            AuthenticatedUserDetails authenticatedUserDetails,
+            AuthenticationTokenDetails authenticationTokenDetails,
+            boolean secure
+    ) {
         this.authenticatedUserDetails = authenticatedUserDetails;
         this.authenticationTokenDetails = authenticationTokenDetails;
         this.secure = secure;

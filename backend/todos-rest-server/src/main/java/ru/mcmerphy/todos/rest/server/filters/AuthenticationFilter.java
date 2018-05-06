@@ -49,13 +49,24 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         // Other authentication schemes (such as Basic) could be supported
     }
 
-    private void handleTokenBasedAuthentication(String authenticationToken, ContainerRequestContext requestContext) throws UserNotFoundException {
-        AuthenticationTokenDetails authenticationTokenDetails = authenticationTokenService.parseToken(authenticationToken);
+    private void handleTokenBasedAuthentication(
+            String authenticationToken,
+            ContainerRequestContext requestContext
+    ) throws UserNotFoundException {
+        AuthenticationTokenDetails authenticationTokenDetails =
+                authenticationTokenService.parseToken(authenticationToken);
         User user = userService.findUserByName(authenticationTokenDetails.getUsername());
-        AuthenticatedUserDetails authenticatedUserDetails = new AuthenticatedUserDetails(user.getUsername(), user.getAuthorities());
+        AuthenticatedUserDetails authenticatedUserDetails = new AuthenticatedUserDetails(
+                user.getUsername(),
+                user.getAuthorities()
+        );
 
         boolean isSecure = requestContext.getSecurityContext().isSecure();
-        SecurityContext securityContext = new TokenBasedSecurityContext(authenticatedUserDetails, authenticationTokenDetails, isSecure);
+        SecurityContext securityContext = new TokenBasedSecurityContext(
+                authenticatedUserDetails,
+                authenticationTokenDetails,
+                isSecure
+        );
         requestContext.setSecurityContext(securityContext);
     }
 
