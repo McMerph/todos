@@ -10,8 +10,6 @@ import java.util.Date;
 
 /**
  * Component which provides operations for issuing JWT tokens.
- *
- * @author cassiomolin
  */
 @Dependent
 class AuthenticationTokenIssuer {

@@ -24,7 +24,6 @@ public class UsernamePasswordValidator {
      * Validate username and password.
      */
     public User validateCredentials(String name, String password) {
-
         User user = null;
         try {
             user = userService.findUserByName(name);

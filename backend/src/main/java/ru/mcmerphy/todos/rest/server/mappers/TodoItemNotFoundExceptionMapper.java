@@ -1,4 +1,4 @@
-package ru.mcmerphy.todos.rest.server.exception.mappers;
+package ru.mcmerphy.todos.rest.server.mappers;
 
 import ru.mcmerphy.todos.dao.TodoItemNotFoundException;
 import ru.mcmerphy.todos.rest.server.ErrorMessage;
@@ -19,5 +19,5 @@ public class TodoItemNotFoundExceptionMapper implements ExceptionMapper<TodoItem
                 .type(MediaType.APPLICATION_JSON_TYPE)
                 .build();
     }
-    
+
 }

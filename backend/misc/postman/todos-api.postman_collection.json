@@ -1,0 +1,504 @@
+{
+	"info": {
+		"_postman_id": "9672808b-4970-4381-9f2c-c6ad8cc7dd56",
+		"name": "todos-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "todos",
+			"description": "",
+			"item": [
+				{
+					"name": "add new todo-item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"text\": \"Work\",\n\t\"completed\": true\n}"
+						},
+						"url": {
+							"raw": "https://localhost/todos-webapi/todos/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"todos-webapi",
+								"todos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get todo-items",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost/todos-webapi/todos?firstResult=0&maxResults=10",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"todos-webapi",
+								"todos"
+							],
+							"query": [
+								{
+									"key": "firstResult",
+									"value": "0"
+								},
+								{
+									"key": "maxResults",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get todo-item",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost/todos-webapi/todos/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"todos-webapi",
+								"todos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete todo-item",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost/todos-webapi/todos/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"todos-webapi",
+								"todos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete all",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost/todos-webapi/todos",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"todos-webapi",
+								"todos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update todo-item",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"text\": \"Updated text content of todo-item\",\n\t\"completed\": true\n}"
+						},
+						"url": {
+							"raw": "https://localhost/todos-webapi/todos/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"todos-webapi",
+								"todos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sync",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"completed\": true,\n        \"text\": \"Work\"\n    },\n    {\n        \"completed\": true,\n        \"id\": 154,\n        \"text\": \"Learn\"\n    },\n    {\n        \"completed\": true,\n        \"id\": 155,\n        \"text\": \"Drink beer\"\n    }\n]"
+						},
+						"url": {
+							"raw": "https://localhost/todos-webapi/todos/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"todos-webapi",
+								"todos",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"description": "",
+			"item": [
+				{
+					"name": "get all users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://localhost/todos-webapi/users",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"todos-webapi",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user by name",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://localhost/todos-webapi/users/admin",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"todos-webapi",
+								"users",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "test",
+			"description": "",
+			"item": [
+				{
+					"name": "test config",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://localhost/todos-webapi/test",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"todos-webapi",
+								"test"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "authentication",
+			"description": "",
+			"item": [
+				{
+					"name": "refresh",
+					"description": "",
+					"item": [
+						{
+							"name": "refresh",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmNzc1NWY4OC0zZTYzLTRiZWUtODBlMC1jZDNlZWEyOTBiZjgiLCJpc3MiOiJodHRwOi8vZXhhbXBsZS5vcmciLCJhdWQiOiJodHRwOi8vZXhhbXBsZS5vcmciLCJzdWIiOiJhZG1pbiIsImlhdCI6MTUyNTU4NDE2NSwiZXhwIjoxNTI1NjIwMTY1LCJhdXRob3JpdGllcyI6WyJBRE1JTiIsIlVTRVIiXSwicmVmcmVzaENvdW50IjowLCJyZWZyZXNoTGltaXQiOjF9.2MZ1o9ryrRr5A_UtSzunWhVFnzpxqa7DIFMW5CjnCA8"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"admin\",\n  \"password\": \"password\"\n}"
+								},
+								"url": {
+									"raw": "https://localhost/todos-webapi/auth/refresh/",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"todos-webapi",
+										"auth",
+										"refresh",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "authenticate as admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"admin\",\n  \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "https://localhost/todos-webapi/auth/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"todos-webapi",
+								"auth",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "authenticate as user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"user\",\n  \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "https://localhost/todos-webapi/auth/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"todos-webapi",
+								"auth",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "authenticate as disabled",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"disabled\",\n  \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "https://localhost/todos-webapi/auth/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"todos-webapi",
+								"auth",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,4 +1,4 @@
-package ru.mcmerphy.todos.rest.server.exception.mappers;
+package ru.mcmerphy.todos.rest.server.mappers;
 
 import ru.mcmerphy.todos.rest.server.ErrorMessage;
 

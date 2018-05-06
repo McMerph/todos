@@ -135,4 +135,18 @@ public final class AuthenticationTokenDetails {
 
     }
 
+    //    TODO Delete
+    @Override
+    public String toString() {
+        return "AuthenticationTokenDetails{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", authorities=" + authorities +
+                ", issuedDate=" + issuedDate +
+                ", expirationDate=" + expirationDate +
+                ", refreshCount=" + refreshCount +
+                ", refreshLimit=" + refreshLimit +
+                '}';
+    }
+
 }

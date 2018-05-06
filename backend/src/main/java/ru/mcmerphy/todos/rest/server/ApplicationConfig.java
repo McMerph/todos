@@ -1,9 +1,8 @@
 package ru.mcmerphy.todos.rest.server;
 
-import ru.mcmerphy.todos.rest.server.exception.mappers.*;
 import ru.mcmerphy.todos.rest.server.filters.*;
+import ru.mcmerphy.todos.rest.server.mappers.*;
 import ru.mcmerphy.todos.rest.server.resources.AuthenticationResource;
-import ru.mcmerphy.todos.rest.server.resources.TestResource;
 import ru.mcmerphy.todos.rest.server.resources.TodoItemResource;
 import ru.mcmerphy.todos.rest.server.resources.UserResource;
 
@@ -20,7 +19,6 @@ public class ApplicationConfig extends Application {
         Set<Class<?>> resources = new HashSet<>();
         resources.add(TodoItemResource.class);
         resources.add(UserResource.class);
-        resources.add(TestResource.class);
         resources.add(AuthenticationResource.class);
 
         resources.add(TodoItemNotFoundExceptionMapper.class);
@@ -30,6 +28,7 @@ public class ApplicationConfig extends Application {
         resources.add(ProcessingExceptionMapper.class);
         resources.add(AuthenticationExceptionMapper.class);
         resources.add(InvalidAuthenticationTokenExceptionMapper.class);
+        resources.add(AccessDeniedExceptionMapper.class);
 
         resources.add(LoggingFilter.class);
         resources.add(CorsFilter.class);

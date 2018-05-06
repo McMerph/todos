@@ -7,6 +7,7 @@ import ru.mcmerphy.todos.rest.server.UsersResponse;
 import ru.mcmerphy.todos.rest.server.filters.Logged;
 import ru.mcmerphy.todos.rest.server.validators.RequestParametersException;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -28,6 +29,7 @@ public class UserResource {
 
     @Logged
     @GET
+    @RolesAllowed({"ADMIN"})
     @Produces(MediaType.APPLICATION_JSON)
     public UsersResponse getAllUsers() {
         List<User> users = service.findAll();
@@ -37,6 +39,7 @@ public class UserResource {
     @Logged
     @GET
     @Path("/{userName}")
+    @RolesAllowed({"ADMIN"})
     @Produces(MediaType.APPLICATION_JSON)
     public User getUserByName(@PathParam("userName") String userName)
             throws RequestParametersException, UserNotFoundException {

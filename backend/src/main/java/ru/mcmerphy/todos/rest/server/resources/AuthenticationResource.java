@@ -47,10 +47,7 @@ public class AuthenticationResource {
         User user = validator.validateCredentials(credentials.getName(), credentials.getPassword());
         String token = authenticationTokenService.issueToken(user.getUsername(), user.getAuthorities());
 
-//        TODO DRY
-        AuthenticationToken authenticationToken = new AuthenticationToken();
-        authenticationToken.setToken(token);
-        return Response.ok(authenticationToken).build();
+        return getTokenResponse(token);
     }
 
     /**
@@ -64,7 +61,10 @@ public class AuthenticationResource {
         AuthenticationTokenDetails tokenDetails = user.getAuthenticationTokenDetails();
         String token = authenticationTokenService.refreshToken(tokenDetails);
 
-//        TODO DRY
+        return getTokenResponse(token);
+    }
+
+    private Response getTokenResponse(String token) {
         AuthenticationToken authenticationToken = new AuthenticationToken();
         authenticationToken.setToken(token);
         return Response.ok(authenticationToken).build();

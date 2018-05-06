@@ -37,15 +37,7 @@ public class UsersResponse {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(users);
-    }
-
-    @Override
-    public String toString() {
-        return "UsersResponse{" +
-                "users=" + users +
-                '}';
     }
 
 }

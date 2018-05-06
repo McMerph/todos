@@ -24,7 +24,7 @@ import java.io.IOException;
  */
 @Provider
 @Dependent
-@Priority(Priorities.AUTHENTICATION)
+@Priority(1)
 public class AuthenticationFilter implements ContainerRequestFilter {
 
     @Inject
@@ -55,6 +55,10 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     ) throws UserNotFoundException {
         AuthenticationTokenDetails authenticationTokenDetails =
                 authenticationTokenService.parseToken(authenticationToken);
+
+//        TODO Delete
+        System.out.println(authenticationTokenDetails);
+
         User user = userService.findUserByName(authenticationTokenDetails.getUsername());
         AuthenticatedUserDetails authenticatedUserDetails = new AuthenticatedUserDetails(
                 user.getUsername(),
@@ -68,8 +72,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 authenticationTokenDetails,
                 isSecure
         );
-        // Set custom SecurityContext
-        requestContext.setSecurityContext(securityContext);
+        requestContext.setSecurityContext(securityContext); // Set custom SecurityContext
     }
 
 }

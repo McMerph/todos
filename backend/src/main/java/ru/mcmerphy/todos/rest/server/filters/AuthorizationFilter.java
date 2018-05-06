@@ -7,7 +7,6 @@ import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.Dependent;
-import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
@@ -21,7 +20,8 @@ import java.lang.reflect.Method;
  */
 @Provider
 @Dependent
-@Priority(Priorities.AUTHORIZATION)
+//TODO Set priority to authorization?
+@Priority(2)
 public class AuthorizationFilter implements ContainerRequestFilter {
 
     @Context
@@ -64,7 +64,7 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         }
 
         // Authentication is required for non-annotated methods
-        if (!isAuthenticated(requestContext)) {
+        if (isNotAuthenticated(requestContext)) {
             throw new AccessDeniedException("Authentication is required to perform this action.");
         }
     }
@@ -73,12 +73,13 @@ public class AuthorizationFilter implements ContainerRequestFilter {
      * Perform authorization based on roles.
      */
     private void performAuthorization(String[] rolesAllowed, ContainerRequestContext requestContext) {
-        if (rolesAllowed.length > 0 && !isAuthenticated(requestContext)) {
+        if (rolesAllowed.length > 0 && isNotAuthenticated(requestContext)) {
             throw new AccessDeniedException("Authentication is required to perform this action.");
         }
 
         for (final String role : rolesAllowed) {
             if (requestContext.getSecurityContext().isUserInRole(role)) {
+                System.out.println("In role");
                 return;
             }
         }
@@ -89,8 +90,8 @@ public class AuthorizationFilter implements ContainerRequestFilter {
     /**
      * Check if the user is authenticated.
      */
-    private boolean isAuthenticated(final ContainerRequestContext requestContext) {
-        return requestContext.getSecurityContext().getUserPrincipal() != null;
+    private boolean isNotAuthenticated(final ContainerRequestContext requestContext) {
+        return requestContext.getSecurityContext().getUserPrincipal() == null;
     }
 
 }
