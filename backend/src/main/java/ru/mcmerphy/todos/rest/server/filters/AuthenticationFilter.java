@@ -58,7 +58,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         User user = userService.findUserByName(authenticationTokenDetails.getUsername());
         AuthenticatedUserDetails authenticatedUserDetails = new AuthenticatedUserDetails(
                 user.getUsername(),
-                user.getAuthorities()
+                user.getAuthorities(),
+                authenticationTokenDetails
         );
 
         boolean isSecure = requestContext.getSecurityContext().isSecure();
@@ -67,6 +68,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 authenticationTokenDetails,
                 isSecure
         );
+        // Set custom SecurityContext
         requestContext.setSecurityContext(securityContext);
     }
 

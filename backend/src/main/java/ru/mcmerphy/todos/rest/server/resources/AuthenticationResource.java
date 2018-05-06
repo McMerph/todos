@@ -2,9 +2,9 @@ package ru.mcmerphy.todos.rest.server.resources;
 
 import ru.mcmerphy.todos.domain.User;
 import ru.mcmerphy.todos.domain.UserCredentials;
+import ru.mcmerphy.todos.rest.server.security.AuthenticatedUserDetails;
 import ru.mcmerphy.todos.rest.server.security.AuthenticationToken;
 import ru.mcmerphy.todos.rest.server.security.AuthenticationTokenDetails;
-import ru.mcmerphy.todos.rest.server.security.TokenBasedSecurityContext;
 import ru.mcmerphy.todos.rest.server.security.service.AuthenticationTokenService;
 import ru.mcmerphy.todos.rest.server.security.service.UsernamePasswordValidator;
 
@@ -60,8 +60,8 @@ public class AuthenticationResource {
     @Path("refresh")
     @Produces(MediaType.APPLICATION_JSON)
     public Response refresh() {
-        AuthenticationTokenDetails tokenDetails =
-                ((TokenBasedSecurityContext) securityContext).getAuthenticationTokenDetails();
+        AuthenticatedUserDetails user = (AuthenticatedUserDetails) securityContext.getUserPrincipal();
+        AuthenticationTokenDetails tokenDetails = user.getAuthenticationTokenDetails();
         String token = authenticationTokenService.refreshToken(tokenDetails);
 
 //        TODO DRY

@@ -44,8 +44,4 @@ public class TokenBasedSecurityContext implements SecurityContext {
         return "Bearer";
     }
 
-    public AuthenticationTokenDetails getAuthenticationTokenDetails() {
-        return authenticationTokenDetails;
-    }
-
 }
