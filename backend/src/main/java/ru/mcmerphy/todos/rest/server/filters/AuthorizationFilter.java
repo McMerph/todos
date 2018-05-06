@@ -1,97 +1,92 @@
 package ru.mcmerphy.todos.rest.server.filters;
 
+import ru.mcmerphy.todos.domain.Authority;
+import ru.mcmerphy.todos.rest.server.resources.Secured;
+import ru.mcmerphy.todos.rest.server.security.AuthenticatedUserDetails;
+import ru.mcmerphy.todos.rest.server.security.AuthenticationTokenDetails;
 import ru.mcmerphy.todos.rest.server.security.service.exception.AccessDeniedException;
 
 import javax.annotation.Priority;
-import javax.annotation.security.DenyAll;
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
-import javax.enterprise.context.Dependent;
+import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-/**
- * Role authorization filter.
- */
+@Secured
 @Provider
-@Dependent
-//TODO Set priority to authorization?
-@Priority(2)
+@Priority(Priorities.AUTHORIZATION)
 public class AuthorizationFilter implements ContainerRequestFilter {
 
     @Context
     private ResourceInfo resourceInfo;
 
     @Override
-    public void filter(final ContainerRequestContext requestContext) throws IOException {
-        Method method = resourceInfo.getResourceMethod();
+    public void filter(ContainerRequestContext requestContext) throws IOException {
 
-        // @DenyAll on the method takes precedence over @RolesAllowed and @PermitAll
-        if (method.isAnnotationPresent(DenyAll.class)) {
-            throw new AccessDeniedException("You don't have permissions to perform this action.");
-        }
+        Class<?> resourceClass = resourceInfo.getResourceClass();
+        List<Authority> classRoles = extractRoles(resourceClass);
 
-        // @RolesAllowed on the method takes precedence over @PermitAll
-        RolesAllowed rolesAllowed = method.getAnnotation(RolesAllowed.class);
-        if (rolesAllowed != null) {
-            performAuthorization(rolesAllowed.value(), requestContext);
-            return;
-        }
+        Method resourceMethod = resourceInfo.getResourceMethod();
+        List<Authority> methodRoles = extractRoles(resourceMethod);
 
-        // @PermitAll on the method takes precedence over @RolesAllowed on the class
-        if (method.isAnnotationPresent(PermitAll.class)) {
-            // Do nothing
-            return;
-        }
-
-        // @DenyAll can't be attached to classes
-
-        // @RolesAllowed on the class takes precedence over @PermitAll on the class
-        rolesAllowed = resourceInfo.getResourceClass().getAnnotation(RolesAllowed.class);
-        if (rolesAllowed != null) {
-            performAuthorization(rolesAllowed.value(), requestContext);
-        }
-
-        // @PermitAll on the class
-        if (resourceInfo.getResourceClass().isAnnotationPresent(PermitAll.class)) {
-            // Do nothing
-            return;
-        }
-
-        // Authentication is required for non-annotated methods
-        if (isNotAuthenticated(requestContext)) {
-            throw new AccessDeniedException("Authentication is required to perform this action.");
+        try {
+            // Check if the user is allowed to execute the method
+            // The method annotations override the class annotations
+            if (methodRoles.isEmpty()) {
+                checkPermissions(classRoles, requestContext);
+            } else {
+                checkPermissions(methodRoles, requestContext);
+            }
+        } catch (Exception e) {
+            requestContext.abortWith(
+                    Response
+                            .status(Response.Status.FORBIDDEN)
+                            .build());
         }
     }
 
     /**
-     * Perform authorization based on roles.
+     * Extract the roles from the annotated element.
      */
-    private void performAuthorization(String[] rolesAllowed, ContainerRequestContext requestContext) {
-        if (rolesAllowed.length > 0 && isNotAuthenticated(requestContext)) {
-            throw new AccessDeniedException("Authentication is required to perform this action.");
-        }
-
-        for (final String role : rolesAllowed) {
-            if (requestContext.getSecurityContext().isUserInRole(role)) {
-                System.out.println("In role");
-                return;
+    private List<Authority> extractRoles(AnnotatedElement annotatedElement) {
+        if (annotatedElement == null) {
+            return new ArrayList<Authority>();
+        } else {
+            Secured secured = annotatedElement.getAnnotation(Secured.class);
+            if (secured == null) {
+                return new ArrayList<Authority>();
+            } else {
+                Authority[] allowedRoles = secured.value();
+                return Arrays.asList(allowedRoles);
             }
         }
-
-        throw new AccessDeniedException("You don't have permissions to perform this action.");
     }
 
     /**
-     * Check if the user is authenticated.
+     * Check if the user contains one of the allowed roles.
+     * Throw an Exception if the user has not permission to execute the method.
      */
-    private boolean isNotAuthenticated(final ContainerRequestContext requestContext) {
-        return requestContext.getSecurityContext().getUserPrincipal() == null;
+    private void checkPermissions(
+            List<Authority> allowedRoles,
+            ContainerRequestContext requestContext
+    ) throws Exception {
+        SecurityContext securityContext = requestContext.getSecurityContext();
+        AuthenticatedUserDetails user = (AuthenticatedUserDetails) securityContext.getUserPrincipal();
+        AuthenticationTokenDetails tokenDetails = user.getAuthenticationTokenDetails();
+        boolean inRole = tokenDetails.getAuthorities().stream().anyMatch(allowedRoles::contains);
+        if (!inRole) {
+            throw new AccessDeniedException("You don't have permissions to perform this action.");
+        }
     }
 
 }

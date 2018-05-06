@@ -1,7 +1,7 @@
 package ru.mcmerphy.todos.rest.server;
 
+import ru.mcmerphy.todos.rest.server.exception.mappers.*;
 import ru.mcmerphy.todos.rest.server.filters.*;
-import ru.mcmerphy.todos.rest.server.mappers.*;
 import ru.mcmerphy.todos.rest.server.resources.AuthenticationResource;
 import ru.mcmerphy.todos.rest.server.resources.TodoItemResource;
 import ru.mcmerphy.todos.rest.server.resources.UserResource;
@@ -22,7 +22,6 @@ public class ApplicationConfig extends Application {
         resources.add(AuthenticationResource.class);
 
         resources.add(TodoItemNotFoundExceptionMapper.class);
-        resources.add(UserNotFoundExceptionMapper.class);
         resources.add(ConstraintViolationExceptionMapper.class);
         resources.add(RequestParametersExceptionMapper.class);
         resources.add(ProcessingExceptionMapper.class);

@@ -3,6 +3,7 @@ package ru.mcmerphy.todos.rest.server.filters;
 import ru.mcmerphy.todos.dao.UserNotFoundException;
 import ru.mcmerphy.todos.dao.UserService;
 import ru.mcmerphy.todos.domain.User;
+import ru.mcmerphy.todos.rest.server.ErrorMessage;
 import ru.mcmerphy.todos.rest.server.security.AuthenticatedUserDetails;
 import ru.mcmerphy.todos.rest.server.security.AuthenticationTokenDetails;
 import ru.mcmerphy.todos.rest.server.security.TokenBasedSecurityContext;
@@ -15,6 +16,8 @@ import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
@@ -24,7 +27,7 @@ import java.io.IOException;
  */
 @Provider
 @Dependent
-@Priority(1)
+@Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
 
     @Inject
@@ -41,8 +44,11 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             try {
                 handleTokenBasedAuthentication(authenticationToken, requestContext);
             } catch (UserNotFoundException e) {
-//                TODO Handle exception
-                e.printStackTrace();
+                requestContext.abortWith(Response
+                        .status(Response.Status.NOT_FOUND)
+                        .entity(new ErrorMessage("User with username=" + e.getUserName() + " not found in database"))
+                        .type(MediaType.APPLICATION_JSON_TYPE)
+                        .build());
             }
         }
 
@@ -55,9 +61,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     ) throws UserNotFoundException {
         AuthenticationTokenDetails authenticationTokenDetails =
                 authenticationTokenService.parseToken(authenticationToken);
-
-//        TODO Delete
-        System.out.println(authenticationTokenDetails);
 
         User user = userService.findUserByName(authenticationTokenDetails.getUsername());
         AuthenticatedUserDetails authenticatedUserDetails = new AuthenticatedUserDetails(

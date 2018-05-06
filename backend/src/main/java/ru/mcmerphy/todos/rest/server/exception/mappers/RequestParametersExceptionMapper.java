@@ -1,4 +1,4 @@
-package ru.mcmerphy.todos.rest.server.mappers;
+package ru.mcmerphy.todos.rest.server.exception.mappers;
 
 import ru.mcmerphy.todos.rest.server.validators.RequestParametersException;
 
