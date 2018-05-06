@@ -7,6 +7,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Persistence model that represents a todo-item.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 @Entity

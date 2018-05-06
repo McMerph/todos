@@ -5,8 +5,8 @@ import ru.mcmerphy.todos.domain.UserCredentials;
 import ru.mcmerphy.todos.rest.server.security.AuthenticatedUserDetails;
 import ru.mcmerphy.todos.rest.server.security.AuthenticationToken;
 import ru.mcmerphy.todos.rest.server.security.AuthenticationTokenDetails;
-import ru.mcmerphy.todos.rest.server.security.service.AuthenticationTokenService;
-import ru.mcmerphy.todos.rest.server.security.service.UsernamePasswordValidator;
+import ru.mcmerphy.todos.rest.server.security.services.AuthenticationTokenService;
+import ru.mcmerphy.todos.rest.server.validators.UsernamePasswordValidator;
 
 import javax.annotation.security.PermitAll;
 import javax.enterprise.context.RequestScoped;

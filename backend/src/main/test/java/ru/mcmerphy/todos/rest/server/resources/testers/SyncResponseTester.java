@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpStatus;
 import ru.mcmerphy.todos.domain.TodoItem;
-import ru.mcmerphy.todos.rest.server.SyncResponse;
+import ru.mcmerphy.todos.rest.server.entities.SyncResponse;
 
 import java.util.Set;
 

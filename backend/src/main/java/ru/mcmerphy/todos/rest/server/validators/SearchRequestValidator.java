@@ -1,11 +1,15 @@
 package ru.mcmerphy.todos.rest.server.validators;
 
-import ru.mcmerphy.todos.rest.server.ErrorMessage;
-import ru.mcmerphy.todos.rest.server.SearchRequest;
+import ru.mcmerphy.todos.rest.server.entities.ErrorMessage;
+import ru.mcmerphy.todos.rest.server.entities.SearchRequest;
+import ru.mcmerphy.todos.rest.server.exceptions.RequestParametersException;
 
 import javax.ejb.Stateless;
 import java.util.Objects;
 
+/**
+ * Component for validating search request.
+ */
 @Stateless
 public class SearchRequestValidator {
 

@@ -1,6 +1,6 @@
 package ru.mcmerphy.todos.rest.server.resources.testers;
 
-import ru.mcmerphy.todos.rest.server.ErrorMessage;
+import ru.mcmerphy.todos.rest.server.entities.ErrorMessage;
 
 public class ErrorTester extends ResponseTester<ErrorMessage> {
 

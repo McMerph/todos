@@ -1,14 +1,14 @@
 package ru.mcmerphy.todos.rest.server.resources;
 
-import ru.mcmerphy.todos.dao.TodoItemNotFoundException;
+import ru.mcmerphy.todos.dao.exceptions.TodoItemNotFoundException;
 import ru.mcmerphy.todos.dao.TodoItemService;
 import ru.mcmerphy.todos.domain.TodoItem;
-import ru.mcmerphy.todos.rest.server.ErrorMessage;
-import ru.mcmerphy.todos.rest.server.SearchRequest;
-import ru.mcmerphy.todos.rest.server.SyncResponse;
-import ru.mcmerphy.todos.rest.server.TodoItemsResponse;
+import ru.mcmerphy.todos.rest.server.entities.ErrorMessage;
+import ru.mcmerphy.todos.rest.server.entities.SearchRequest;
+import ru.mcmerphy.todos.rest.server.entities.SyncResponse;
+import ru.mcmerphy.todos.rest.server.entities.TodoItemsResponse;
 import ru.mcmerphy.todos.rest.server.filters.Logged;
-import ru.mcmerphy.todos.rest.server.validators.RequestParametersException;
+import ru.mcmerphy.todos.rest.server.exceptions.RequestParametersException;
 import ru.mcmerphy.todos.rest.server.validators.SearchRequestValidator;
 import ru.mcmerphy.todos.rest.server.validators.TodoItemValidator;
 

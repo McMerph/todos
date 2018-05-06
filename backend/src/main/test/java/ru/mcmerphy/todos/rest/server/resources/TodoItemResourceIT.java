@@ -9,7 +9,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import ru.mcmerphy.todos.domain.TodoItem;
-import ru.mcmerphy.todos.rest.server.TodoItemsResponse;
+import ru.mcmerphy.todos.rest.server.entities.TodoItemsResponse;
 import ru.mcmerphy.todos.rest.server.resources.testers.*;
 
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package ru.mcmerphy.todos.rest.server.filters;
 
-import ru.mcmerphy.todos.rest.server.ErrorMessage;
+import ru.mcmerphy.todos.rest.server.entities.ErrorMessage;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.container.ContainerRequestContext;

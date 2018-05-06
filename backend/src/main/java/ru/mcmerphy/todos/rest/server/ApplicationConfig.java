@@ -1,6 +1,6 @@
 package ru.mcmerphy.todos.rest.server;
 
-import ru.mcmerphy.todos.rest.server.exception.mappers.*;
+import ru.mcmerphy.todos.rest.server.exceptions.mappers.*;
 import ru.mcmerphy.todos.rest.server.filters.*;
 import ru.mcmerphy.todos.rest.server.resources.AuthenticationResource;
 import ru.mcmerphy.todos.rest.server.resources.TodoItemResource;

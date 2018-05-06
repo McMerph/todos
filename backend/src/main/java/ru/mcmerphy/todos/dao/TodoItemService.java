@@ -1,5 +1,6 @@
 package ru.mcmerphy.todos.dao;
 
+import ru.mcmerphy.todos.dao.exceptions.TodoItemNotFoundException;
 import ru.mcmerphy.todos.domain.TodoItem;
 
 import javax.ejb.Stateless;

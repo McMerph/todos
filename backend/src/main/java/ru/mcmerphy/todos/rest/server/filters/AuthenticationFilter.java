@@ -1,13 +1,13 @@
 package ru.mcmerphy.todos.rest.server.filters;
 
-import ru.mcmerphy.todos.dao.UserNotFoundException;
+import ru.mcmerphy.todos.dao.exceptions.UserNotFoundException;
 import ru.mcmerphy.todos.dao.UserService;
 import ru.mcmerphy.todos.domain.User;
-import ru.mcmerphy.todos.rest.server.ErrorMessage;
+import ru.mcmerphy.todos.rest.server.entities.ErrorMessage;
 import ru.mcmerphy.todos.rest.server.security.AuthenticatedUserDetails;
 import ru.mcmerphy.todos.rest.server.security.AuthenticationTokenDetails;
 import ru.mcmerphy.todos.rest.server.security.TokenBasedSecurityContext;
-import ru.mcmerphy.todos.rest.server.security.service.AuthenticationTokenService;
+import ru.mcmerphy.todos.rest.server.security.services.AuthenticationTokenService;
 
 import javax.annotation.Priority;
 import javax.enterprise.context.Dependent;

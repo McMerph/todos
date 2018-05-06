@@ -1,5 +1,6 @@
 package ru.mcmerphy.todos.dao;
 
+import ru.mcmerphy.todos.dao.exceptions.UserNotFoundException;
 import ru.mcmerphy.todos.domain.User;
 
 import javax.ejb.Stateless;

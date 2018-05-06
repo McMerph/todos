@@ -1,12 +1,12 @@
 package ru.mcmerphy.todos.rest.server.resources;
 
-import ru.mcmerphy.todos.dao.UserNotFoundException;
+import ru.mcmerphy.todos.dao.exceptions.UserNotFoundException;
 import ru.mcmerphy.todos.dao.UserService;
 import ru.mcmerphy.todos.domain.Authority;
 import ru.mcmerphy.todos.domain.User;
-import ru.mcmerphy.todos.rest.server.UsersResponse;
+import ru.mcmerphy.todos.rest.server.entities.UsersResponse;
 import ru.mcmerphy.todos.rest.server.filters.Logged;
-import ru.mcmerphy.todos.rest.server.validators.RequestParametersException;
+import ru.mcmerphy.todos.rest.server.exceptions.RequestParametersException;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

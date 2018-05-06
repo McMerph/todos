@@ -4,7 +4,7 @@ import ru.mcmerphy.todos.domain.Authority;
 import ru.mcmerphy.todos.rest.server.resources.Secured;
 import ru.mcmerphy.todos.rest.server.security.AuthenticatedUserDetails;
 import ru.mcmerphy.todos.rest.server.security.AuthenticationTokenDetails;
-import ru.mcmerphy.todos.rest.server.security.service.exception.AccessDeniedException;
+import ru.mcmerphy.todos.rest.server.exceptions.AccessDeniedException;
 
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;

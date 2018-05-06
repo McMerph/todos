@@ -3,7 +3,7 @@ package ru.mcmerphy.todos.rest.server.resources.testers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpStatus;
-import ru.mcmerphy.todos.rest.server.TodoItemsResponse;
+import ru.mcmerphy.todos.rest.server.entities.TodoItemsResponse;
 
 public class OkTodoItemsResponseTester extends ResponseTester<TodoItemsResponse> {
 
